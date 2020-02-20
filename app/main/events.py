@@ -1,6 +1,5 @@
 from flask_socketio import emit, send
 from .. import socketio
-from .. import models, data
 
 
 @socketio.on('plot_update')
