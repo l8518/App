@@ -6,7 +6,11 @@ You can find the meetings notes on a by-weekly basis [here](docs/Meetings.md).
 
 ## Development
 
-Install with `pip install -t requirements.txt`
+### Use a Virtualenv
+
+- `python3 -m venv ./venv`
+- Activate based on your OS (how to [check here](https://docs.python.org/3/library/venv.html))
+- Run in your virtual env `pip3 install -r requirements.txt`
 
 ### Run on Linux & Mac ###
 
