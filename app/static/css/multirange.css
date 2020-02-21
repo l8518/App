@@ -4,6 +4,7 @@
 		margin: 0;
 		display: inline-block;
 		vertical-align: top;
+		width: 100%;
 	}
 		input[type="range"].multirange::-moz-range-thumb {
 			transform: scale(1); /* FF doesn't apply position it seems */
@@ -63,7 +64,7 @@
 				transparent var(--low), var(--range-color) 0,
 				var(--range-color) var(--high), transparent 0
 			) no-repeat 0 45% / 100% 40%;
-		--range-color: hsl(190, 80%, 40%);
+		--range-color: red; /*hsl(190, 80%, 40%)*/
 	}
 
 		input[type="range"].multirange.ghost::-webkit-slider-runnable-track {
