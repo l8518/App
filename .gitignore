@@ -1,3 +1,6 @@
 *.pyc 
 **/.DS_Store
 
+artsight_csvs/*
+data/*
+omniart_eye_dataset/*
