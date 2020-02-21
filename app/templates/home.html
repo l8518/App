@@ -12,8 +12,8 @@
 
 <H2 class="mt-3">Main View</H2>
 <div class="mt-3" id="example"></div>
-<script type="text/javascript" src="../static/js/main.js"></script>
-<script type="text/javascript" src="../static/js/multirange.js"></script>
+
+<svg width="960" height="960" font-family="sans-serif" font-size="10" text-anchor="middle"></svg>
 
 <p>
   <label for="amount">Time range:</label>
@@ -21,6 +21,10 @@
 </p>
 
 <input id="time_slider" type="range" multiple value="1000,1200" onchange="sliderChange()" min="1000" max="2000"/>
+
+<script type="text/javascript" src="../static/js/main.js"></script>
+<script type="text/javascript" src="../static/js/multirange.js"></script>
+<script type="text/javascript" src="../static/js/bubblechart.js"></script>
 
 <script type="text/javascript">
 	const time_slider = document.getElementById("time_slider");

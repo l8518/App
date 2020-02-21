@@ -2,3 +2,8 @@
 **/.DS_Store
 venv
 
+omniart_eye_dataset/*
+artsight_csvs/*
+data/*
+
+settings.json
