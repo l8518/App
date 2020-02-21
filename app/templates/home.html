@@ -30,9 +30,9 @@
 
 <script type="text/javascript">
 	const time_slider = document.getElementById("time_slider");
-	
+	const timeRangeText = document.getElementById("amount");
+	timeRangeText.value = "1000 - 1200"; // place holder value
  	function sliderChange(){
- 		const timeRangeText = document.getElementById("amount");
  		timeRangeText.value = time_slider.value.replace(",", " - ")
  	}
 </script>
