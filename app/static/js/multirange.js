@@ -65,7 +65,8 @@ var multirange = function(input) {
 
 	function update(mode) {
 		ghost.style.setProperty("--low", 100 * ((input.valueLow - min) / (max - min)) + 1 + "%");
-		ghost.style.setProperty("--high", 100 * ((input.valueHigh - min) / (max - min)) - 1 + "%");
+		const line_length = 100 * ((input.valueHigh - min) / (max - min)) - 1;
+		ghost.style.setProperty("--high", line_length > 90 ? line_length  + "%" : line_length +1  + "%");
 
 		if (dragMiddle && mode !== 1) {
 			let w = input.valueHigh - input.valueLow;
