@@ -34,6 +34,7 @@
 	timeRangeText.value = "1000 - 1200"; // place holder value
  	function sliderChange(){
  		timeRangeText.value = time_slider.value.replace(",", " - ")
+ 		fetch_data(time_slider.value.split(",")[0], time_slider.value.split(",")[1])
  	}
 </script>
 {% endblock %}

@@ -1,5 +1,5 @@
-fetch_data = function(){
-  const url = "/api/portraits";
+fetch_data = function(year_start, year_end){
+  const url = "/api/portraits_for_period?year_start=" +year_start +"&year_end=" +year_end;
     fetch(url)
         .then(resp => resp.json())
         .then(json => {
@@ -66,4 +66,4 @@ render_bubble_chart = function(data){
 
 }
 
-window.onload = fetch_data();
+window.onload = fetch_data(1000, 1200);
