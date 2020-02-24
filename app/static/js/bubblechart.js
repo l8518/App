@@ -1,46 +1,74 @@
-fetch_data = function(year_start, year_end){
-  const url = "/api/portraits_for_period?year_start=" +year_start +"&year_end=" +year_end;
-    fetch(url)
-        .then(resp => resp.json())
-        .then(data => {
-            var root = d3.hierarchy({children: data})
-              .sum(function(d) { return d.count; });
+fetch_data = async function(year_start, year_end){
+    const url = "/api/portraits_for_period?year_start=" +year_start +"&year_end=" +year_end;
+    const response = await fetch(url)
+      .then(resp => resp.json());
 
-            var data = pack(root).leaves();
-            node.data(data);             
-            render_bubble_chart();
-        });
+    return response;
 }
 
-render_bubble_chart = function(){ 
-  console.log("render update");
-  node.append("g")
-    .attr("class", "node")
-    .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-  
+update = function(data){
 
-  node.append("circle")
-    .attr("id", function(d) { return d.data.dominant_color; })
-    .attr("r", function(d) { return d.r; })
-    .style("fill", function(d) { return d.data.dominant_color });
+  //transition
+  var t = d3.transition().duration(750);
+
+  //hierarchy
+  var h = d3.hierarchy({children: data}).sum(function(d) { return d.count; });
   
-  node.append("clipPath")
-    .attr("id", function(d) { return "clip-" + d.data.dominant_color; })
-    .append("use")
-    .attr("xlink:href", function(d) { return "#" + d.data.dominant_color; });
-  
-  node.append("text")
-    .attr("clip-path", function(d) { return "url(#clip-" + d.data.dominant_color + ")"; })
-    // .selectAll("tspan")
-    // .data(function(d) { return d.data.dominant_color; })
-    // .enter().append("tspan")
-    // .attr("x", 0)
-    // .attr("y", function(d, i, nodes) { console.log(nodes); return 13 + (i - nodes.length / 2 - 0.5) * 10; })
-    .text(function(d) { return d.data.dominant_color; });
-  
-  node.append("title")
-    .text(function(d) { return d.data.dominant_color + "\n" + format(d.data.count); });
-  console.log(node);
+  console.log(pack(h).leaves());
+  //JOIN
+  var circle = svg.selectAll("circle")
+    .data(pack(h).leaves(), function(d){return d.data.dominant_color;});
+    
+  var text = svg.selectAll("text")
+    .data(pack(h).leaves(), function(d){return d.data.count;});
+
+  //EXIT
+  circle.exit()
+    .style("fill",  function(d){return d.data.dominant_color})
+    .transition(t)
+    .attr("r", 1e-6)
+    .remove();
+
+  text.exit()
+    .transition(t)
+    .attr("opacity", 1e-6)
+    .remove();
+
+  //UPDATE
+
+  circle
+    .transition(t)
+    .style("fill", function(d){ return d.data.dominant_color })
+    .attr("r", function(d){ return d.r })
+    .attr("cx", function(d){ return d.x; })
+    .attr("cy", function(d){ return d.y; })
+
+  text
+    .transition(t)
+    .attr("x", function(d){ return d.x; })
+    .attr("y", function(d){ return d.y; });
+
+  //ENTER
+  var el = circle.enter().append("circle")
+    .attr("r", 1e-6)
+    .attr("cx", function(d){ return d.x; })
+    .attr("cy", function(d){ return d.y; })
+    .style("fill", function(d){return d.data.dominant_color});
+
+    el.transition(t)
+      .style("fill", function(d){return d.data.dominant_color})
+      .attr("r", function(d){ return d.r });
+
+    el.append("title")
+    .text(function(d) {return d.data.dominant_color + "\n" + format(d.data.count); });
+
+  text.enter().append("text")
+    .attr("opacity", 1e-6)
+    .attr("x", function(d){ return d.x; })
+    .attr("y", function(d){ return d.y; })
+    .text(function(d){ return d.data.count; })
+    .transition(t)
+    .attr("opacity", 1);
 }
 
 var svg = d3.select("svg"),
@@ -49,16 +77,6 @@ var svg = d3.select("svg"),
   
 var format = d3.format(",d");
 
-var color = d3.scaleOrdinal(d3.schemeCategory10);
-
 var pack = d3.pack()
-.size([width, height])
-.padding(1.5);
-
-var node = svg.selectAll(".node")
-  .enter();
-  
-  // .data(pack(root).leaves())
-  // .enter();
-
-  // render_bubble_chart();
+  .size([width, height])
+  .padding(1.5);

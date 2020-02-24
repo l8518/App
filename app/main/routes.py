@@ -8,6 +8,10 @@ from . import data
 def index():
 	return render_template("home.html")
 
+@main.route('/temp', methods=['GET'])
+def temp():
+	return render_template("home_temp.html")
+
 @main.route('/api/portraits', methods=['GET'])
 def get_portraits_dominant_color_count():
     df = data.get_portraits_by_year('1400','1402')
