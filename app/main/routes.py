@@ -26,6 +26,12 @@ def get_portraits_dominant_color_count_for_period():
     dominant_color_count = df.groupby(['dominant_color'])['id'].count().reset_index(name="count").to_json(orient='records')
     return dominant_color_count
 
+@main.route('/api/school_types', methods=['GET'])
+def get_school_types():
+    d = ["Dutch", "French", "Italian"]
+    return jsonify(data.school_types()[1:42].tolist()) # FIXME! NaN value breaks
+
+
 @main.route('/api/helloworld', methods=['GET'])
 def api_helloworld():
     d = [2, 10, 10]
