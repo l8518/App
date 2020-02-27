@@ -20,14 +20,8 @@ def get_portraits_dominant_color_count():
 
 @main.route('/api/portraits_heatmap', methods=['GET'])
 def get_portraits_heatmap():
-	# TODO LM
-    # data = [21 * 11]
-    # for x in range(0,20):
-    #     for y in range(1,10):
-    #         data[x + y] = ({'century': (y * 1000), 'period': x, 'pcolor': '#C46210'})
-
-    data = [{'century': 1000, 'period': 0, 'pcolor': '#ffaa80'}, {'century': 1000, 'period': 5, 'pcolor': '#ff9966'}, {'century': 1000, 'period': 10, 'pcolor': '#ff884d'}]
-    return jsonify(data)
+    df_heat = data.get_heatmap()
+    return df_heat.to_json(orient='records')
 
 @main.route('/api/portraits_for_period', methods=['GET'])
 def get_portraits_dominant_color_count_for_period():

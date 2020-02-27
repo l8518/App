@@ -6,4 +6,5 @@ settings.json
 
 omniart_eye_dataset/*
 artsight_csvs/*
-data/*
+data/csv
+data/resize_scripts

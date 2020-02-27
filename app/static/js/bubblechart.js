@@ -14,7 +14,7 @@ update = function(data){
   //hierarchy
   var h = d3.hierarchy({children: data}).sum(function(d) { return d.count; });
   
-  console.log(pack(h).leaves());
+  // console.log(pack(h).leaves());
   //JOIN
   var circle = bubble_svg.selectAll("circle")
     .data(pack(h).leaves(), function(d){return d.data.dominant_color;});
