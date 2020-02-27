@@ -30,3 +30,8 @@ def get_portraits_dominant_color_count_for_period():
 def api_helloworld():
     d = [2, 10, 10]
     return jsonify(d)
+
+@main.route('/api/images', methods=['GET'])
+def api_images():
+    all_portaits = data.get_portraits_by_year(str('0'), str('2020'))
+    return all_portaits['image_url'].head(100).to_json(orient='records')
