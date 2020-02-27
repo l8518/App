@@ -2,6 +2,11 @@
 
 This contains the meeting notes for each week.
 
+# Week 4
+- Face main part
+- Heat map showing only the line of century. 
+ - Click on century folds out to more specific view (original heatmap)
+
 # Week 3
 - Prepare boilerplate code
 - Pitched the idea of a time line correlation visualization against objects/concepts to Gjorgji
