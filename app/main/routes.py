@@ -26,7 +26,7 @@ def get_portraits_heatmap():
     #     for y in range(1,10):
     #         data[x + y] = ({'century': (y * 1000), 'period': x, 'pcolor': '#C46210'})
 
-    data = [{'century': 1000, 'period': 0, 'pcolor': '#FFFF00'}, {'century': 1000, 'period': 5, 'pcolor': '#FF00FF'}, {'century': 1000, 'period': 10, 'pcolor': '#00FFFF'}]
+    data = [{'century': 1000, 'period': 0, 'pcolor': '#ffaa80'}, {'century': 1000, 'period': 5, 'pcolor': '#ff9966'}, {'century': 1000, 'period': 10, 'pcolor': '#ff884d'}]
     return jsonify(data)
 
 @main.route('/api/portraits_for_period', methods=['GET'])

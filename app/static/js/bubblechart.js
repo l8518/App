@@ -16,10 +16,10 @@ update = function(data){
   
   console.log(pack(h).leaves());
   //JOIN
-  var circle = svg.selectAll("circle")
+  var circle = bubble_svg.selectAll("circle")
     .data(pack(h).leaves(), function(d){return d.data.dominant_color;});
     
-  var text = svg.selectAll("text")
+  var text = bubble_svg.selectAll("text")
     .data(pack(h).leaves(), function(d){return d.data.count;});
 
   //EXIT
@@ -70,13 +70,17 @@ update = function(data){
     .transition(t)
     .attr("opacity", 1);
 }
+const bubble_width = 600;
+const bubble_height = 600;
 
-var svg = d3.select("svg"),
-  width = +svg.attr("width"),
-  height = +svg.attr("height");
-  
+var bubble_svg = d3.select("#bubble")
+  .append("svg")
+    .attr("id", "bubble")
+    .attr("width", bubble_width)
+    .attr("height", bubble_height);
+
 var format = d3.format(",d");
 
 var pack = d3.pack()
-  .size([width, height])
+  .size([bubble_width, bubble_height])
   .padding(1.5);
