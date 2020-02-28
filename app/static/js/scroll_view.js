@@ -79,7 +79,7 @@ get_images = function(index, schouldClear){
 			img.src = data[i];
 
 			var att = document.createAttribute("class");
-			att.value = "imageClass";
+			att.value = "imageClass img-thumbnail";
 			img.setAttributeNode(att)
 
 			var bootstrap = document.createAttribute("class");
