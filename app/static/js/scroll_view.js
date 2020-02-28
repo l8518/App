@@ -5,6 +5,7 @@ ageRangeText.value = "0 - 100"; // place holder value
 
 function ageSliderChange(){
 	ageRangeText.value = age_slider.value.replace(",", " - ");
+	renew_view();
 }
 
 const maleFilterBtn = document.getElementById("maleFilter");
@@ -22,6 +23,7 @@ function maleClick(){
 		maleFilterBtn.setAttributeNode(selectedBtn)	
 		isMaleSelected = true
 	}
+	renew_view();
 }
 
 const femaleFilterBtn = document.getElementById("femaleFilter");
@@ -38,6 +40,7 @@ function femaleClick(){
 		femaleFilterBtn.setAttributeNode(selectedBtn)	
 		isFemaleSelected = true
 	}
+	renew_view();
 }
 
 // Dropdown
@@ -64,15 +67,10 @@ function filterFunction() {
 } 
 
 // Continous scroll
-get_images = function(index, schouldClear){
+get_images = function(index){
 	fetch('/api/images?index='+index).then(function(resp) {
 		return resp.json()
 	}).then(function (data){
-		if (schouldClear) {
-			while (mainView.childElementCount > 0){
-				mainView.removeChild(mainView.children[0]) // todo not the buttons
-			}
-		};
 		for (var i = 0; i < data.length; i++) {
 			var img = document.createElement("img");
 			var container = document.createElement("div");
@@ -91,8 +89,30 @@ get_images = function(index, schouldClear){
 		};
 	});	
 }
+const root_el = document.getElementById("example")
+renew_view = function(){
+	// reset index
+	index = 1
+	
+	root_el.removeChild(document.getElementById("scroll"))
+	create_scroll_container()
 
-const mainView = document.getElementById("scroll")
+	get_images(index)
+}
+create_scroll_container = function(){
+	// id="scroll" class="row"
+	var container = document.createElement("div");
+	container.id = "scroll"
+
+	var row = document.createAttribute("class");	
+	row.value = "row";
+	container.setAttributeNode(row)
+	root_el.appendChild(container);
+	mainView = container;
+}
+
+
+var mainView = document.getElementById("scroll")
 var index = 0;
 
 window.onscroll = function(){

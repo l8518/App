@@ -1,15 +1,15 @@
 <link rel="stylesheet" type="text/css" href="../static/css/dropdown.css">
 
-<div id="filtering" class="row">
-  <div class="col-md-12">
-    <div id="filtering" class="row">
-      <div class="col-md-4">
-        <button id="maleFilter" onclick="maleClick()" type="button" style="padding: 1vw;" class="btn btn-outline-secondary">Male</button>
-        <button id="femaleFilter"  onclick="femaleClick()"  type="button" style="padding: 1vw;" class="btn btn-outline-secondary">Female</button>
-      </div>
-      
-      <div class="col-md-4">
-       <div class="dropdown">
+<!-- <div id="filtering" class="row"> -->
+<div class="col-md-12">
+  <div id="filtering" class="row">
+    <div class="col-md-4">
+      <button id="maleFilter" onclick="maleClick()" type="button" style="padding: 1vw;" class="btn btn-outline-secondary">Male</button>
+      <button id="femaleFilter"  onclick="femaleClick()"  type="button" style="padding: 1vw;" class="btn btn-outline-secondary">Female</button>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="dropdown">
         <button onclick="dropdownClick()" class="dropbtn">Shool type</button>
         <div id="myDropdown" class="dropdown-content">
           <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
@@ -35,7 +35,6 @@
   </div>
 </div>
 <div id="scroll" class="row">
-  
 </div>
 
 <script type="text/javascript" src="../static/js/scroll_view.js"></script>
