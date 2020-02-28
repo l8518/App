@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="../static/css/multirange.css"></link>
 
 <H2 class="mt-3">Main View</H2>
-<div class="mt-3" id="example">
+<div class="container mt-3" id="example">
 	<div class="mt-12">
 		<p>
 		  <label for="amount">Time range:</label>
@@ -22,14 +22,12 @@
 	<div class="mt-12">
 		<input id="time_slider" type="range" multiple data-drag-middle value="1000,1200" onchange="sliderChange()" min="1000" max="2000"/>
 	</div>
-	<div id="scroll" class="row">
-	</div>
+	{%  include "scroll_view.html" %}
 </div>
 
 <script type="text/javascript" src="../static/js/main.js"></script>
 <script type="text/javascript" src="../static/js/multirange.js"></script>
 <script type="text/javascript" src="../static/js/bubblechart.js"></script>
-<script type="text/javascript" src="../static/js/scroll_view.js"></script>
 
 <script type="text/javascript">
 	const time_slider = document.getElementById("time_slider");
