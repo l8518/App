@@ -1,13 +1,33 @@
+updateCenturiesData = function(data){
+  for (var i = 0; i < data.length; i++) {
+    const century = data[i].century;
+    if (century === 1 || century == 21) {
+      data[i].century = century + 'st';
+      continue;
+    }
+    if (data[i].century === 2 ) {
+      data[i].century = century + 'nd';
+      continue;
+    }
+    if (data[i].century === 3 ) {
+      data[i].century = century + 'rd';
+      continue;
+    }
+    data[i].century = century + 'th';
+  }
+  return data;
+}
 
 //Read the data
 readAndDrawData = function (){
   fetch('/api/portraits_heatmap').then(function(resp){
     return resp.json();
   }).then(function(data){
+    data = updateCenturiesData(data)
     // set the dimensions and margins of the graph
-    var heatmap_margin = {top: 30, right: 30, bottom: 30, left: 30},
-    heatmap_width = 450 - heatmap_margin.left - heatmap_margin.right,
-    heatmap_height = 450 - heatmap_margin.top - heatmap_margin.bottom;
+    var heatmap_margin = {top: 10, right: 55, bottom: 55, left: 65},
+    heatmap_width = 600 - heatmap_margin.left - heatmap_margin.right,
+    heatmap_height = 600 - heatmap_margin.top - heatmap_margin.bottom;
 
     // append the svg object to the body of the page
     var heatmap_svg = d3.select("#my_dataviz")
@@ -19,22 +39,25 @@ readAndDrawData = function (){
     .attr("transform",
           "translate(" + heatmap_margin.left + "," + heatmap_margin.top + ")");
     // Labels of row and columns
-    // var periods = [1, 2, 3, 4, 5, 6, 7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-    // var centuries = [1, 2, 3, 4, 5, 6, 7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
 
     var periods = d3.map(data, function(d){return d.period}).keys()
     var centuries = d3.map(data, function(d){return d.century}).keys()
-
     // Build X scales and axis:
     var x = d3.scaleBand()
     .range([0, heatmap_width ])
     .domain(periods)
     .padding(0.01);
+
     heatmap_svg.append("g")
     .style("font-size", 15)
     .attr("transform", "translate(0," + heatmap_height + ")")
-    .call(d3.axisBottom(x).tickSize(0))
-    .select(".domain").remove()
+    .call(d3.axisBottom(x).tickSize(5))
+    // Rotate the x-axis labels
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .attr("transform", "rotate(-60)")
 
     // Build Y scales and axis:
     var y = d3.scaleBand()
@@ -44,8 +67,43 @@ readAndDrawData = function (){
 
     heatmap_svg.append("g")
     .style("font-size", 15)
-    .call(d3.axisLeft(y).tickSize(0))
-    .select(".domain").remove()
+    .attr("transform", "translate(-5,0)")
+    .call(d3.axisLeft(y)
+      .tickSize(5))
+
+    heatmap_svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - heatmap_margin.left)
+    .attr("x",0 - (heatmap_height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("Centuries");
+
+    // create a tooltip
+    var tooltip = d3.select("#my_dataviz")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "2px")
+    .style("border-radius", "5px")
+    .style("padding", "5px")
+
+    var mouseover = function(d) {
+      tooltip.style("opacity", 1)
+    }
+    var mousemove = function(d) {        
+      tooltip
+        .html("The color of<br>this period is: " + d.dominant_color)
+        .style("left", (d3.mouse(this)[0]+70) + "px")
+        // FIXME. Dont know how to get right position. heatmap_height + 130 is just arbritary. 
+        // Need to get absolute mouse position relative to window
+        .style("top", (d3.mouse(this)[1]+ heatmap_height + 130) +  "px") 
+    }
+    var mouseleave = function(d) {
+      tooltip.style("opacity", 0)
+    }
 
     heatmap_svg.selectAll()
       .data(data)
@@ -56,6 +114,10 @@ readAndDrawData = function (){
         .attr("width", x.bandwidth() )
         .attr("height", y.bandwidth() )
         .style("fill", function(d) { return d.dominant_color !== null ? d.dominant_color : '#FFFFFF'} )
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
+
     heatmap_svg.selectAll()
       .data(data)
       .enter().filter(function(d){ return d.dominant_color === null})
