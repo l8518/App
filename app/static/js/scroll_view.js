@@ -1,3 +1,15 @@
+var params = {}
+
+// Color selection
+const colorField = document.getElementById("colorselect")
+function colorSelection(){
+	renew_view()
+	color = String(colorField.value).split('#')[1]
+	console.log(color)
+	params['color'] = color;
+	get_images(index)
+}
+
 // Age selection
 const ageSlider = document.getElementById("age_slider");
 const ageRangeText = document.getElementById("ageRange");
@@ -68,7 +80,20 @@ function filterFunction() {
 
 // Continous scroll
 get_images = function(index){
-	fetch('/api/images?index='+index).then(function(resp) {
+
+	var url = new URL('/api/images', 'http://localhost:5000')
+	params['index'] = index;
+	// var params = {lat:35.696233, long:139.570431} // or:
+	// var params = [['lat', '35.696233'], ['long', '139.570431']]
+
+	url.search = new URLSearchParams(params).toString();
+
+	// console.log(par.length + " " +par)
+	// for (var i = 0; i < par.length; i++) {
+	// 	url.concat("&" +par[i] +"=" +par[i][0])
+	// };
+	console.log(url)
+	fetch(url).then(function(resp) {
 		return resp.json()
 	}).then(function (data){
 		for (var i = 0; i < data.length; i++) {

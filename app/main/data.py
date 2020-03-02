@@ -15,4 +15,4 @@ def get_portraits_by_year(begin_date:str, end_date:str):
 
 def get_portraits_by_year_with_color(begin_date:str, end_date:str, color:str):
     hex_col = str("#"+color)
-    return portraits_meta.query(begin_date + ' <= creation_year <= ' + end_date +'and dominant_color == "' +hex_col +'"')
+    return portraits_meta.query('dominant_color == "' +hex_col +'"')
