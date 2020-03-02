@@ -93,9 +93,15 @@ readAndDrawData = function (){
     var mouseover = function(d) {
       tooltip.style("opacity", 1)
     }
-    var mousemove = function(d) {        
+    var mousemove = function(d) {
+      var text;
+      if(d.dominant_color){
+        text = "The color of<br>this period is: " + d.dominant_color
+      } else{
+        text = "There is no portrait from this century and period."
+      }
       tooltip
-        .html("The color of<br>this period is: " + d.dominant_color)
+        .html(text)
         .style("left", (d3.mouse(this)[0]+70) + "px")
         // FIXME. Dont know how to get right position. heatmap_height + 130 is just arbritary. 
         // Need to get absolute mouse position relative to window
@@ -107,6 +113,8 @@ readAndDrawData = function (){
 
     var showDialog = function(d){
       if(d.dominant_color){
+        // TODO: Make a html box where one can select a button to scroll to view of all the portraits with color, century and period.
+        // Which are fetched from the server with
         alert("show portraits with skin color: " + d.dominant_color + " from " + d.century + " period " + d.period)
       }
     }
