@@ -34,8 +34,10 @@ def api_helloworld():
 @main.route('/api/images', methods=['GET'])
 def api_images():
     index = int(request.args.get("index"))
+    color = request.args.get("color")
     if index == None:
-        index = 0
+        all_portaits = data.get_portraits_by_year('0', '2020')
+    if color != None:
+    	all_portaits = data.get_portraits_by_year_with_color('0', '2020', color)
     pag = int(index * 100)
-    all_portaits = data.get_portraits_by_year(str('0'), str('2020'))
     return all_portaits['image_url'].loc[pag: pag + 99].to_json(orient='records')
