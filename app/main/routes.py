@@ -39,5 +39,6 @@ def api_images():
         all_portaits = data.get_portraits_by_year_with_color('0', '2020', color)
     else:
         all_portaits = data.get_portraits_by_year('0', '2020')
+    print(len(all_portaits['image_url']))
     pag = int(index * 100)
-    return all_portaits['image_url'].loc[pag: pag + 99].to_json(orient='records')
+    return all_portaits['image_url'].iloc[pag: pag + 99].to_json(orient='records')
