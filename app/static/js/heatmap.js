@@ -105,6 +105,12 @@ readAndDrawData = function (){
       tooltip.style("opacity", 0)
     }
 
+    var showDialog = function(d){
+      if(d.dominant_color){
+        alert("show portraits with skin color: " + d.dominant_color + " from " + d.century + " period " + d.period)
+      }
+    }
+
     heatmap_svg.selectAll()
       .data(data)
       .enter()
@@ -117,6 +123,7 @@ readAndDrawData = function (){
         .on("mouseover", mouseover)
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)
+        .on("click", showDialog)
 
     heatmap_svg.selectAll()
       .data(data)
