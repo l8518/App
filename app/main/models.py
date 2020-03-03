@@ -3,14 +3,6 @@ class Data():
     count:int
 
 class FilterObj():
-	beginDate:str
-	endDate:str
-	beginAge:int
-	endAge:int
-	schools:list
-	female:bool
-	male:bool
-
 	def __init__(self, beginDate, endDate, beginAge, endAge, schools, female, male):
 	    self.beginDate = beginDate
 	    self.endDate = endDate

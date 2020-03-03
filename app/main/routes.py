@@ -42,7 +42,8 @@ def api_images():
     female = bool(request.args.get("female"))
     male = bool(request.args.get("male"))
 
-    filterObj = FilterObj('0', '2020', beginAge, endAge, schools, female, male)
+    filterObj = models.FilterObj('0', '2020', beginAge, endAge, school, female, male)
+
 
     if color != None:
         all_portaits = data.get_portraits_by_year_with_color('0', '2020', color)
