@@ -2,38 +2,61 @@
 
 <!-- <div id="filtering" class="row"> -->
 <div class="col-md-12">
-  <div id="filtering" class="row">
-    <div class="col-md-4">
-      <button id="maleFilter" onclick="maleClick()" type="button" style="padding: 1vw;" class="btn btn-outline-secondary">Male</button>
-      <button id="femaleFilter"  onclick="femaleClick()"  type="button" style="padding: 1vw;" class="btn btn-outline-secondary">Female</button>
-    </div>
-    
-    <div class="col-md-4">
-      <div class="dropdown">
-        <button onclick="dropdownClick()" class="dropbtn">Shool type</button>
-        <div id="myDropdown" class="dropdown-content">
-          <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-          <a href="#dutch">Dutch</a>
-          <a href="#italian">Italian</a>
-          <a href="#french">French</a>
-          <a href="#western">Western</a>
-          <a href="#chinese">Chinese</a>
-          <a href="#russian">Russian</a>
-          <a href="#scandinavian">Scandinavian</a>
+    <div id="filtering" class="row">
+        <div class="col-md-4">
+            <button id="maleFilter" onclick="maleClick()" type="button" style="padding: 1vw;"
+                    class="btn btn-outline-secondary">Male
+            </button>
+            <button id="femaleFilter" onclick="femaleClick()" type="button" style="padding: 1vw;"
+                    class="btn btn-outline-secondary">Female
+            </button>
         </div>
-      </div> 
-    </div>
 
-    <div class="col-md-4">
-      <div class="row">
-        <p> Age <input type="text" id="ageRange" readonly style="border:0; color: red; font-weight:bold;"></p>
-      </div>
-      <div class="row">
-        <input id="age_slider" type="range" multiple data-drag-middle value="0,100" onchange="ageSliderChange()" min="0" max="100"/>
-      </div>
+        {#        <div class="col-md-4">#}
+        {#            <div class="dropdown">#}
+        {#                <button onclick="dropdownClick()" class="dropbtn">Shool type</button>#}
+        {#                <div id="myDropdown" class="dropdown-content">#}
+        {#                    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">#}
+        {#                    <a href="#dutch">Dutch</a>#}
+        {#                    <a href="#italian">Italian</a>#}
+        {#                    <a href="#french">French</a>#}
+        {#                    <a href="#western">Western</a>#}
+        {#                    <a href="#chinese">Chinese</a>#}
+        {#                    <a href="#russian">Russian</a>#}
+        {#                    <a href="#scandinavian">Scandinavian</a>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
+        <div class="col-md-4">
+            <div class="row">
+                <select id="schoolGroupSelect" name="schoolGroups" multiple>
+                    <option value="Dutch">Dutch</option>
+                    <option value="Italian">Italian</option>
+                    <option value="French">French</option>
+                    <option value="Western">Western</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="Russian">Russian</option>
+                    <option value="Scandinavian">Scandinavian</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="row">
+                <select id="ageGroupSelect" name="ageGroups" multiple>
+                    <option value="(0-2)">0-2</option>
+                    <option value="(4-6)">4-6</option>
+                    <option value="(8-12)">8-12</option>
+                    <option value="(15-20)">15-20</option>
+                    <option value="(25-32)">25-32</option>
+                    <option value="(38-43)">38-43</option>
+                    <option value="(48-53)">48-53</option>
+                    <option value="(60-100)">60-100</option>
+                </select>
+            </div>
+        </div>
+        <input id="colorselect" type='color' onchange="colorSelection()"></input>
     </div>
-    <input id="colorselect" type='color' onchange="colorSelection()"></input>
-  </div>
 </div>
 <div id="scroll" class="row">
 </div>
