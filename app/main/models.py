@@ -3,7 +3,7 @@ class Data():
     count:int
 
 class FilterObj():
-	def __init__(self, beginDate, endDate, beginAge, endAge, schools, female, male):
+	def __init__(self, beginDate, endDate, beginAge, endAge, schools, female, male, color):
 	    self.beginDate = beginDate
 	    self.endDate = endDate
 	    self.beginAge = beginAge
@@ -11,3 +11,4 @@ class FilterObj():
 	    self.schools = schools
 	    self.female = female
 	    self.male = male
+	    self.color = color
