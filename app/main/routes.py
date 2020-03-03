@@ -18,6 +18,11 @@ def get_portraits_dominant_color_count():
     dominant_color_count = df.groupby(['dominant_color'])['id'].count().reset_index(name="count").to_json(orient='records')
     return dominant_color_count
 
+@main.route('/api/portraits_heatmap', methods=['GET'])
+def get_portraits_heatmap():
+    df_heat = data.get_heatmap()
+    return df_heat.to_json(orient='records')
+
 @main.route('/api/portraits_for_period', methods=['GET'])
 def get_portraits_dominant_color_count_for_period():
     year_start = request.args.get("year_start")
