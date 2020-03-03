@@ -3,6 +3,7 @@ import os, json
 
 from . import main
 from . import data
+from . import models
 
 @main.route('/', methods=['GET'])
 def index():
@@ -35,8 +36,18 @@ def api_helloworld():
 def api_images():
     index = int(request.args.get("index"))
     color = request.args.get("color")
+    beginAge = int(request.args.get("beginAge"))
+    endAge = int(request.args.get("endAge"))
+    school = []#list(request.args.get("school"))
+    female = bool(request.args.get("female"))
+    male = bool(request.args.get("male"))
+
+    filterObj = FilterObj('0', '2020', beginAge, endAge, schools, female, male)
+
     if color != None:
         all_portaits = data.get_portraits_by_year_with_color('0', '2020', color)
+    # elif school != None:
+    # 	all_portaits = data.get_portraits_by_year_with_color('0', '2020', school)
     else:
         all_portaits = data.get_portraits_by_year('0', '2020')
     print(len(all_portaits['image_url']))

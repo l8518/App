@@ -1,5 +1,13 @@
 var params = {}
 
+params['beginDate'] = 0
+params['endDate'] = 2020
+params['beginAge'] = 0
+params['endAge'] = 100
+params['schools'] = []
+params['female'] = true
+params['male'] = true
+
 // Color selection
 const colorField = document.getElementById("colorselect")
 function colorSelection(){
@@ -117,7 +125,7 @@ get_images = function(index){
 const root_el = document.getElementById("example")
 renew_view = function(){
 	// reset index
-	index = 1
+	index = 0
 	
 	root_el.removeChild(document.getElementById("scroll"))
 	create_scroll_container()
