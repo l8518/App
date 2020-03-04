@@ -1,4 +1,5 @@
 from flask import render_template, request, jsonify
+from flask_restplus import inputs
 
 from . import data
 from . import main
@@ -42,15 +43,15 @@ def api_helloworld():
 @main.route('/api/images', methods=['GET'])
 def api_images():
     index = int(request.args.get("index"))
-    color = request.args.get("color")  # Should be a list same as age
+    color = request.args.get("color")  # TODO Should be a list same as age
     age = request.args.get("age")
-    school = request.args.get("schools")  # fixme sa,e as age list(request.args.get("school"))
-    female = bool(request.args.get("female"))
-    male = bool(request.args.get("male"))
+    school = request.args.get("schools")
+    female = request.args.get("female", type=inputs.boolean)
+    male = request.args.get("male", type=inputs.boolean)
 
     age = age.split(',')  # To list
     school = school.split(',')
-    print(school)
+
     filterObj = models.FilterObj('0', '2020', age, school, female, male, '')
 
     if color != None:

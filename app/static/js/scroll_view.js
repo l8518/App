@@ -1,5 +1,5 @@
-var params = {}
-
+var params = {};
+// init
 const age_groups = ["(0-2)", "(4-6)", "(8-12)", "(15-20)", "(25-32)", "(38-43)", "(48-53)", "(60-100)"];
 const school_types = [
     'Danmark',
@@ -69,11 +69,11 @@ const colorField = document.getElementById("colorselect");
 function colorSelection() {
     renew_view();
     color = String(colorField.value).split('#')[1];
-    console.log(color);
     params['color'] = color;
     get_images(index)
 }
 
+// Age selection
 document.getElementById('ageGroupSelect').onchange = function () {
     var elements = document.getElementById('ageGroupSelect').selectedOptions;
     params['age'] = Array.prototype.slice.call(elements).map((element) => {
@@ -83,6 +83,29 @@ document.getElementById('ageGroupSelect').onchange = function () {
 };
 
 
+function bothClick() {
+    params['female'] = true;
+    params['male'] = true;
+
+    renew_view();
+}
+
+// Male female filtering
+function maleClick() {
+    params['female'] = false;
+    params['male'] = true;
+
+    renew_view();
+}
+
+function femaleClick() {
+    params['female'] = true;
+    params['male'] = false;
+
+    renew_view();
+}
+
+// Schools
 document.getElementById('schoolGroupSelect').onchange = function () {
     var elements = document.getElementById('schoolGroupSelect').selectedOptions;
     params['schools'] = Array.prototype.slice.call(elements).map((element) => {
@@ -90,30 +113,6 @@ document.getElementById('schoolGroupSelect').onchange = function () {
     });
     renew_view();
 };
-
-
-var isMaleSelected = false;
-
-function bothClick() {
-    isFemaleSelected = true;
-    isMaleSelected = true;
-    renew_view();
-}
-
-// Male female filtering
-function maleClick() {
-    isFemaleSelected = false;
-    isMaleSelected = true;
-    renew_view();
-}
-
-var isFemaleSelected = false;
-
-function femaleClick() {
-    isFemaleSelected = true;
-    isMaleSelected = false;
-    renew_view();
-}
 
 function buildSchoolsOptionList() {
     const groupSelect = document.getElementById('schoolGroupSelect')
@@ -150,7 +149,7 @@ function filterFunction() {
     }
 }
 
-// Continous scroll
+// Continuous scroll
 get_images = function (index) {
 
     var url = new URL('/api/images', 'http://localhost:5000')
@@ -158,7 +157,6 @@ get_images = function (index) {
 
     url.search = new URLSearchParams(params).toString();
 
-    console.log(url)
     fetch(url).then(function (resp) {
         return resp.json()
     }).then(function (data) {
@@ -180,6 +178,7 @@ get_images = function (index) {
         }
     });
 };
+
 const root_el = document.getElementById("example")
 renew_view = function () {
     // reset index
@@ -190,6 +189,7 @@ renew_view = function () {
 
     get_images(index)
 };
+
 create_scroll_container = function () {
     // id="scroll" class="row"
     var container = document.createElement("div");

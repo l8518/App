@@ -26,34 +26,31 @@ def get_portraits_by_year_with_color(begin_date: str, end_date: str, color: str)
 
 
 def get_portraits_by_year_by_params(filterObj: models.FilterObj):
-    female_male_string = female_male_filter(filterObj)
-    # df = get_portraits_by_year(filterObj.beginDate, filterObj.endDate)
-    # df = faces.query(
-    #     # str(filterObj.beginAge) + ' <= age <= ' + str(filterObj.endAge)
-    #     # female_male_string
-    # )
-
+    # Age filter
     df = faces[faces['age'].isin(filterObj.age)]
+    # Gender filter
+    df = female_male_filter(df, filterObj)
+
+    #Color filter
     # df = df[df['color'].isin(filterObj.color)]
 
-    print(len(portraits_meta))
+    #Filter school types
     result = portraits_meta[portraits_meta['school'].isin(filterObj.schools)]
-    print(len(result))
+    # Filter period
+    result = result.query(filterObj.beginDate + ' <= creation_year <= ' + filterObj.endDate)
+    # Match both datasets
     end = result[result['id'].isin(df['imgid'])]  # Wrong?
-    print(len(end))
+    print('Amount of results for query: ', len(end))
     return end
+
 
 def toColor(color: str):
     return str("#" + color)
 
 
-def female_male_filter(filterObj):
-    if filterObj.female:
-        if filterObj.male:
-            return ""  # Standard we always show everything
-        else:
-            return "and gender == Female"
-    elif filterObj.male:
-        return "and gender == Male"
-    else:
-        return ""  # Standard we always show everything
+def female_male_filter(df, filterObj):
+    if filterObj.female is True and filterObj.male is not True:
+        df = df.query('gender == "Female"')
+    if filterObj.male is True and filterObj.female is not True:
+        df = df.query('gender == "Male"')
+    return df
