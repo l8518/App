@@ -40,7 +40,9 @@ def get_portraits_by_year_by_params(filterObj: models.FilterObj):
     # df = df[df['color'].isin(filterObj.color)]
     # df = df[df['school_type'].isin(filterObj.schools)]
 
-    return portraits_meta[df['imgid'].isin(portraits_meta['id'])]
+    result = portraits_meta[portraits_meta['school'].isin(filterObj.schools)]
+    return result[result['id'].isin(df['imgid'])]
+    # return portraits_meta[portraits_meta['id'].isin(df['imgid'])]
 
 
 def toColor(color: str):

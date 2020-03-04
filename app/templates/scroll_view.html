@@ -4,12 +4,24 @@
 <div class="col-md-12">
     <div id="filtering" class="row">
         <div class="col-md-4">
-            <button id="maleFilter" onclick="maleClick()" type="button" style="padding: 1vw;"
-                    class="btn btn-outline-secondary">Male
-            </button>
-            <button id="femaleFilter" onclick="femaleClick()" type="button" style="padding: 1vw;"
-                    class="btn btn-outline-secondary">Female
-            </button>
+{#            <button id="maleFilter" onclick="maleClick()" type="button" style="padding: 1vw;"#}
+            {#                    class="btn btn-outline-secondary">Male#}
+            {#            </button>#}
+            {#            <button id="femaleFilter" onclick="femaleClick()" type="button" style="padding: 1vw;"#}
+            {#                    class="btn btn-outline-secondary">Female#}
+            {#            </button>#}
+
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary active">
+                    <input type="radio" name="options" id="option1" checked> Both
+                </label>
+                <label class="btn btn-secondary">
+                    <input type="radio" name="options" id="option2"> Female
+                </label>
+                <label class="btn btn-secondary">
+                    <input type="radio" name="options" id="option3"> Male
+                </label>
+            </div>
         </div>
 
         {#        <div class="col-md-4">#}

@@ -97,7 +97,7 @@ function dropdownClick() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
 
-function filterFunction() {
+function filterFunction() { // todo use this to build a multiselect that is searchable?
     var input, filter, ul, li, a, i;
     input = document.getElementById("myInput");
     filter = input.value.toUpperCase();
