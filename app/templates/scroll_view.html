@@ -4,56 +4,26 @@
 <div class="col-md-12">
     <div id="filtering" class="row">
         <div class="col-md-4">
-            {#            <button id="maleFilter" onclick="maleClick()" type="button" style="padding: 1vw;"#}
-            {#                    class="btn btn-outline-secondary">Male#}
-            {#            </button>#}
-            {#            <button id="femaleFilter" onclick="femaleClick()" type="button" style="padding: 1vw;"#}
-            {#                    class="btn btn-outline-secondary">Female#}
-            {#            </button>#}
-
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-secondary active">
-                    <input type="radio" name="options" id="option1" checked> Both
+                    <input type="radio" name="options" id="option1" checked onclick="bothClick()"> Both
                 </label>
                 <label class="btn btn-secondary">
-                    <input type="radio" name="options" id="option2"> Female
+                    <input type="radio" name="options" id="option2" onclick="femaleClick()"> Female
                 </label>
                 <label class="btn btn-secondary">
-                    <input type="radio" name="options" id="option3"> Male
+                    <input type="radio" name="options" id="option3" onclick="maleClick()"> Male
                 </label>
             </div>
         </div>
-
-        {#        <div class="col-md-4">#}
-        {#            <div class="dropdown">#}
-        {#                <button onclick="dropdownClick()" class="dropbtn">Shool type</button>#}
-        {#                <div id="myDropdown" class="dropdown-content">#}
-        {#                    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">#}
-        {#                    <a href="#dutch">Dutch</a>#}
-        {#                    <a href="#italian">Italian</a>#}
-        {#                    <a href="#french">French</a>#}
-        {#                    <a href="#western">Western</a>#}
-        {#                    <a href="#chinese">Chinese</a>#}
-        {#                    <a href="#russian">Russian</a>#}
-        {#                    <a href="#scandinavian">Scandinavian</a>#}
-        {#                </div>#}
-        {#            </div>#}
-        {#        </div>#}
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="row">
                 <select id="schoolGroupSelect" name="schoolGroups" multiple>
-                    {#                    <option value="modern">modern</option>#}
-                    {#                    <option value="Italia">Italia</option>#}
-                    {#                    <option value="Nederland">Nederland</option>#}
-                    {#                    <option value="France métropolitaine">France métropolitaine</option>#}
-                    {#                    <option value="Chinese">France</option>#}
-                    {#                    <option value="Russian">Russian</option>#}
-                    {#                    <option value="Scandinavian">Scandinavian</option>#}
                 </select>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-2">
             <div class="row">
                 <select id="ageGroupSelect" name="ageGroups" multiple>
                     <option value="(0-2)">0-2</option>

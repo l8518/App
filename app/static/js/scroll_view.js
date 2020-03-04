@@ -67,87 +67,52 @@ params['male'] = true;
 const colorField = document.getElementById("colorselect");
 
 function colorSelection() {
-    renew_view()
-    color = String(colorField.value).split('#')[1]
-    console.log(color)
+    renew_view();
+    color = String(colorField.value).split('#')[1];
+    console.log(color);
     params['color'] = color;
     get_images(index)
 }
 
-
-// Age selection
-// const ageSlider = document.getElementById("age_slider");
-// const ageRangeText = document.getElementById("ageRange");
-// ageRangeText.value = "0 - 100"; // place holder value
-
-// var selectedAgeFilter = '(60-100)'
-// function ageDropdownUpdate(group) {
-//     console.log(group)
-//     document.getElementById("myAgeDropdown").classList.toggle("show");
-// }
-//
-// function ageDropdownClick() {
-//     document.getElementById("myAgeDropdown").classList.toggle("show");
-// }
-//
-// function ageSliderChange() {
-//     ageRangeText.value = age_slider.value.replace(",", " - ");
-//     renew_view();
-// }
 document.getElementById('ageGroupSelect').onchange = function () {
     var elements = document.getElementById('ageGroupSelect').selectedOptions;
-    var values = Array.prototype.slice.call(elements).map((element) => {
+    params['age'] = Array.prototype.slice.call(elements).map((element) => {
         return element.value
     });
+    renew_view();
+};
 
-    params['age'] = values;
-    console.log(params);
+
+document.getElementById('schoolGroupSelect').onchange = function () {
+    var elements = document.getElementById('schoolGroupSelect').selectedOptions;
+    params['schools'] = Array.prototype.slice.call(elements).map((element) => {
+        return element.value
+    });
+    renew_view();
+};
+
+
+var isMaleSelected = false;
+
+function bothClick() {
+    isFemaleSelected = true;
+    isMaleSelected = true;
     renew_view();
 }
-
-
-const maleFilterBtn = document.getElementById("maleFilter");
-var isMaleSelected = false;
 
 // Male female filtering
 function maleClick() {
-    if (isMaleSelected) {
-        var selectedBtn = document.createAttribute("class");
-        selectedBtn.value = "btn btn-outline-secondary";
-        maleFilterBtn.setAttributeNode(selectedBtn)
-        isMaleSelected = false
-    } else {
-        var selectedBtn = document.createAttribute("class");
-        selectedBtn.value = "btn btn-secondary";
-        maleFilterBtn.setAttributeNode(selectedBtn)
-        isMaleSelected = true
-    }
+    isFemaleSelected = false;
+    isMaleSelected = true;
     renew_view();
 }
 
-const femaleFilterBtn = document.getElementById("femaleFilter");
 var isFemaleSelected = false;
 
 function femaleClick() {
-    if (isFemaleSelected) {
-        var selectedBtn = document.createAttribute("class");
-        selectedBtn.value = "btn btn-outline-secondary";
-        femaleFilterBtn.setAttributeNode(selectedBtn)
-        isFemaleSelected = false
-    } else {
-        var selectedBtn = document.createAttribute("class");
-        selectedBtn.value = "btn btn-secondary";
-        femaleFilterBtn.setAttributeNode(selectedBtn)
-        isFemaleSelected = true
-    }
+    isFemaleSelected = true;
+    isMaleSelected = false;
     renew_view();
-}
-
-// Dropdown
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function dropdownClick() {
-    document.getElementById("myDropdown").classList.toggle("show");
 }
 
 function buildSchoolsOptionList() {
@@ -163,22 +128,13 @@ function buildSchoolsOptionList() {
         }
 
         groupSelect.appendChild(opt);
-        // var att = document.createAttribute("class");
-        // att.value = "imageClass img-thumbnail";
-        // img.setAttributeNode(att)
-        //
-        // var bootstrap = document.createAttribute("class");
-        // bootstrap.value = "col-md-3 my-1";
-        // container.setAttributeNode(bootstrap)
-        //
-        // container.appendChild(img)
-        // mainView.appendChild(container)
     }
 }
 
 buildSchoolsOptionList();
 
-function filterFunction() { // todo use this to build a multiselect that is searchable?
+// todo use this to build a multiselect that is searchable?
+function filterFunction() {
     var input, filter, ul, li, a, i;
     input = document.getElementById("myInput");
     filter = input.value.toUpperCase();
@@ -199,15 +155,9 @@ get_images = function (index) {
 
     var url = new URL('/api/images', 'http://localhost:5000')
     params['index'] = index;
-    // var params = {lat:35.696233, long:139.570431} // or:
-    // var params = [['lat', '35.696233'], ['long', '139.570431']]
 
     url.search = new URLSearchParams(params).toString();
 
-    // console.log(par.length + " " +par)
-    // for (var i = 0; i < par.length; i++) {
-    // 	url.concat("&" +par[i] +"=" +par[i][0])
-    // };
     console.log(url)
     fetch(url).then(function (resp) {
         return resp.json()
@@ -219,28 +169,27 @@ get_images = function (index) {
 
             var att = document.createAttribute("class");
             att.value = "imageClass img-thumbnail";
-            img.setAttributeNode(att)
+            img.setAttributeNode(att);
 
             var bootstrap = document.createAttribute("class");
             bootstrap.value = "col-md-3 my-1";
-            container.setAttributeNode(bootstrap)
+            container.setAttributeNode(bootstrap);
 
-            container.appendChild(img)
-            mainView.appendChild(container)
+            container.appendChild(img);
+            mainView.appendChild(container);
         }
-        ;
     });
-}
+};
 const root_el = document.getElementById("example")
 renew_view = function () {
     // reset index
-    index = 0
+    index = 0;
 
     root_el.removeChild(document.getElementById("scroll"))
     create_scroll_container()
 
     get_images(index)
-}
+};
 create_scroll_container = function () {
     // id="scroll" class="row"
     var container = document.createElement("div");
@@ -251,7 +200,7 @@ create_scroll_container = function () {
     container.setAttributeNode(row)
     root_el.appendChild(container);
     mainView = container;
-}
+};
 
 
 var mainView = document.getElementById("scroll")
@@ -263,9 +212,9 @@ window.onscroll = function () {
 
     if (scrollY >= bottom_page) {
         index++;
-        get_images(index)
+        get_images(index);
         window.setTimeout(1000);
     }
-}
+};
 
 get_images(index);

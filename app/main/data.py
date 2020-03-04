@@ -32,18 +32,16 @@ def get_portraits_by_year_by_params(filterObj: models.FilterObj):
     #     # str(filterObj.beginAge) + ' <= age <= ' + str(filterObj.endAge)
     #     # female_male_string
     # )
-    df = faces
-    print(df)
-    print(filterObj.age)
-    df = df[df['age'].isin(filterObj.age)]
-    print(df)
+
+    df = faces[faces['age'].isin(filterObj.age)]
     # df = df[df['color'].isin(filterObj.color)]
-    # df = df[df['school_type'].isin(filterObj.schools)]
 
+    print(len(portraits_meta))
     result = portraits_meta[portraits_meta['school'].isin(filterObj.schools)]
-    return result[result['id'].isin(df['imgid'])]
-    # return portraits_meta[portraits_meta['id'].isin(df['imgid'])]
-
+    print(len(result))
+    end = result[result['id'].isin(df['imgid'])]  # Wrong?
+    print(len(end))
+    return end
 
 def toColor(color: str):
     return str("#" + color)
