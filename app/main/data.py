@@ -7,7 +7,7 @@ from . import models
 # stats_ams_meta = pd.read_csv("app/data/ams_stats_infovis_metadata.csv", sep=";")
 portraits_meta = pd.read_csv("omniart_eye_dataset/omniart_metadata.csv")
 
-faces = pd.read_csv("data/faces.csv")
+faces = pd.read_json("data/faces.json")
 
 
 ##########################

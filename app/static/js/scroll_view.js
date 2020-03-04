@@ -1,11 +1,65 @@
 var params = {}
 
 const age_groups = ["(0-2)", "(4-6)", "(8-12)", "(15-20)", "(25-32)", "(38-43)", "(48-53)", "(60-100)"];
+const school_types = [
+    'Danmark',
+    'Deutschland, Europe',
+    'España',
+    'France métropolitaine, France',
+    'Great Britain, Richmondshire, North Yorkshire, Yorkshire and the Humber, England, UK',
+    'Italia',
+    'Magyarország',
+    'Nederland',
+    'Other, Corozal, Corozal District, Corozal, 0000, Belize',
+    'Russian, Municipio Benítez, Sucre, Venezuela',
+    'Schweiz/Suisse/Svizzera/Svizra',
+    'United States of America',
+    'american',
+    'austrian',
+    'belgian',
+    'bohemian',
+    'british',
+    'catalan',
+    'central',
+    'chinese',
+    'danish',
+    'dutch',
+    'english',
+    'flemish',
+    'french',
+    'german',
+    'greek',
+    'hungarian',
+    'india',
+    'irish',
+    'italian',
+    'japanese',
+    'korean',
+    'modern',
+    'nepal',
+    'netherlandish',
+    'norwegian,',
+    'other',
+    'polish',
+    'portuguese',
+    'roman',
+    'russian',
+    'scottish',
+    'south',
+    'spanish',
+    'swedish',
+    'swiss',
+    'thailand',
+    'tibet',
+    'unknown',
+    'western',
+    'Österreich'
+];
 
 params['beginDate'] = 0;
 params['endDate'] = 2020;
 params['age'] = age_groups;
-params['schools'] = [];
+params['schools'] = school_types;
 params['female'] = true;
 params['male'] = true;
 
@@ -52,7 +106,6 @@ document.getElementById('ageGroupSelect').onchange = function () {
 }
 
 
-// TODO https://getbootstrap.com/docs/4.4/components/buttons/#checkbox-and-radio-buttons
 const maleFilterBtn = document.getElementById("maleFilter");
 var isMaleSelected = false;
 
@@ -96,6 +149,34 @@ toggle between hiding and showing the dropdown content */
 function dropdownClick() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
+
+function buildSchoolsOptionList() {
+    const groupSelect = document.getElementById('schoolGroupSelect')
+    for (let i = 0; i < school_types.length; i++) {
+        var opt = document.createElement("option");
+        // var container = document.createElement("div");
+        opt.value = school_types[i];
+        if (school_types[i] === 'Great Britain, Richmondshire, North Yorkshire, Yorkshire and the Humber, England, UK') {
+            opt.text = 'Great Britain';
+        } else {
+            opt.text = school_types[i];
+        }
+
+        groupSelect.appendChild(opt);
+        // var att = document.createAttribute("class");
+        // att.value = "imageClass img-thumbnail";
+        // img.setAttributeNode(att)
+        //
+        // var bootstrap = document.createAttribute("class");
+        // bootstrap.value = "col-md-3 my-1";
+        // container.setAttributeNode(bootstrap)
+        //
+        // container.appendChild(img)
+        // mainView.appendChild(container)
+    }
+}
+
+buildSchoolsOptionList();
 
 function filterFunction() { // todo use this to build a multiselect that is searchable?
     var input, filter, ul, li, a, i;

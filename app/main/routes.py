@@ -44,12 +44,13 @@ def api_images():
     index = int(request.args.get("index"))
     color = request.args.get("color")  # Should be a list same as age
     age = request.args.get("age")
-    school = []  # fixme sa,e as age list(request.args.get("school"))
+    school = request.args.get("schools")  # fixme sa,e as age list(request.args.get("school"))
     female = bool(request.args.get("female"))
     male = bool(request.args.get("male"))
 
     age = age.split(',')  # To list
-
+    school = school.split(',')
+    print(school)
     filterObj = models.FilterObj('0', '2020', age, school, female, male, '')
 
     if color != None:
