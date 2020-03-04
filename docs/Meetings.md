@@ -2,7 +2,22 @@
 
 This contains the meeting notes for each week.
 
+# Week 5
+## Done
+- Finishing up the heatmap
+- Preparing all the features in one pipeline
+- Making a scroll (over-) view page
+
+## Meeting
+- Presentation
+
 # Week 4
+## Done
+- Start building bubble chart with range time slider
+- Start of heatmap for skincolor
+- Researching multiple models for extracting features
+
+## Meeting
 - Face main part
 - Heat map showing only the line of century. 
  - Click on century folds out to more specific view (original heatmap)
