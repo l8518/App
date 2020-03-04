@@ -1,65 +1,10 @@
 var params = {};
 // init
 const age_groups = ["(0-2)", "(4-6)", "(8-12)", "(15-20)", "(25-32)", "(38-43)", "(48-53)", "(60-100)"];
-const school_types = [
-    'Danmark',
-    'Deutschland, Europe',
-    'España',
-    'France métropolitaine, France',
-    'Great Britain, Richmondshire, North Yorkshire, Yorkshire and the Humber, England, UK',
-    'Italia',
-    'Magyarország',
-    'Nederland',
-    'Other, Corozal, Corozal District, Corozal, 0000, Belize',
-    'Russian, Municipio Benítez, Sucre, Venezuela',
-    'Schweiz/Suisse/Svizzera/Svizra',
-    'United States of America',
-    'american',
-    'austrian',
-    'belgian',
-    'bohemian',
-    'british',
-    'catalan',
-    'central',
-    'chinese',
-    'danish',
-    'dutch',
-    'english',
-    'flemish',
-    'french',
-    'german',
-    'greek',
-    'hungarian',
-    'india',
-    'irish',
-    'italian',
-    'japanese',
-    'korean',
-    'modern',
-    'nepal',
-    'netherlandish',
-    'norwegian,',
-    'other',
-    'polish',
-    'portuguese',
-    'roman',
-    'russian',
-    'scottish',
-    'south',
-    'spanish',
-    'swedish',
-    'swiss',
-    'thailand',
-    'tibet',
-    'unknown',
-    'western',
-    'Österreich'
-];
 
 params['beginDate'] = 0;
 params['endDate'] = 2020;
 params['age'] = age_groups;
-params['schools'] = school_types;
 params['female'] = true;
 params['male'] = true;
 
@@ -83,6 +28,19 @@ document.getElementById('ageGroupSelect').onchange = function () {
 };
 
 
+function buildAgeOptionList() {
+    const groupSelect = document.getElementById('ageGroupSelect');
+    for (let i = 0; i < age_groups.length; i++) {
+        var opt = document.createElement("option");
+        opt.value = age_groups[i];
+        opt.text = age_groups[i];
+
+        groupSelect.appendChild(opt);
+    }
+}
+
+buildAgeOptionList();
+
 function bothClick() {
     params['female'] = true;
     params['male'] = true;
@@ -103,50 +61,6 @@ function femaleClick() {
     params['male'] = false;
 
     renew_view();
-}
-
-// Schools
-document.getElementById('schoolGroupSelect').onchange = function () {
-    var elements = document.getElementById('schoolGroupSelect').selectedOptions;
-    params['schools'] = Array.prototype.slice.call(elements).map((element) => {
-        return element.value
-    });
-    renew_view();
-};
-
-function buildSchoolsOptionList() {
-    const groupSelect = document.getElementById('schoolGroupSelect')
-    for (let i = 0; i < school_types.length; i++) {
-        var opt = document.createElement("option");
-        // var container = document.createElement("div");
-        opt.value = school_types[i];
-        if (school_types[i] === 'Great Britain, Richmondshire, North Yorkshire, Yorkshire and the Humber, England, UK') {
-            opt.text = 'Great Britain';
-        } else {
-            opt.text = school_types[i];
-        }
-
-        groupSelect.appendChild(opt);
-    }
-}
-
-buildSchoolsOptionList();
-
-// todo use this to build a multiselect that is searchable?
-function filterFunction() {
-    var input, filter, ul, li, a, i;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    div = document.getElementById("myDropdown");
-    a = div.getElementsByTagName("a");
-    for (i = 0; i < a.length; i++) {
-        txtValue = a[i].textContent || a[i].innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            a[i].style.display = "";
-        } else {
-            a[i].style.display = "none";
-        }
-    }
 }
 
 // Continuous scroll
