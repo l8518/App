@@ -42,7 +42,7 @@ def api_helloworld():
 
 @main.route('/api/images', methods=['GET'])
 def api_images():
-    index = int(request.args.get("index"))
+    index = request.args.get("index", type=int)
     color = request.args.get("color")  # TODO Should be a list same as age
     age = request.args.get("age")
     female = request.args.get("female", type=inputs.boolean)
@@ -57,4 +57,5 @@ def api_images():
 
     all_portaits = data.get_portraits_by_year_by_params(filterObj)
     pag = int(index * 100)
-    return all_portaits['image_url'].iloc[pag: pag + 99].to_json(orient='records')
+    return all_portaits[['image_url', 'artwork_name', 'artist_full_name', 'creation_year']].iloc[pag: pag + 99].to_json(
+        orient='records')

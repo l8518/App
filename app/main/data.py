@@ -18,13 +18,6 @@ def get_portraits_by_year(begin_date: str, end_date: str):
     return portraits_meta.query(begin_date + ' <= creation_year <= ' + end_date)
 
 
-def get_portraits_by_year_with_color(begin_date: str, end_date: str, color: str):
-    hex_col = toColor(color)
-    results = portraits_meta.query(
-        begin_date + ' <= creation_year <= ' + end_date + 'and dominant_color == "' + hex_col + '"')
-    return results
-
-
 def get_portraits_by_year_by_params(filterObj: models.FilterObj):
     # Age filter
     df = faces[faces['age'].isin(filterObj.age)]
