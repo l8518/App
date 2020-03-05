@@ -2,20 +2,22 @@
 {% block title %}Home{% endblock %}
 {% block body %}
 
-    <script type="text/javascript">
-        d3.selectAll(".nav-item").classed("active", false);
-        d3.select("#nav-link-d3").classed("active", true);
-    </script>
+<script type="text/javascript">
+    d3.selectAll(".nav-item").classed("active", false);
+    d3.select("#nav-link-d3").classed("active", true);
+</script>
 
-    <link rel="stylesheet" type="text/css" href="../static/css/main.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/multirange.css"></link>
+<link rel="stylesheet" type="text/css" href="../static/css/main.css">
+<link rel="stylesheet" type="text/css" href="../static/css/multirange.css">
+</link>
+<link rel="stylesheet" type="text/css" href="../static/css/dropdown.css">
 
-    <div class="container-fluid mt-3" id="example">
+<div class="container-fluid mt-3" id="example">
     <div class="row row-eq-height">
-        <div class="col-4 p-0">
-				<div id="bubble"></div>
-			</div>
-			<div class="col-4 text-center">
+        <div class="col-4 p-4">
+            <div id="bubble"></div>
+        </div>
+        <div class="col-4 text-center">
             <svg class="faceframe" class="w-100" viewport="0 0 1200 1200" version="1.1"
                 xmlns="http://www.w3.org/2000/svg">
 
@@ -28,48 +30,80 @@
                 <use xlink:href="#overlay" />
             </svg>
         </div>
-        <div class="col-4 p-0">
+        <div class="col-4 p-4">
             <div id="my_dataviz"></div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <p>
-                            <label for="amount">Time range:</label>
-                            <input type="text" id="amount" readonly style="border:0; color: red; font-weight:bold;">
-                        </p>
-                        <div class="mt-12">
-                <input id="time_slider" type="range" multiple data-drag-middle value="1000,1200"
-                    onchange="sliderChange()" min="1000" max="2000" />
-			</div>
-			</div>
-        </div>
-        <div class="row">
-            {% include "scroll_view.html" %}    
         </div>
     </div>
+    <div class="row">
+        <div class="col-4 p-0"></div>
+        <div class="col-4 text-center">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <label for="amount">Time range:</label>
+                    <input type="text" id="amount" readonly style="border:0; color: red; font-weight:bold;">
 
-    <!-- Create a div where the graph will take place -->
-    <script type="text/javascript" src="../static/js/main.js"></script>
-    <script type="text/javascript" src="../static/js/multirange.js"></script>
-    <script type="text/javascript" src="../static/js/bubblechart.js"></script>
-    <script type="text/javascript" src="../static/js/heatmap.js"></script>
+                    <div class="mt-12">
+                        <input id="time_slider" type="range" multiple data-drag-middle value="1000,1200"
+                            onchange="sliderChange()" min="1000" max="2000" />
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="filtering">
 
-    <script type="text/javascript">
-        const time_slider = document.getElementById("time_slider");
-        const timeRangeText = document.getElementById("amount");
-        timeRangeText.value = "1000 - 1200"; // place holder value
-        function sliderChange() {
-            timeRangeText.value = time_slider.value.replace(",", " - ");
-            fetch_data(time_slider.value.split(",")[0], time_slider.value.split(",")[1])
-                .then(data => {
-                    update(data);
-                });
-        }
+                <div class="col-6 text-left">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-secondary active">
+                            <input type="radio" name="options" id="option1" checked onclick="bothClick()"> Both
+                        </label>
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="options" id="option2" onclick="femaleClick()"> Female
+                        </label>
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="options" id="option3" onclick="maleClick()"> Male
+                        </label>
+                    </div>
+                </div>
+                <div class="col-6 text-right">
+                    <div class="ml-auto">
+                        <select id="ageGroupSelect" class="ml-auto" name="options[]" class="selectpicker" multiple
+                            data-live-search="true" data-selected-text-format="count > 3" data-actions-box="true">
+                        </select>
+                    </div>
 
-        fetch_data(1000, 1200).then(data => {
-            update(data);
-        });
-    </script>
+                </div>
+                <!-- TODO: Add some more filterotpions -->
+                <!-- <div class="col-md-4">
+                    <input id="colorselect" type='color' onchange="colorSelection()" />
+                </div> -->
+            </div>
+        </div>
+        <div class="col-4 p-0"></div>
+    </div>
+    <div class="row mt-4">
+        {% include "scroll_view.html" %}
+    </div>
+</div>
+
+<!-- Create a div where the graph will take place -->
+<script type="text/javascript" src="../static/js/main.js"></script>
+<script type="text/javascript" src="../static/js/multirange.js"></script>
+<script type="text/javascript" src="../static/js/bubblechart.js"></script>
+<script type="text/javascript" src="../static/js/heatmap.js"></script>
+
+<script type="text/javascript">
+    const time_slider = document.getElementById("time_slider");
+    const timeRangeText = document.getElementById("amount");
+    timeRangeText.value = "1000 - 1200"; // place holder value
+    function sliderChange() {
+        timeRangeText.value = time_slider.value.replace(",", " - ");
+        fetch_data(time_slider.value.split(",")[0], time_slider.value.split(",")[1])
+            .then(data => {
+                update(data);
+            });
+    }
+
+    fetch_data(1000, 1200).then(data => {
+        update(data);
+    });
+</script>
 {% endblock %}
