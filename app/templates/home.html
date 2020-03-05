@@ -10,27 +10,51 @@
     <link rel="stylesheet" type="text/css" href="../static/css/main.css">
     <link rel="stylesheet" type="text/css" href="../static/css/multirange.css"></link>
 
-    <H2 class="mt-3">Main View</H2>
-    <div class="container mt-3" id="example">
-        <div class="mt-12">
-            <p>
-                <label for="amount">Time range:</label>
-                <input type="text" id="amount" readonly style="border:0; color: red; font-weight:bold;">
-            </p>
+    <div class="container-fluid mt-3" id="example">
+    <div class="row row-eq-height">
+        <div class="col-4 p-0">
+				<div id="bubble"></div>
+			</div>
+			<div class="col-4 text-center">
+            <svg class="faceframe" class="w-100" viewport="0 0 1200 1200" version="1.1"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <svg id="overlay" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200">
+                    <image href="/static/img/century/14.jpg" x="225" y="225" width="750" height="750" />
+                </svg>
+                <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200">
+                    <image href="/static/img/frame.png" x="0" width="1200" />
+                </svg>
+                <use xlink:href="#overlay" />
+            </svg>
         </div>
-        <div id="bubble"></div>
-        <div class="mt-12">
-            <input id="time_slider" type="range" multiple data-drag-middle value="1000,1200" onchange="sliderChange()"
-                   min="1000" max="2000"/>
+        <div class="col-4 p-0">
+            <div id="my_dataviz"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <p>
+                            <label for="amount">Time range:</label>
+                            <input type="text" id="amount" readonly style="border:0; color: red; font-weight:bold;">
+                        </p>
+                        <div class="mt-12">
+                            <input id="time_slider" type="range" multiple data-drag-middle value="1000,1200" onchange="sliderChange()"
+                                   min="1000" max="2000"/>
+                        </div>
+                    </div>
+                </div>
+			</div>
+			<div class="col-4">
+				<div id="my_dataviz"></div>
+			</div>
         </div>
-        <div id="my_dataviz"></div>
-    
-        {% include "scroll_view.html" %}
+        <div class="row">
+            {% include "scroll_view.html" %}    
+        </div>
     </div>
 
     <!-- Create a div where the graph will take place -->
-
-
     <script type="text/javascript" src="../static/js/main.js"></script>
     <script type="text/javascript" src="../static/js/multirange.js"></script>
     <script type="text/javascript" src="../static/js/bubblechart.js"></script>
