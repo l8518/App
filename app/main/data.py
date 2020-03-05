@@ -3,11 +3,8 @@ import pandas as pd
 from . import models
 
 # Load data as panda dfs #
-# stats_ams = pd.read_csv('app/data/ams_stats_infovis.csv')
-# stats_ams_meta = pd.read_csv("app/data/ams_stats_infovis_metadata.csv", sep=";")
-portraits_meta = pd.read_csv("omniart_eye_dataset/omniart_metadata.csv")
+portraits_meta = pd.read_csv("data/omniart_v3_portrait.csv")
 heatmap_csv = pd.read_csv("data/heatmap.csv")
-
 faces = pd.read_json("data/faces.json")
 
 
