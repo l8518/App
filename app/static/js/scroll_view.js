@@ -73,9 +73,12 @@ get_images = function (index) {
     fetch(url).then(function (resp) {
         return resp.json()
     }).then(function (data) {
-        for (var i = 0; i < data.length; i++) {
-            const div = document.createElement("div");
-            const titleEl = document.createElement("h5");
+        for (let i = 0; i < data.length; i++) {
+
+            const textOverlay = document.createElement("div");
+            const textDiv = document.createElement("div");
+
+            const titleEl = document.createElement("h6");
             const p1 = document.createElement("p");
             const p2 = document.createElement("p");
 
@@ -87,29 +90,35 @@ get_images = function (index) {
             p1.appendChild(artist);
             p2.appendChild(creation_year);
 
-            div.appendChild(titleEl);
-            div.appendChild(p1);
-            div.appendChild(p2);
+            textDiv.appendChild(titleEl);
+            textDiv.appendChild(p1);
+            textDiv.appendChild(p2);
 
-            var textImageOverlay = document.createAttribute("class");
-            textImageOverlay.value = "textImageOverlay img-thumbnail";
-            div.setAttributeNode(textImageOverlay);
+            const text = document.createAttribute("class");
+            text.value = "text";
+            textDiv.setAttributeNode(text);
 
-            var img = document.createElement("img");
-            var container = document.createElement("div");
-            img.src = data[i]['image_url'];
-            console.log(data[i]);
+            const textImageOverlay = document.createAttribute("class");
+            textImageOverlay.value = "textImageOverlay";
+            textOverlay.setAttributeNode(textImageOverlay);
 
-            var att = document.createAttribute("class");
-            att.value = "imageClass img-thumbnail";
+            textOverlay.appendChild(textDiv);
+
+            const img = document.createElement("img");
+            const att = document.createAttribute("class");
+            att.value = "imageClass"; // img-thumbnail
             img.setAttributeNode(att);
 
-            var bootstrap = document.createAttribute("class");
+            const container = document.createElement("div");
+            img.src = data[i]['image_url'];
+            console.log(data[i]);
+            const bootstrap = document.createAttribute("class");
             bootstrap.value = "col-md-3 my-1 imageContainer";
             container.setAttributeNode(bootstrap);
 
             container.appendChild(img);
-            container.appendChild(div);
+            container.appendChild(textOverlay);
+
             mainView.appendChild(container);
         }
     });
