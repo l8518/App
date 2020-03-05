@@ -9,7 +9,24 @@ This contains the meeting notes for each week.
 - Making a scroll (over-) view page
 
 ## Meeting
-- Presentation
+
+### landmarks
+Face points per face and then in a row diverging further and further from the average.
+Average vector calculate all differences
+
+### Discussion part of the paper:
+Visual analytics: the noise of data can be corrected by a user by clicking the image and make a feedback loop. We are not going to do this because we should warp the faces again in the background. And it will shift the project from data visualisation to visual analytics
+
+### Paper:
+- Guidelines use template and page limit
+
+### Extra stuff?
+- average standard deviation of skin tone
+- Better positioning of components
+- More data vs better visualisation, go for better visualisation 
+- If you do all this compute then it will be rewarded in the grade
+
+Good on track and cool idea!
 
 # Week 4
 ## Done
