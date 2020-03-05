@@ -6,6 +6,7 @@ from . import models
 # stats_ams = pd.read_csv('app/data/ams_stats_infovis.csv')
 # stats_ams_meta = pd.read_csv("app/data/ams_stats_infovis_metadata.csv", sep=";")
 portraits_meta = pd.read_csv("omniart_eye_dataset/omniart_metadata.csv")
+heatmap_csv = pd.read_csv("data/heatmap.csv")
 
 faces = pd.read_json("data/faces.json")
 
@@ -16,6 +17,9 @@ faces = pd.read_json("data/faces.json")
 
 def get_portraits_by_year(begin_date: str, end_date: str):
     return portraits_meta.query(begin_date + ' <= creation_year <= ' + end_date)
+
+def get_heatmap():
+    return heatmap_csv
 
 
 def get_portraits_by_year_by_params(filterObj: models.FilterObj):
