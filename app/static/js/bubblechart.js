@@ -73,11 +73,11 @@ update = function(data){
 const bubble_width = 600;
 const bubble_height = 600;
 
+let viewBox = `0 0 ${bubble_width} ${bubble_height}`;
 var bubble_svg = d3.select("#bubble")
   .append("svg")
     .attr("id", "bubble")
-    .attr("width", bubble_width)
-    .attr("height", bubble_height);
+    .attr("viewBox", viewBox)
 
 var format = d3.format(",d");
 

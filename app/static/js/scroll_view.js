@@ -111,9 +111,9 @@ get_images = function (index) {
 
             const container = document.createElement("div");
             img.src = data[i]['image_url'];
-            console.log(data[i]);
+            
             const bootstrap = document.createAttribute("class");
-            bootstrap.value = "col-md-3 my-1 imageContainer";
+            bootstrap.value = "col-4 col-md-3 col-lg-2 my-1 imageContainer";
             container.setAttributeNode(bootstrap);
 
             container.appendChild(img);
@@ -129,7 +129,10 @@ renew_view = function () {
     // reset index
     index = 0;
 
-    root_el.removeChild(document.getElementById("scroll"));
+    let elem = document.getElementById("scroll");
+    
+    root_el.removeChild(elem);
+    
     create_scroll_container();
 
     get_images(index);

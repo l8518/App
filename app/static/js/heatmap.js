@@ -28,13 +28,16 @@ readAndDrawData = function (){
     var heatmap_margin = {top: 10, right: 55, bottom: 55, left: 65},
     heatmap_width = 600 - heatmap_margin.left - heatmap_margin.right,
     heatmap_height = 600 - heatmap_margin.top - heatmap_margin.bottom;
-
+    // viewBox="0 0 1400 500" xmlns="http://www.w3.org/2000/svg">
     // append the svg object to the body of the page
+
+    let viewboxHeight = heatmap_width + heatmap_margin.left + heatmap_margin.right;
+    let viewBoxWidth = heatmap_height + heatmap_margin.top + heatmap_margin.bottom;
+    let viewBox = `0 0 ${viewBoxWidth} ${viewboxHeight}`;
     var heatmap_svg = d3.select("#my_dataviz")
     .append("svg")
     .attr("id", "heatmap")
-    .attr("width", heatmap_width + heatmap_margin.left + heatmap_margin.right)
-    .attr("height", heatmap_height + heatmap_margin.top + heatmap_margin.bottom)
+    .attr("viewBox", viewBox)
     .append("g")
     .attr("transform",
           "translate(" + heatmap_margin.left + "," + heatmap_margin.top + ")");
