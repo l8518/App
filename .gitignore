@@ -8,3 +8,5 @@ omniart_eye_dataset/*
 artsight_csvs/*
 data/csv
 data/resize_scripts
+
+app/static/img/*
