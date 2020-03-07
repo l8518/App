@@ -72,8 +72,7 @@ body {
 #analyzer .container {
     /* Margin for sticky navbar */
     padding-top: 76px;
-    
-    height: 100vh;
+    min-height: 100vh;
 }
 
 /* ############# Scrollview Section ################# */
@@ -119,4 +118,35 @@ body {
 .text {
     color: black;
     font-size: 11px;
+}
+/* 
+ This is the main file.
+*/
+.area {
+  fill: steelblue;
+  clip-path: url(#clip);
+}
+  
+.zoom {
+  cursor: move;
+  fill: none;
+  pointer-events: all;
+}
+
+.focus{
+    position:absolute;
+    /* top:0px;
+    left:50%;
+    margin:auto; */
+}
+
+.focus image {
+  -webkit-transition: opacity 5s ease-in-out;
+  -moz-transition: opacity 5s ease-in-out;
+  -o-transition: opacity 5s ease-in-out;
+  transition: opacity 5s ease-in-out;
+}
+
+.focus image.transparent {
+  opacity:0;
 }

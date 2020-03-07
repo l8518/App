@@ -5,11 +5,25 @@
                 <div id="bubble"></div>
             </div>
             <div class="col-12 col-sm-6" id="analyzer-right">
-                <img src="../static/img/century/19.jpg" class="w-100" />
+                <svg id="face_view_svg" width="960" height="550"></svg>
             </div>
         </div>
         <div class="row">
             <div class="col-12 text-center">
+
+                <hr><br>
+                <div id="value-time2"></div>
+                
+                <h2>Time</h2>
+                <div class="row align-items-center">
+                <div class="col-sm-2"><p id="value-time"></p></div>
+                <div class="col-sm"><div id="slider-time"></div></div>
+                </div>
+                <div class="row align-items-center">
+                <div class="col-sm-2"><p id="value-new-york-times"></p></div>
+                <div class="col-sm"><div id="slider-new-york-times"></div></div>
+                </div>
+                
                 <label for="amount">Time range:</label>
                 <input type="text" id="amount" readonly style="border:0; color: red; font-weight:bold;">
 
@@ -17,8 +31,11 @@
                     <input id="time_slider" type="range" multiple data-drag-middle value="1000,1200"
                         onchange="sliderChange()" min="1000" max="2000" />
                 </div>
+
             </div>
         </div>
+
+
         <div class="row" id="filtering">
             <div class="col-6 text-left">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">

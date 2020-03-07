@@ -42,7 +42,6 @@ def api_helloworld():
     d = [2, 10, 10]
     return jsonify(d)
 
-
 @main.route('/api/images', methods=['GET'])
 def api_images():
     index = request.args.get("index", type=int)
@@ -62,3 +61,23 @@ def api_images():
     pag = int(index * 100)
     return all_portaits[['image_url', 'artwork_name', 'artist_full_name', 'creation_year']].iloc[pag: pag + 99].to_json(
         orient='records')
+@main.route('/api/portrait_count_by_year', methods=['GET'])
+def get_portrait_count_by_year():
+    portraits_df = data.get_portraits()
+    portraits_df = portraits_df.groupby(['creation_year','century']).creation_year.agg('count').to_frame('count').reset_index()    
+    return portraits_df[['creation_year','count']].to_json(orient='records')
+
+@main.route('/api/portrait_count_by_century', methods=['GET'])
+def get_portrait_count_by_century():
+    portraits_df = data.get_portraits()
+    portraits_df = portraits_df.groupby(['century']).creation_year.agg('count').to_frame('count').reset_index() 
+    return portraits_df.to_json(orient='records')
+
+@main.route('/api/morphed_image_by_year', methods=['GET'])
+def morphed_image_by_year():
+    return 0
+
+@main.route('/api/testdata', methods=['GET'])
+def testdata():
+    return data.get_testdata().to_json(orient='records')
+
