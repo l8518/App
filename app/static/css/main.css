@@ -11,7 +11,7 @@ http://colorbrewer2.org/#type=diverging&scheme=RdBu&n=6
 
 body {
     font-size: 16px;
-    background-color: #fddbc7;
+    background-color: white;
     font-family: 'Roboto Slab', serif;
 }
 
@@ -22,6 +22,10 @@ body {
 /* ############# Splash Section ################# */
 #splash .container {
     height: 100vh;
+}
+
+#splash {
+    background-color: #fddbc7;
 }
 
 #splash-frame .framecontainer {
@@ -65,20 +69,18 @@ body {
 }
 
 /* ############# Analyzer Section ################# */
-#analyzer {
-    background-color: white;
-}
-
 #analyzer .container {
     /* Margin for sticky navbar */
     padding-top: 76px;
     min-height: 100vh;
 }
 
-/* ############# Scrollview Section ################# */
-#scrollview {
-    background-color: white;
+/* ############# Heatmap Section ################# */
+#heatmap {
+    background-color: #fddbc7;
 }
+
+/* ############# Scrollview Section ################# */
 
 /* ############# Old Stuff Section ################# */
 
