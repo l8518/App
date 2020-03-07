@@ -1,82 +1,88 @@
-/*
- This is the main file.
-*/
+/**
+Colour Safe Palette
+http://colorbrewer2.org/#type=diverging&scheme=RdBu&n=6
+#b2182b
+#ef8a62
+#fddbc7
+#d1e5f0
+#67a9cf
+#2166ac
+**/
 
-/*.imageClass {*/
-/*    max-height: 30vh;*/
+body {
+    font-size: 16px;
+    background-color: white;
+    font-family: 'Roboto Slab', serif;
+}
 
-/*    opacity: 1;*/
-/*    display: block;*/
-/*    width: 100%;*/
-/*    height: auto;*/
-/*    transition: .5s ease;*/
-/*    backface-visibility: hidden;*/
-/*}*/
+.navbar a {
+    color: black;
+}
 
-/*.imageContainer {*/
-/*    position: relative;*/
-/*}*/
+/* ############# Splash Section ################# */
+#splash .container {
+    height: 100vh;
+}
 
-/*.textImageOverlay {*/
-/*    transition: .5s ease;*/
-/*    opacity: 0;*/
-/*    position: absolute;*/
-/*    top: 50%;*/
-/*    left: 50%;*/
-/*    transform: translate(-50%, -50%);*/
-/*    -ms-transform: translate(-50%, -50%);*/
-/*    text-align: center;*/
-/*}*/
+#splash {
+    background-color: #fddbc7;
+}
 
-/*.imageContainer:hover .imageClass {*/
-/*    opacity: 0.3;*/
-/*}*/
+#splash-frame .framecontainer {
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+}
 
-/*.imageContainer:hover .textImageOverlay {*/
-/*    opacity: 1;*/
-/*}*/
+#splash-frame #faceframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
 
+@keyframes cf3FadeInOut {
+    0% {
+        opacity: 1;
+    }
 
-/*.imageContainer {*/
-/*    position: relative;*/
-/*    width: 50%;*/
-/*}*/
+    45% {
+        opacity: 0.75;
+    }
 
-/*.imageClass {*/
-/*    opacity: 1;*/
-/*    display: block;*/
-/*    width: 100%;*/
-/*    height: auto;*/
-/*    transition: .5s ease;*/
-/*    backface-visibility: hidden;*/
-/*}*/
+    55% {
+        opacity: 0.5;
+    }
 
-/*.textImageOverlay {*/
-/*    transition: .5s ease;*/
-/*    opacity: 0;*/
-/*    position: absolute;*/
-/*    top: 50%;*/
-/*    left: 50%;*/
-/*    transform: translate(-50%, -50%);*/
-/*    -ms-transform: translate(-50%, -50%);*/
-/*    text-align: center;*/
-/*}*/
+    100% {
+        opacity: 0;
+    }
+}
 
-/*.imageContainer:hover .imageClass {*/
-/*    opacity: 0.3;*/
-/*}*/
+.imgtop {
+    animation-name: cf3FadeInOut;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-duration: 5s;
+    animation-direction: alternate;
+}
 
-/*.imageContainer:hover .middle {*/
-/*    opacity: 1;*/
-/*}*/
+/* ############# Analyzer Section ################# */
+#analyzer .container {
+    /* Margin for sticky navbar */
+    padding-top: 76px;
+    min-height: 100vh;
+}
 
-/*.text {*/
-/*    !* background-color: #4CAF50;*!*/
-/*    color: black;*/
-/*    font-size: 16px;*/
-/*    padding: 16px 32px;*/
-/*}*/
+/* ############# Heatmap Section ################# */
+#heatmap {
+    background-color: #fddbc7;
+}
 
+/* ############# Scrollview Section ################# */
+
+/* ############# Old Stuff Section ################# */
 
 .imageContainer {
     position: relative;
@@ -115,11 +121,34 @@
     color: black;
     font-size: 11px;
 }
+/* 
+ This is the main file.
+*/
+.area {
+  fill: steelblue;
+  clip-path: url(#clip);
+}
+  
+.zoom {
+  cursor: move;
+  fill: none;
+  pointer-events: all;
+}
 
-.faceframe {
-        width: 100%;
-        height: 100%;
-    
-        object-fit:scale-down;
-     
-     }
+.focus{
+    position:absolute;
+    /* top:0px;
+    left:50%;
+    margin:auto; */
+}
+
+.focus image {
+  -webkit-transition: opacity 5s ease-in-out;
+  -moz-transition: opacity 5s ease-in-out;
+  -o-transition: opacity 5s ease-in-out;
+  transition: opacity 5s ease-in-out;
+}
+
+.focus image.transparent {
+  opacity:0;
+}
