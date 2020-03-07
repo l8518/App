@@ -1,0 +1,19 @@
+/* Modify the boostrap classes */
+
+.btn-primary {
+    background-color: #67a9cf;
+    border-color: #67a9cf;
+}
+
+.primary:hover {
+    background-color: #2166ac;
+    border-color: #2166ac;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
