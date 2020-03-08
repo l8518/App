@@ -1,18 +1,19 @@
 const ageGroups = ["(0-2)", "(4-6)", "(8-12)", "(15-20)", "(25-32)", "(38-43)", "(48-53)", "(60-100)"];
+const centuries = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
 // set the dimensions and margins of the graph
-var margin = {top: 40, right: 150, bottom: 60, left: 30},
-    width = 500 - margin.left - margin.right,
-    height = 420 - margin.top - margin.bottom;
+var marginBubble = {top: 40, right: 150, bottom: 60, left: 30},
+    widthBubble = 500 - marginBubble.left - marginBubble.right,
+    heightBubble = 500 - marginBubble.top - marginBubble.bottom;
 
 // append the svg object to the body of the page
 var svgBubble = d3.select("#bubble")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("width", widthBubble + marginBubble.left + marginBubble.right)
+    .attr("height", heightBubble + marginBubble.top + marginBubble.bottom)
     .append("g")
     .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
+        "translate(" + marginBubble.left + "," + marginBubble.top + ")");
 
 update = function (data) {
 
@@ -21,24 +22,53 @@ update = function (data) {
     // ---------------------------//
 
     // Add X axis
-    var x = d3.scaleLinear() // TODO make this dynamic on the century that is selected?
-        .domain([0, 2020])
-        .range([0, width]);
+    const widths = [0.25, 0.35, 0.4, 0.45, 0.5, 0.5, 0.5, 0.5, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
+    let ticksX = [];
+    for (let i = 0; i < centuries.length; i++) {
+        ticksX[i] = ((widthBubble / centuries.length) * i) * widths[i]
+    }
+    // const intervals = [[7, 8], [8, 9], [9, 10], [10, 11], [11, 12], [12, 13], [13, 14], [14, 15], [15, 16], [16, 17], [17, 18], [18, 19], [19, 20]]
+    console.log(ticksX)
+    var x = d3.scaleOrdinal()
+        .domain(centuries) // Centuries
+        .range(ticksX);
+
+
+    // var x = d3.scaleBand()
+    //     .domain(centuries)
+    //     .range(ticksX)
+    // let x = d3.scaleBand()
+    //     .domain(centuries)
+    // .padding([.5])
+    // .rangeRound([0, width]);
+    // .domain(centuries) // Centuries
+    // .range(ticksX);
+
     svgBubble.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x).ticks(3));
+        .attr("transform", "translate(0," + heightBubble + ")")
+        .call(d3.axisBottom(x));
+
+    // X grid lines
+    svgBubble.append("g")
+        .attr("class", "grid")
+        .attr("transform", "translate(0," + heightBubble + ")")
+        .call(d3.axisBottom(x)
+            .ticks(centuries.length)
+            .tickSize(-heightBubble)
+            .tickFormat(""));
+
 
     // Add X axis label:
     svgBubble.append("text")
         .attr("text-anchor", "end")
-        .attr("x", width)
-        .attr("y", height + 50)
-        .text("Time");
+        .attr("x", widthBubble)
+        .attr("y", heightBubble + 50)
+        .text("Century");
 
     // Create ticks for y-axis
     let ticks = [];
     for (let i = 0; i < ageGroups.length; i++) {
-        ticks[i] = (height / ageGroups.length) * i
+        ticks[i] = (heightBubble / ageGroups.length) * i
     }
     // Add Y axis
     var y = d3.scaleOrdinal()
@@ -46,6 +76,14 @@ update = function (data) {
         .range(ticks.reverse());
     svgBubble.append("g")
         .call(d3.axisLeft(y));
+
+    // Y grid lines
+    svgBubble.append("g")
+        .attr("class", "grid")
+        .call(d3.axisLeft(y)
+            .ticks(ageGroups.length)
+            .tickSize(-widthBubble)
+            .tickFormat(""));
 
     // Add Y axis label:
     svgBubble.append("text")
@@ -130,7 +168,7 @@ update = function (data) {
             return "bubbles " + d.gender
         })
         .attr("cx", function (d) {
-            return Math.floor(Math.random() * 2000); // Fixme or what are we gonna show?
+            return x(d.century)
         })
         .attr("cy", function (d) {
             return y(d.age);
@@ -162,7 +200,7 @@ update = function (data) {
         .append("circle")
         .attr("cx", xCircle)
         .attr("cy", function (d) {
-            return height - 100 - z(d)
+            return heightBubble - 100 - z(d)
         })
         .attr("r", function (d) {
             return z(d)
@@ -181,10 +219,10 @@ update = function (data) {
         })
         .attr('x2', xLabel)
         .attr('y1', function (d) {
-            return height - 100 - z(d)
+            return heightBubble - 100 - z(d)
         })
         .attr('y2', function (d) {
-            return height - 100 - z(d)
+            return heightBubble - 100 - z(d)
         })
         .attr('stroke', 'black')
         .style('stroke-dasharray', ('2,2'))
@@ -197,7 +235,7 @@ update = function (data) {
         .append("text")
         .attr('x', xLabel)
         .attr('y', function (d) {
-            return height - 100 - z(d)
+            return heightBubble - 100 - z(d)
         })
         .text(function (d) {
             return d
@@ -208,7 +246,7 @@ update = function (data) {
     // Legend title
     svgBubble.append("text")
         .attr('x', xCircle)
-        .attr("y", height - 100 + 30)
+        .attr("y", heightBubble - 100 + 30)
         .text("Amount of paintings")
         .attr("text-anchor", "middle")
 

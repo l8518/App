@@ -1,9 +1,25 @@
 .bubbles {
     stroke-width: 1px;
-    stroke: black;
+    /*stroke: black;*/
     opacity: .8
+}
+
+.Female {
+    stroke: pink;
+}
+
+.Male {
+    stroke: lightblue;
 }
 
 .bubbles:hover {
     stroke: black;
+}
+
+.grid {
+    fill: none;
+    stroke: gray;
+    opacity: .5;
+    stroke-width: 2px;
+    stroke-dasharray: 5, 5;
 }

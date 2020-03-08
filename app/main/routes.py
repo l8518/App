@@ -94,5 +94,6 @@ def testdata():
 
 @main.route('/api/bubble', methods=['GET'])
 def bubble_chart():
-    filterObj = models.FilterObj('0', '2020', 0, True, True, '')
+    ageGroups = ["(0-2)", "(4-6)", "(8-12)", "(15-20)", "(25-32)", "(38-43)", "(48-53)", "(60-100)"]
+    filterObj = models.FilterObj('0', '2020', ageGroups, True, True, '')
     return data.get_bubble(filterObj).to_json(orient='records')
