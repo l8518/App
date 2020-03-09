@@ -4,26 +4,21 @@
             <div class="col-12 col-sm-6" id="analyzer-left">
                 <div id="bubble"></div>
             </div>
-            <div class="col-12 col-sm-6" id="analyzer-right">
-                <svg id="face_view_svg" width="960" height="550"></svg>
+            <div class="col-12 col-sm-6 text-center" id="analyzer-right">
+                <img src="" id="warped-face"/>
             </div>
         </div>
         <div class="row">
             <div class="col-12 text-center">
-
+                TODO: Connect the two slider
                 <hr><br>
-                <div id="value-time2"></div>
-                
-                <h2>Time</h2>
-                <div class="row align-items-center">
-                <div class="col-sm-2"><p id="value-time"></p></div>
-                <div class="col-sm"><div id="slider-time"></div></div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <svg id="face_view_svg"  class="w-100 h-100" viewport="0 0 960 550" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>        
+                    </div>
                 </div>
-                <div class="row align-items-center">
-                <div class="col-sm-2"><p id="value-new-york-times"></p></div>
-                <div class="col-sm"><div id="slider-new-york-times"></div></div>
-                </div>
-                
+
                 <label for="amount">Time range:</label>
                 <input type="text" id="amount" readonly style="border:0; color: red; font-weight:bold;">
 
