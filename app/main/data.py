@@ -7,6 +7,7 @@ portraits_meta = pd.read_csv("data/omniart_v3_portrait.csv")
 heatmap_csv = pd.read_csv("data/heatmap.csv")
 faces = pd.read_json("data/faces_new.json")
 color_groups = pd.read_json("data/group_centers.json")
+portraits_with_faces_and_color = pd.read_csv("data/portraits_with_faces_and_color.csv")
 
 
 # portrait_data = pd.read_csv("data/portraits.csv")
@@ -23,7 +24,8 @@ def get_heatmap():
 
 def get_portraits_by_year_by_params(filterObj: models.FilterObj):
     # Age filter
-    df = faces[faces['age'].isin(filterObj.age)]
+    df = portraits_with_faces_and_color[portraits_with_faces_and_color['age'].isin(filterObj.age)]
+    # df = faces[faces['age'].isin(filterObj.age)]
     # Gender filter
     df = female_male_filter(df, filterObj)
 
@@ -32,13 +34,12 @@ def get_portraits_by_year_by_params(filterObj: models.FilterObj):
 
     # Filter period
     # portraits_filtered = portraits_meta[~portraits_meta.century.isin([8,13])] #Doesnt work....
-    result = portraits_meta.query(filterObj.beginDate + ' <= creation_year <= ' + filterObj.endDate)
+    result = df.query(filterObj.beginDate + ' <= creation_year <= ' + filterObj.endDate)
     # Match both datasets
-    end = result[result['id'].isin(df['imgid'])]  # Wrong?
-    # end = pd.merge(result, df, left_on='id', right_on='imgid') #Right? But app fails if used this
+    
 
-    print('Amount of results for query: ', len(end))
-    return end
+    print('Amount of results for query: ', len(result))
+    return result
 
 
 def toColor(color: str):
