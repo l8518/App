@@ -136,17 +136,13 @@ body {
 }
 
 .focus{
-    position:absolute;
-    /* top:0px;
-    left:50%;
-    margin:auto; */
 }
 
 .focus image {
-  -webkit-transition: opacity 5s ease-in-out;
-  -moz-transition: opacity 5s ease-in-out;
-  -o-transition: opacity 5s ease-in-out;
-  transition: opacity 5s ease-in-out;
+  -webkit-transition: opacity 2s ease-in-out;
+  -moz-transition: opacity 2s ease-in-out;
+  -o-transition: opacity 2s ease-in-out;
+  transition: opacity 2s ease-in-out;
 }
 
 .focus image.transparent {
