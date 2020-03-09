@@ -3,8 +3,8 @@ const centuries = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
 // set the dimensions and margins of the graph
 var marginBubble = {top: 40, right: 150, bottom: 60, left: 30},
-    widthBubble = 500 - marginBubble.left - marginBubble.right,
-    heightBubble = 500 - marginBubble.top - marginBubble.bottom;
+    widthBubble = 1000 - marginBubble.left - marginBubble.right,
+    heightBubble = 1000 - marginBubble.top - marginBubble.bottom;
 
 // append the svg object to the body of the page
 var svgBubble = d3.select("#bubble")
@@ -25,18 +25,19 @@ update = function (data) {
     const widths = [0.25, 0.35, 0.4, 0.45, 0.5, 0.5, 0.5, 0.5, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
     let ticksX = [];
     for (let i = 0; i < centuries.length; i++) {
-        ticksX[i] = ((widthBubble / centuries.length) * i) * widths[i]
+        ticksX[i] = ((widthBubble / centuries.length) * i); //* widths[i]
     }
     // const intervals = [[7, 8], [8, 9], [9, 10], [10, 11], [11, 12], [12, 13], [13, 14], [14, 15], [15, 16], [16, 17], [17, 18], [18, 19], [19, 20]]
     console.log(ticksX)
-    var x = d3.scaleOrdinal()
-        .domain(centuries) // Centuries
-        .range(ticksX);
+    // var x = d3.scaleOrdinal()
+    //     .domain(centuries) // Centuries
+    //     .range(ticksX);
 
 
-    // var x = d3.scaleBand()
-    //     .domain(centuries)
-    //     .range(ticksX)
+    var x = d3.scaleBand()
+        .domain(centuries)
+        .rangeRound([0, widthBubble - 25], 10, 0)
+
     // let x = d3.scaleBand()
     //     .domain(centuries)
     // .padding([.5])
@@ -71,9 +72,13 @@ update = function (data) {
         ticks[i] = (heightBubble / ageGroups.length) * i
     }
     // Add Y axis
-    var y = d3.scaleOrdinal()
-        .domain(ageGroups)
-        .range(ticks.reverse());
+    // var y = d3.scaleOrdinal()
+    //     .domain(ageGroups)
+    //     .range(ticks.reverse());
+
+    var y = d3.scaleBand()
+        .domain(ageGroups.reverse())
+        .rangeRound([0, heightBubble - 25], 10, 0)
     svgBubble.append("g")
         .call(d3.axisLeft(y));
 
@@ -168,10 +173,10 @@ update = function (data) {
             return "bubbles " + d.gender
         })
         .attr("cx", function (d) {
-            return x(d.century)
+            return x(d.century) + Math.random() * 10
         })
         .attr("cy", function (d) {
-            return y(d.age);
+            return y(d.age) + Math.random() * 10;
         })
         .attr("r", function (d) {
             return z(d.count);
