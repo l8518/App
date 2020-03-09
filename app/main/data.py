@@ -31,9 +31,12 @@ def get_portraits_by_year_by_params(filterObj: models.FilterObj):
     # df = df[df['color'].isin(filterObj.color)]
 
     # Filter period
+    # portraits_filtered = portraits_meta[~portraits_meta.century.isin([8,13])] #Doesnt work....
     result = portraits_meta.query(filterObj.beginDate + ' <= creation_year <= ' + filterObj.endDate)
     # Match both datasets
     end = result[result['id'].isin(df['imgid'])]  # Wrong?
+    # end = pd.merge(result, df, left_on='id', right_on='imgid') #Right? But app fails if used this
+
     print('Amount of results for query: ', len(end))
     return end
 

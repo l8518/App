@@ -134,6 +134,7 @@ function median(values){
 function set_portrait(time){
     d3.select('image#prev').attr("xlink:href", document.getElementById('curr').href.baseVal)
     d3.select('image#curr').attr("xlink:href", get_image_url("year",time))
+    d3.select('image#prev').attr("class",null)
     .on("error", function() {
         d3.select('image').attr("xlink:href", get_image_url(null, time))
         d3.select('image#prev').attr("class","transparent")
