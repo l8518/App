@@ -8,7 +8,6 @@
 {% include "sections/scrollview.html" %}
 
 <script type="text/javascript" src="../static/js/main.js"></script>
-<script type="text/javascript" src="../static/js/multirange.js"></script>
 <script type="text/javascript" src="../static/js/bubblechart.js"></script>
 <script type="text/javascript" src="../static/js/heatmap.js"></script>
 <script>
@@ -39,22 +38,5 @@
 </script>
 <script type="text/javascript" src="https://unpkg.com/d3-simple-slider"></script>
 <script type="text/javascript" src="../static/js/picslider.js"></script>
-
-<script type="text/javascript">
-    const time_slider = document.getElementById("time_slider");
-    const timeRangeText = document.getElementById("amount");
-    timeRangeText.value = "1000 - 1200"; // place holder value
-    function sliderChange() {
-        timeRangeText.value = time_slider.value.replace(",", " - ");
-        fetch_data(time_slider.value.split(",")[0], time_slider.value.split(",")[1])
-            .then(data => {
-                update(data);
-            });
-    }
-
-    fetch_data(1000, 1200).then(data => {
-        update(data);
-    });
-</script>
 
 {% endblock %}

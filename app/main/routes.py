@@ -23,10 +23,12 @@ def get_portraits_dominant_color_count():
         orient='records')
     return dominant_color_count
 
+
 @main.route('/api/portraits_heatmap', methods=['GET'])
 def get_portraits_heatmap():
     df_heat = data.get_heatmap()
     return df_heat.to_json(orient='records')
+
 
 @main.route('/api/portraits_for_period', methods=['GET'])
 def get_portraits_dominant_color_count_for_period():
@@ -37,10 +39,12 @@ def get_portraits_dominant_color_count_for_period():
         orient='records')
     return dominant_color_count
 
+
 @main.route('/api/helloworld', methods=['GET'])
 def api_helloworld():
     d = [2, 10, 10]
     return jsonify(d)
+
 
 @main.route('/api/images', methods=['GET'])
 def api_images():
@@ -61,23 +65,35 @@ def api_images():
     pag = int(index * 100)
     return all_portaits[['image_url', 'artwork_name', 'artist_full_name', 'creation_year']].iloc[pag: pag + 99].to_json(
         orient='records')
+
+
 @main.route('/api/portrait_count_by_year', methods=['GET'])
 def get_portrait_count_by_year():
     portraits_df = data.get_portraits()
-    portraits_df = portraits_df.groupby(['creation_year','century']).creation_year.agg('count').to_frame('count').reset_index()    
-    return portraits_df[['creation_year','count']].to_json(orient='records')
+    portraits_df = portraits_df.groupby(['creation_year', 'century']).creation_year.agg('count').to_frame(
+        'count').reset_index()
+    return portraits_df[['creation_year', 'count']].to_json(orient='records')
+
 
 @main.route('/api/portrait_count_by_century', methods=['GET'])
 def get_portrait_count_by_century():
     portraits_df = data.get_portraits()
-    portraits_df = portraits_df.groupby(['century']).creation_year.agg('count').to_frame('count').reset_index() 
+    portraits_df = portraits_df.groupby(['century']).creation_year.agg('count').to_frame('count').reset_index()
     return portraits_df.to_json(orient='records')
+
 
 @main.route('/api/morphed_image_by_year', methods=['GET'])
 def morphed_image_by_year():
     return 0
 
+
 @main.route('/api/testdata', methods=['GET'])
 def testdata():
     return data.get_testdata().to_json(orient='records')
 
+
+@main.route('/api/bubble', methods=['GET'])
+def bubble_chart():
+    ageGroups = ["(0-2)", "(4-6)", "(8-12)", "(15-20)", "(25-32)", "(38-43)", "(48-53)", "(60-100)"]
+    filterObj = models.FilterObj('0', '2020', ageGroups, True, True, '')
+    return data.get_bubble(filterObj).to_json(orient='records')
