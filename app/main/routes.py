@@ -49,17 +49,15 @@ def api_helloworld():
 @main.route('/api/images', methods=['GET'])
 def api_images():
     index = request.args.get("index", type=int)
-    color = request.args.get("color")  # TODO Should be a list same as age
+    color = request.args.get("color")
     age = request.args.get("age")
     female = request.args.get("female", type=inputs.boolean)
     male = request.args.get("male", type=inputs.boolean)
 
     age = age.split(',')  # To list
+    color = color.split(',')
 
-    filterObj = models.FilterObj('0', '2020', age, female, male, '')
-
-    if color != None:
-        filterObj.color = '000000'
+    filterObj = models.FilterObj('0', '2020', age, female, male, color)
 
     all_portaits = data.get_portraits_by_year_by_params(filterObj)
     pag = int(index * 100)
@@ -95,5 +93,5 @@ def testdata():
 @main.route('/api/bubble', methods=['GET'])
 def bubble_chart():
     ageGroups = ["(0-2)", "(4-6)", "(8-12)", "(15-20)", "(25-32)", "(38-43)", "(48-53)", "(60-100)"]
-    filterObj = models.FilterObj('0', '2020', ageGroups, True, True, '')
+    filterObj = models.FilterObj('0', '2020', ageGroups, True, True, [0, 1, 2, 3, 4, 5, 6, 7, 8])
     return data.get_bubble(filterObj).to_json(orient='records')

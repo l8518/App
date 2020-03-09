@@ -1,12 +1,14 @@
 var params = {};
 // init
 const age_groups = ["(0-2)", "(4-6)", "(8-12)", "(15-20)", "(25-32)", "(38-43)", "(48-53)", "(60-100)"];
+const color_groups = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
 params['beginDate'] = 0;
 params['endDate'] = 2020;
 params['age'] = age_groups;
 params['female'] = true;
 params['male'] = true;
+params['color'] = color_groups;
 
 // Color selection
 const colorField = document.getElementById("colorselect");
@@ -111,7 +113,7 @@ get_images = function (index) {
 
             const container = document.createElement("div");
             img.src = data[i]['image_url'];
-            
+
             const bootstrap = document.createAttribute("class");
             bootstrap.value = "col-4 col-md-3 col-lg-2 my-1 imageContainer";
             container.setAttributeNode(bootstrap);
@@ -130,9 +132,9 @@ renew_view = function () {
     index = 0;
 
     let elem = document.getElementById("scroll");
-    
+
     root_el.removeChild(elem);
-    
+
     create_scroll_container();
 
     get_images(index);
