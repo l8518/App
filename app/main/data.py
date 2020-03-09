@@ -25,12 +25,11 @@ def get_heatmap():
 def get_portraits_by_year_by_params(filterObj: models.FilterObj):
     # Age filter
     df = portraits_with_faces_and_color[portraits_with_faces_and_color['age'].isin(filterObj.age)]
-    # df = faces[faces['age'].isin(filterObj.age)]
     # Gender filter
     df = female_male_filter(df, filterObj)
 
     # Color filter
-    # df = df[df['color'].isin(filterObj.color)]
+    df = df[df['group'].isin(filterObj.color)]
 
     # Filter period
     # portraits_filtered = portraits_meta[~portraits_meta.century.isin([8,13])] #Doesnt work....
@@ -62,36 +61,10 @@ def get_bubble(filterObj):
     color_groups.columns = ['R', 'G', 'B', 'group']
     portraits = get_portraits_by_year_by_params(filterObj)
     print(portraits.columns)
-    portraits.columns = ["Unnamed: 0",
-                         "imgid",
-                         "artwork_name",
-                         "artist_full_name",
-                         "artist_first_name",
-                         "artist_last_name",
-                         "creation_year",
-                         "century",
-                         "source_url",
-                         "image_url",
-                         "collection_origins",
-                         "artwork_type",
-                         "school",
-                         "original_id_in_collection",
-                         "created_at",
-                         "last_modified",
-                         "omni_id",
-                         "created_by_id",
-                         "general_type",
-                         "geocoded",
-                         "color_pallete",
-                         "dominant_color",
-                         "palette_count"]
 
-    # print(portraits.loc[0])
-    merged = pd.merge(portraits, faces, on=['imgid'], how='outer')
-    print(merged.loc[0])
     # print(faces)
     # meta_faces = portraits[portraits['id'].isin(faces['imgid'])]
-    dfGrouped = merged.groupby(['gender', 'age', 'group', 'century'])
-    dfGrouped = dfGrouped.imgid.agg('count').to_frame('count').reset_index()
+    dfGrouped = portraits.groupby(['gender', 'age', 'group', 'century'])
+    dfGrouped = dfGrouped.id.agg('count').to_frame('count').reset_index()
     dfGrouped = pd.merge(dfGrouped, color_groups, on='group', how='outer')
     return dfGrouped[['R', 'G', 'B', 'gender', 'age', 'count', 'century']]
