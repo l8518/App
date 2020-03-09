@@ -128,6 +128,9 @@ get_images = function (index) {
 
 const root_el = document.getElementById("example");
 renew_view = function () {
+    // TODO should redraw all components
+    fetch_bubble();
+
     // reset index
     index = 0;
 

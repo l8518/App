@@ -25,24 +25,18 @@ def get_heatmap():
 def get_portraits_by_year_by_params(filterObj: models.FilterObj):
     # Age filter
     df = portraits_with_faces_and_color[portraits_with_faces_and_color['age'].isin(filterObj.age)]
+
     # Gender filter
     df = female_male_filter(df, filterObj)
 
     # Color filter
-    print(filterObj.color)
     df = df[df['group'].isin(filterObj.color)]
 
     # Filter period
-    # portraits_filtered = portraits_meta[~portraits_meta.century.isin([8,13])] #Doesnt work....
     result = df.query(filterObj.beginDate + ' <= creation_year <= ' + filterObj.endDate)
-    # Match both datasets
 
     print('Amount of results for query: ', len(result))
     return result
-
-
-def toColor(color: str):
-    return str("#" + color)
 
 
 def female_male_filter(df, filterObj):
@@ -60,11 +54,23 @@ def get_portraits():
 def get_bubble(filterObj):
     color_groups.columns = ['R', 'G', 'B', 'group']
     portraits = get_portraits_by_year_by_params(filterObj)
-    print(portraits.columns)
 
-    # print(faces)
-    # meta_faces = portraits[portraits['id'].isin(faces['imgid'])]
-    dfGrouped = portraits.groupby(['gender', 'age', 'group', 'century'])
+    if filterObj.selectedTimePeriod == "YEAR":
+        dfGrouped = portraits.groupby(['gender', 'age', 'group'])
+    elif filterObj.selectedTimePeriod == "CENTURY":
+        # TODO make groups of decades
+        dfGrouped = portraits.groupby(['gender', 'age', 'group', 'creation_year'])
+    elif filterObj.selectedTimePeriod == "DECADE":
+        dfGrouped = portraits.groupby(['gender', 'age', 'group', 'creation_year'])
+    else:
+        dfGrouped = portraits.groupby(['gender', 'age', 'group', 'century'])
+
     dfGrouped = dfGrouped.id.agg('count').to_frame('count').reset_index()
     dfGrouped = pd.merge(dfGrouped, color_groups, on='group', how='outer')
-    return dfGrouped[['R', 'G', 'B', 'gender', 'age', 'count', 'century']]
+
+    if filterObj.selectedTimePeriod == "ALL":
+        return dfGrouped[['R', 'G', 'B', 'gender', 'age', 'count', 'century']]
+    elif filterObj.selectedTimePeriod == "CENTURY" or filterObj.selectedTimePeriod == "DECADE":
+        return dfGrouped[['R', 'G', 'B', 'gender', 'age', 'count', 'creation_year']]
+    else:
+        return dfGrouped[['R', 'G', 'B', 'gender', 'age', 'count']]
