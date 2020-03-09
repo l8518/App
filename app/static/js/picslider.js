@@ -1,10 +1,14 @@
+var svg = d3.select("#face_view_svg");
+let svg_width=svg.node().getBoundingClientRect().width;
+let svg_height=svg.node().getBoundingClientRect().height;
 
-var svg = d3.select("#face_view_svg"),
-margin = {top: 20, right: 20, bottom: 110, left: 40},
-margin2 = {top: 430, right: 20, bottom: 50, left: 40},
-width = +svg.attr("width") - margin.left - margin.right,
-height = +svg.attr("height") - margin.top - margin.bottom,
-height2 = +svg.attr("height") - margin2.top - margin2.bottom;
+let margin = {top: 20, right: 20, bottom: 110, left: 40};
+let margin2 = {top: 30, right: 20, bottom: 50, left: 40};
+
+let width = svg_width - margin.left - margin.right;
+let height = svg_height ;
+let height2 = svg_height;
+
 
 var parseDate = d3.timeParse("%b %Y");
 
@@ -37,10 +41,6 @@ svg.append("defs").append("clipPath")
 .append("rect")
 .attr("width", width)
 .attr("height", height);
-
-var focus = svg.append("g")
-    .attr("class", "focus")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var context = svg.append("g")
 .attr("class", "context")
@@ -76,16 +76,7 @@ readAndDrawData = function (){
         .attr("transform", "translate(0," + (height2 + 3) + ")")
         .call(sliderTime);
 
-        focus.append("svg:image")
-        .attr("id", "prev")
-        .attr('x', (width/2) - 125)
-        .attr('y', 0)
-
-        focus.append("svg:image")
-        .attr("id", "curr")
-        .attr('x', (width/2) - 125)
-        .attr('y', 0)
-        .attr("xlink:href", get_image_url("year",median(data.map(d => d.creation_year)).getFullYear()))
+        d3.select('#warped-face').attr("src", get_image_url("year",median(data.map(d => d.creation_year)).getFullYear()));
     });
 }
 
@@ -132,15 +123,7 @@ function median(values){
   }
 
 function set_portrait(time){
-    d3.select('image#prev').attr("xlink:href", document.getElementById('curr').href.baseVal)
-    d3.select('image#curr').attr("xlink:href", get_image_url("year",time))
-    d3.select('image#prev').attr("class",null)
-    .on("error", function() {
-        d3.select('image').attr("xlink:href", get_image_url(null, time))
-        d3.select('image#prev').attr("class","transparent")
-      });
-    d3.select('image#prev').attr("class","transparent")
-    
+    d3.select('#warped-face').attr("src", get_image_url("year",time))
 }
 function dragged_debounce(d) {
     var year = d3.timeFormat('%Y')(d)
