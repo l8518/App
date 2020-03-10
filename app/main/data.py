@@ -29,13 +29,13 @@ def get_portraits_by_year_by_params(filterObj: models.FilterObj):
     df = female_male_filter(df, filterObj)
 
     # Color filter
+    print(filterObj.color)
     df = df[df['group'].isin(filterObj.color)]
 
     # Filter period
     # portraits_filtered = portraits_meta[~portraits_meta.century.isin([8,13])] #Doesnt work....
     result = df.query(filterObj.beginDate + ' <= creation_year <= ' + filterObj.endDate)
     # Match both datasets
-    
 
     print('Amount of results for query: ', len(result))
     return result
