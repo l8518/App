@@ -4,7 +4,7 @@
             <div class="col-12 col-sm-6" id="analyzer-left">
                 <div id="bubble"></div>
             </div>
-            <div class="col-12 col-sm-6 text-center" id="analyzer-right">
+            <div class="col-12 col-sm-4 text-center" id="analyzer-right">
                 <div class="svg-warped-face-container">
                     <svg class="w-100 h-100 rounded-circle shadow" id="svg-warped-face-box" viewport="0 0 1200 1200" version="1.1" xmlns="http://www.w3.org/2000/svg">
                         <svg id="svg-warped-face-1"  preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200">
@@ -33,37 +33,6 @@
                     </div>
                 </div>
 
-            </div>
-        </div>
-
-
-        <div class="row" id="filtering">
-            <div class="col-6 text-left">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-secondary active">
-                        <input type="radio" name="options" id="option1" checked onclick="bothClick()"> Both
-                    </label>
-                    <label class="btn btn-secondary">
-                        <input type="radio" name="options" id="option2" onclick="femaleClick()"> Female
-                    </label>
-                    <label class="btn btn-secondary">
-                        <input type="radio" name="options" id="option3" onclick="maleClick()"> Male
-                    </label>
-                </div>
-            </div>
-            <div class="col-6 text-right">
-                <div class="ml-auto">
-                    <select id="ageGroupSelect" class="ml-auto" name="options[]" class="selectpicker" multiple
-                        data-live-search="true" data-selected-text-format="count > 3" data-actions-box="true">
-                    </select>
-                    <script>
-                        // Some Jquery to select all the age groups when loaded
-                        $(function () {
-                            $('#ageGroupSelect').selectpicker({});
-                            $("#ageGroupSelect").selectpicker('selectAll');
-                        });
-                    </script>
-                </div>
             </div>
         </div>
     </div>
