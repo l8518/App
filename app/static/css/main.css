@@ -75,6 +75,38 @@ body {
     min-height: 100vh;
 }
 
+.svg-warped-face-container {
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+}
+
+#svg-warped-face-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+#usebox-svg-warped-face-2 {
+    -webkit-transition: opacity 1s ease-in-out;
+    -moz-transition: opacity 1s ease-in-out;
+    -o-transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out;
+}
+
+#usebox-svg-warped-face-1 {
+    -webkit-transition: opacity 1s ease-in-out;
+    -moz-transition: opacity 1s ease-in-out;
+    -o-transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out;
+}
+
+.crossfade {
+    opacity: 0;
+}
+
 /* ############# Heatmap Section ################# */
 #heatmap {
     background-color: #fddbc7;
