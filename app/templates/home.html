@@ -2,41 +2,40 @@
 {% block title %}OmniArt SkinTone{% endblock %}
 {% block body %}
 
-{% include "sections/splash.html" %}
-{% include "sections/analyzer.html" %}
-{% include "sections/heatmap.html" %}
-{% include "sections/scrollview.html" %}
+    {% include "sections/splash.html" %}
+    {% include "sections/analyzer.html" %}
+    {% include "sections/heatmap.html" %}
+    {% include "sections/scrollview.html" %}
 
-<script type="text/javascript" src="../static/js/main.js"></script>
-<script type="text/javascript" src="../static/js/bubblechart.js"></script>
-<script type="text/javascript" src="../static/js/heatmap.js"></script>
-<script>
-    window.sr = ScrollReveal();
-    sr.reveal('.navbar', {
-        duration: 2000,
-        origin: 'bottom'
-    });
-    sr.reveal('#splash-frame', {
-        duration: 2000,
-        origin: 'top',
-        distance: '300px',
-        delay: 1000,
-        viewFactor: 0.2
-    });
-    sr.reveal('#splash-right', {
-        duration: 2000,
-        delay: 2000,
-        origin: 'bottom'
-    });
-    sr.reveal('#analyzer-section', {
-        duration: 2000,
-        origin: 'top',
-        distance: '300px',
-        delay: 1000,
-        viewFactor: 0.2
-    });
-</script>
-<script type="text/javascript" src="https://unpkg.com/d3-simple-slider"></script>
-<script type="text/javascript" src="../static/js/picslider.js"></script>
+    <script type="text/javascript" src="../static/js/color_distribution.js"></script>
+    <script type="text/javascript" src="../static/js/heatmap.js"></script>
+    <script>
+        window.sr = ScrollReveal();
+        sr.reveal('.navbar', {
+            duration: 2000,
+            origin: 'bottom'
+        });
+        sr.reveal('#splash-frame', {
+            duration: 2000,
+            origin: 'top',
+            distance: '300px',
+            delay: 1000,
+            viewFactor: 0.2
+        });
+        sr.reveal('#splash-right', {
+            duration: 2000,
+            delay: 2000,
+            origin: 'bottom'
+        });
+        sr.reveal('#analyzer-section', {
+            duration: 2000,
+            origin: 'top',
+            distance: '300px',
+            delay: 1000,
+            viewFactor: 0.2
+        });
+    </script>
+    <script type="text/javascript" src="https://unpkg.com/d3-simple-slider"></script>
+    <script type="text/javascript" src="../static/js/picslider.js"></script>
 
 {% endblock %}
