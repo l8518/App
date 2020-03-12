@@ -38,7 +38,7 @@
 
 
         <div class="row" id="filtering">
-            <div class="col-6 text-left">
+            <div class="col-4 text-left">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-secondary active">
                         <input type="radio" name="options" id="option1" checked onclick="bothClick()"> Both
@@ -51,7 +51,11 @@
                     </label>
                 </div>
             </div>
-            <div class="col-6 text-right">
+            <div class="col-4 text-center">
+                <!-- Initialize a select button -->
+                <select id="selectTimeButton"></select>
+            </div>
+            <div class="col-4 text-right">
                 <div class="ml-auto">
                     <select id="ageGroupSelect" class="ml-auto" name="options[]" class="selectpicker" multiple
                         data-live-search="true" data-selected-text-format="count > 3" data-actions-box="true">
