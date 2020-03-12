@@ -72,7 +72,7 @@ def bubble_chart():
 @main.route('/api/color_dist', methods=['GET'])
 def get_color_dist():
     filterObj = getFilterParams()
-    return data.get_color_dist(filterObj).to_json(orient='index')
+    return data.get_color_dist(filterObj).to_json(orient='records')
 
 
 @main.route('/api/colors', methods=['GET'])

@@ -84,6 +84,4 @@ def get_color_dist(filterObj):
     portraits = get_portraits_by_year_by_params(filterObj)
     dfGrouped = portraits.groupby(['age', 'group'])
     df = dfGrouped.id.agg('count').to_frame('count').reset_index()
-    df = df.pivot(index='age', columns='group', values='count')
-    print(df)
-    return df
+    return df.pivot(index='age', columns='group', values='count').reset_index()
