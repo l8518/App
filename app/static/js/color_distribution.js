@@ -6,7 +6,7 @@ let colors;
 
 fetch_color_dist_data = function () {
     let url = new URL('/api/color_dist', 'http://localhost:5000')
-    url.search = new URLSearchParams(params).toString();
+    url.search = new URLSearchParams(filterJSParams).toString();
 
     fetch(url)
         .then(resp => resp.json())
@@ -33,8 +33,8 @@ get_max_sum = function (data) {
     let values = [];
     data.forEach((bar) => {
         let sum = 0;
-        for (let i = 0; i < params['color'].length; i++) {
-            sum += bar[String(params['color'][i])]
+        for (let i = 0; i < filterJSParams['color'].length; i++) {
+            sum += bar[String(filterJSParams['color'][i])]
         }
         values.push(sum);
     });
@@ -58,7 +58,7 @@ sort_age_groups = function (groups) {
 function drawBars(data) {
     let groups = d3.map(data, d => d.age).keys();
     groups = sort_age_groups(groups);
-    let subgroups = params['color'];
+    let subgroups = filterJSParams['color'];
 
     // TODO fix for smaller values than 1000
     const maxY = Math.round((get_max_sum(data) + (get_max_sum(data) / 10)) / 1000) * 1000;
@@ -75,7 +75,7 @@ function drawBars(data) {
 
     // TODO maybe sort color groups? Looks actually good like this
     let color = d3.scaleOrdinal()
-        .domain(params['color'])
+        .domain(filterJSParams['color'])
         .range(colRange);
 
     console.log(colors);
@@ -122,3 +122,5 @@ function drawBars(data) {
     svgColorDist.append("g")
         .call(d3.axisLeft(y));
 }
+
+filterJSInitParamsChangedHook(fetch_color_dist_data);
