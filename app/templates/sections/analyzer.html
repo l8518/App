@@ -1,54 +1,33 @@
 <section id="analyzer">
     <div class="container">
         <div class="row row-eq-height pt-4">
-            <div class="col-12 col-sm-6" id="analyzer-left">
+            <div class="col-12 col-sm-8" id="analyzer-left">
                 <div id="bubble"></div>
             </div>
-            <div class="col-12 col-sm-6 text-center" id="analyzer-right">
-                <img src="" id="warped-face"/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 text-center">
-                TODO: Connect the two slider
-                <hr><br>
-
+            <div class="col-12 col-sm-4 text-center" id="analyzer-right">
                 <div class="row">
                     <div class="col-12">
-                        <svg id="face_view_svg"  class="w-100 h-100" viewport="0 0 960 550" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>        
+                        <div class="svg-warped-face-container">
+                            <svg class="w-100 h-100 rounded-circle shadow" id="svg-warped-face-box" viewport="0 0 1200 1200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                <svg id="svg-warped-face-1"  preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200">
+                                    <image id="warped-face-1" class="w-100" href="../static/img/missing_face.svg"/>
+                                </svg>
+                                <svg id="svg-warped-face-2"  preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200">
+                                    <image id="warped-face-2" class="w-100" href="../static/img/missing_face.svg"/>
+                                </svg>
+                                <svg  id="svg-warped-face-3" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200">
+                                    <image id="warped-face-3" href="../static/img/missing_face.svg" width="100%"/>
+                                </svg>
+                                <use id="usebox-svg-warped-face-2" xlink:href="#svg-warped-face-2" />
+                                <use id="usebox-svg-warped-face-1" xlink:href="#svg-warped-face-1" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
-
-            </div>
-        </div>
-
-
-        <div class="row" id="filtering">
-            <div class="col-6 text-left">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-secondary active">
-                        <input type="radio" name="options" id="option1" checked onclick="bothClick()"> Both
-                    </label>
-                    <label class="btn btn-secondary">
-                        <input type="radio" name="options" id="option2" onclick="femaleClick()"> Female
-                    </label>
-                    <label class="btn btn-secondary">
-                        <input type="radio" name="options" id="option3" onclick="maleClick()"> Male
-                    </label>
-                </div>
-            </div>
-            <div class="col-6 text-right">
-                <div class="ml-auto">
-                    <select id="ageGroupSelect" class="ml-auto" name="options[]" class="selectpicker" multiple
-                        data-live-search="true" data-selected-text-format="count > 3" data-actions-box="true">
-                    </select>
-                    <script>
-                        // Some Jquery to select all the age groups when loaded
-                        $(function () {
-                            $('#ageGroupSelect').selectpicker({});
-                            $("#ageGroupSelect").selectpicker('selectAll');
-                        });
-                    </script>
+                <div class="row">
+                    <div class="col-12">
+                        Face Sim
+                    </div>
                 </div>
             </div>
         </div>

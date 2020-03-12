@@ -46,6 +46,7 @@ var context = svg.append("g")
 .attr("class", "context")
 .attr("transform", "translate(" + margin2.left + "," + (margin2.top -100)+ ")");
 
+var toggleNum = 0;
 
 //Read the data
 readAndDrawData = function (){
@@ -123,7 +124,25 @@ function median(values){
   }
 
 function set_portrait(time){
-    d3.select('#warped-face').attr("src", get_image_url("year",time))
+
+    let warpBoxBack = d3.select(`#usebox-svg-warped-face-2`);
+    let warpBoxFront = d3.select(`#usebox-svg-warped-face-1`);
+    let warpImageBack = d3.select(`#warped-face-2`)
+    let warpImageFront = d3.select(`#warped-face-1`)
+    let url = get_image_url("year",time);
+
+    warpImageBack.attr("href", url).on("error", function() {
+      warpImageBack.attr("href", "../static/img/missing_face.svg")
+      url = "../static/img/missing_face.svg";
+    });
+
+    warpBoxFront.classed("crossfade", true);
+
+    setTimeout(() => {
+      warpImageFront.attr("href", url)
+      warpBoxFront.classed("crossfade", false);
+    }, 1000);
+    
 }
 function dragged_debounce(d) {
     var year = d3.timeFormat('%Y')(d)
