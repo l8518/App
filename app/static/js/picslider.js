@@ -56,12 +56,9 @@ var slider_svg = context.append("g")
 readAndDrawData = function (){
     let url = new URL('/api/portrait_count_by_params', 'http://localhost:5000')
     url.search = new URLSearchParams(filterJSParams).toString();
-    console.log("call fetch data")
     fetch(url).then(function(resp){
       return resp.json();
     }).then(function(data){
-        console.log("print data")
-        console.log(data)
         if(filterJSParams['selected_time'] == "YEAR"){
             data.map(function(d){return map_to_datetime(d, filterJSParams['selected_time'])});
         
@@ -192,17 +189,6 @@ function set_portrait(time){
     }, 1000);
     
 }
-
-d3.select("#selectTimeButton").on("change", function(d) {
-    // recover the option that has been chosen
-    var selectedOption = d3.select(this).property("value")
-    // run the updateChart function with this selected option
-
-    //FIXME
-    // filterJSParams['selected_time'] = selectedOption; // ALL, CENTURY, DECADE, YEAR
-    readAndDrawData();
-})
-
 
 function dragged_debounce(d) {
     var year = d3.timeFormat('%Y')(d)
