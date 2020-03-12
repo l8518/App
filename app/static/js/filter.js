@@ -62,6 +62,10 @@ function filterJSGenderFemaleClick() {
 
 // // functions for the age
 function registerListener() {
+    document.getElementById("selectTimeButton").onchange = function(ev) {
+        filterJSUpdate("selected_time", ev.target.value)
+    }
+
     document.getElementById('ageGroupSelect').onchange = function () {
         var elements = document.getElementById('ageGroupSelect').selectedOptions;
         let selection = Array.prototype.slice.call(elements).map((element) => {
