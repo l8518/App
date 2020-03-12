@@ -54,12 +54,13 @@ var slider_svg = context.append("g")
 
 //Read the data
 readAndDrawData = function (){
-    let url = new URL('/api/portrait_count_by_filterJSParams', 'http://localhost:5000')
-    url.search = new URLSearchfilterJSParams(filterJSfilterJSParams).toString();
-
+    let url = new URL('/api/portrait_count_by_params', 'http://localhost:5000')
+    url.search = new URLSearchParams(filterJSParams).toString();
+    console.log("call fetch data")
     fetch(url).then(function(resp){
       return resp.json();
     }).then(function(data){
+        console.log("print data")
         console.log(data)
         if(filterJSParams['selected_time'] == "YEAR"){
             data.map(function(d){return map_to_datetime(d, filterJSParams['selected_time'])});
