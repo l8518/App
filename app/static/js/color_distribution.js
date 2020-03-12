@@ -31,19 +31,33 @@ init_colors();
 
 get_max_sum = function (data) {
     let values = [];
-    data.forEach((ageGroup) => {
+    data.forEach((bar) => {
         let sum = 0;
         for (let i = 0; i < params['color'].length; i++) {
-            sum += ageGroup[String(params['color'][i])]
+            sum += bar[String(params['color'][i])]
         }
         values.push(sum);
     });
     return Math.max(...values);
 };
 
-// TODO maybe sort age groups?
+sort_age_groups = function (groups) {
+    let values = [];
+    groups.forEach((ageGroup) => {
+        values.push([Number(ageGroup.split("-")[0].split("(")[1]), Number(ageGroup.split("-")[1].split(")")[0])])
+    });
+    values.sort((a, b) => a[0] - b[0]);
+
+    // Convert back to string
+    const ageStrings = values.map((val) => {
+        return "(" + val[0] + "-" + val[1] + ")";
+    });
+    return ageStrings;
+};
+
 function drawBars(data) {
     let groups = d3.map(data, d => d.age).keys();
+    groups = sort_age_groups(groups);
     let subgroups = params['color'];
 
     // TODO fix for smaller values than 1000
