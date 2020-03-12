@@ -49,64 +49,7 @@
 
     {% block body %} {% endblock %}
 
-    <nav id="filter-nav-bar" class="navbar navbar-expand-md pb-0 fixed-bottom">
-        <div class="container bg-white rounded-top shadow-lg p-2">
-            <div class="row" id="filtering">
-                <div class="col-4 text-center">
-                    <div class="d-inline mr-2">
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-secondary active">
-                                <input type="radio" name="options" id="option1" checked
-                                    onclick="filterJSGenderBothClick()"> Both
-                            </label>
-                            <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="option2" onclick="filterJSGenderFemaleClick()">
-                                Female
-                            </label>
-                            <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="option3" onclick="filterJSGenderMaleClick()">
-                                Male
-                            </label>
-                        </div>
-                    </div>
-
-                    <select id="selectTimeButton"></select>
-
-                    <div class="d-inline">
-                        <select id="ageGroupSelect" class="ml-auto" name="options[]" class="selectpicker" multiple
-                            data-live-search="true" data-selected-text-format="count > 3" data-actions-box="true">
-                        </select>
-                        <script>
-                            // Some Jquery to select all the age groups when loaded
-                            $(function () {
-                                $('#ageGroupSelect').selectpicker({});
-                                $("#ageGroupSelect").selectpicker('selectAll');
-                            });
-                        </script>
-                    </div>
-                </div>
-
-                <div class="d-inline">
-                    <select id="ageGroupSelect" class="ml-auto" name="options[]" class="selectpicker" multiple
-                        data-live-search="true" data-selected-text-format="count > 3" data-actions-box="true">
-                    </select>
-                    <script>
-                        // Some Jquery to select all the age groups when loaded
-                        $(function () {
-                            $('#ageGroupSelect').selectpicker({});
-                            $("#ageGroupSelect").selectpicker('selectAll');
-                        });
-                    </script>
-                </div>
-            </div>
-            <div class="col-8">
-                <svg id="face_view_svg" class="w-100 h-100" viewport="0 0 960 550" version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"></svg>
-            </div>
-        </div>
-        </div>
-
-    </nav>
+    {% include "filterbox.html" %}
 
     <script type="text/javascript" src="../static/js/heatmap.js"></script>
     <script type="text/javascript" src="../static/libs/d3-simple-slider.min.js"></script>

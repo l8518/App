@@ -1,0 +1,104 @@
+<nav id="filter-nav-bar" class="navbar navbar-expand-md pb-0 fixed-bottom">
+    <div class="container bg-white rounded-top shadow-lg pb-1">
+        <div class="row row-eq-height text-center">
+            <div class="col-8">
+                <small>Average Face Filteroptions</small>
+            </div>
+            <div class="col-4">
+                <small>Detail Filteroptions</small>
+            </div>
+            <div class="col-8">
+                <div class="row row-eq-height align-items-center">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 p-2">
+                                <svg id="face_view_svg" class="w-100 h-100" viewport="0 0 960 550" version="1.1"
+                                    xmlns="http://www.w3.org/2000/svg"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-start row-eq-height">
+                    <div class="input-group col-12">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="input-group-timeslider-time">Timespan</label>
+                        </div>
+                        <select id="selectTimeButton" class="custom-select form-control form-control-sm"
+                            id="input-group-timeslider-time">
+                        </select>
+
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="input-group-timeslider-dimension">Dimension</label>
+                        </div>
+                        <select onchange="timesliderDimensionChanged(this);" class="custom-select form-control form-control-sm"
+                            id="input-group-timeslider-dimension">
+                            <option value="none">None</option>
+                            <option value="age">Age</option>
+                            <option value="gender">Gender</option>
+                            <option value="color-group">Color Group</option>
+                        </select>
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade" id="timeslider-dimension-list-age" role="tabpanel">
+                                <select onchange="timesliderAgeChanged(this);"
+                                    class="custom-select border-left-0 rounded-0 rounded-right form-control form-control-sm"
+                                    id="input-group-timeslider-age">
+                                </select>
+                            </div>
+                            <div class="tab-pane fade" id="timeslider-dimension-list-gender" role="tabpanel">
+                            
+                            </div>
+                            <div class="tab-pane fade" id="timeslider-dimension-list-color-group" role="tabpanel"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 mt-auto">
+                <div class="row">
+                    <div class="col-12">
+                            <select id="ageGroupSelect" class="mb-2" name="options[]" class="selectpicker" multiple
+                                data-live-search="true" data-selected-text-format="count > 3" data-actions-box="true">
+                            </select>
+                            <script>
+                                $(function () {
+                                    $('#ageGroupSelect').selectpicker({});
+                                    $("#ageGroupSelect").selectpicker('selectAll');
+                                });
+                            </script>
+                    </div>
+                    <div class="col-12">
+                            <div class="btn-group btn-group-toggle mb-2" data-toggle="buttons">
+                                <label class="btn btn-secondary active">
+                                    <input type="radio" name="options" id="option1" checked
+                                        onclick="filterJSGenderBothClick()"> Both
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" name="options" id="option2"
+                                        onclick="filterJSGenderFemaleClick()">
+                                    Female
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" name="options" id="option3" onclick="filterJSGenderMaleClick()">
+                                    Male
+                                </label>
+                            </div>
+                        
+                    </div>
+                    <div class="col-12">
+                        <div class="d-inline">
+                            <select id="detailfilter-color-groups" class="ml-auto" name="options[]" class="selectpicker"
+                                multiple data-live-search="true" data-selected-text-format="count > 3"
+                                data-actions-box="true">
+                            </select>
+                            <script>
+                                $(function () {
+                                    $('#detailfilter-color-groups').selectpicker({});
+                                    $("#detailfilter-color-groups").selectpicker('selectAll');
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
