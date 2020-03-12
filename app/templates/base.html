@@ -64,17 +64,20 @@
                     <div class="d-inline mr-2">
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-secondary active">
-                                <input type="radio" name="options" id="option1" checked onclick="filterJSGenderBothClick()"> Both
+                                <input type="radio" name="options" id="option1" checked
+                                    onclick="filterJSGenderBothClick()"> Both
                             </label>
                             <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="option2" onclick="filterJSGenderFemaleClick()"> Female
+                                <input type="radio" name="options" id="option2" onclick="filterJSGenderFemaleClick()">
+                                Female
                             </label>
                             <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="option3" onclick="filterJSGenderMaleClick()"> Male
+                                <input type="radio" name="options" id="option3" onclick="filterJSGenderMaleClick()">
+                                Male
                             </label>
                         </div>
                     </div>
-                    
+
                     <select id="selectTimeButton"></select>
 
                     <div class="d-inline">
@@ -90,47 +93,61 @@
                         </script>
                     </div>
                 </div>
-                <div class="col-8">
-                    <svg id="face_view_svg"  class="w-100 h-100" viewport="0 0 960 550" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>        
+
+                <div class="d-inline">
+                    <select id="ageGroupSelect" class="ml-auto" name="options[]" class="selectpicker" multiple
+                        data-live-search="true" data-selected-text-format="count > 3" data-actions-box="true">
+                    </select>
+                    <script>
+                        // Some Jquery to select all the age groups when loaded
+                        $(function () {
+                            $('#ageGroupSelect').selectpicker({});
+                            $("#ageGroupSelect").selectpicker('selectAll');
+                        });
+                    </script>
                 </div>
             </div>
+            <div class="col-8">
+                <svg id="face_view_svg" class="w-100 h-100" viewport="0 0 960 550" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"></svg>
+            </div>
+        </div>
         </div>
 
     </nav>
 
-<script type="text/javascript" src="../static/js/main.js"></script>
-<script type="text/javascript" src="../static/js/heatmap.js"></script>
-<script type="text/javascript" src="https://unpkg.com/d3-simple-slider"></script>
-<script type="text/javascript" src="../static/js/picslider.js"></script>
-<script type="text/javascript" src="../static/js/color_distribution.js"></script>
-<script type="text/javascript" src="../static/js/scroll_view.js"></script>
-<script type="text/javascript" src="../static/js/multirange.js"></script>
-<script>
-    window.sr = ScrollReveal();
-    sr.reveal('#top-navbar', {
-        duration: 2000,
-        origin: 'bottom'
-    });
-    sr.reveal('#splash-frame', {
-        duration: 2000,
-        origin: 'top',
-        distance: '300px',
-        delay: 1000,
-        viewFactor: 0.2
-    });
-    sr.reveal('#splash-right', {
-        duration: 2000,
-        delay: 2000,
-        origin: 'bottom'
-    });
-    sr.reveal('#analyzer-section', {
-        duration: 2000,
-        origin: 'top',
-        distance: '300px',
-        delay: 1000,
-        viewFactor: 0.2
-    });
-</script>
+    <script type="text/javascript" src="../static/js/heatmap.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/d3-simple-slider"></script>
+    <script type="text/javascript" src="../static/js/picslider.js"></script>
+    <script type="text/javascript" src="../static/js/color_distribution.js"></script>
+    <script type="text/javascript" src="../static/js/scroll_view.js"></script>
+    <script type="text/javascript" src="../static/js/multirange.js"></script>
+    <script>
+        window.sr = ScrollReveal();
+        sr.reveal('#top-navbar', {
+            duration: 2000,
+            origin: 'bottom'
+        });
+        sr.reveal('#splash-frame', {
+            duration: 2000,
+            origin: 'top',
+            distance: '300px',
+            delay: 1000,
+            viewFactor: 0.2
+        });
+        sr.reveal('#splash-right', {
+            duration: 2000,
+            delay: 2000,
+            origin: 'bottom'
+        });
+        sr.reveal('#analyzer-section', {
+            duration: 2000,
+            origin: 'top',
+            distance: '300px',
+            delay: 1000,
+            viewFactor: 0.2
+        });
+    </script>
 
 </body>
 
