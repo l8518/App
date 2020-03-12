@@ -9,8 +9,6 @@ let width = svg_width - margin.left - margin.right;
 let height = svg_height ;
 let height2 = svg_height;
 
-params['selected_time'] = "YEAR"; // ALL, CENTURY, DECADE, YEAR
-
 var allTimeGroups = ["Year", "Decade", "Century", "All"]
 
 d3.select("#selectTimeButton")
@@ -56,14 +54,15 @@ var slider_svg = context.append("g")
 
 //Read the data
 readAndDrawData = function (){
-    let url = new URL('/api/portrait_count_by_params', 'http://localhost:5000')
-    url.search = new URLSearchParams(params).toString();
+    let url = new URL('/api/portrait_count_by_filterJSParams', 'http://localhost:5000')
+    url.search = new URLSearchfilterJSParams(filterJSfilterJSParams).toString();
 
     fetch(url).then(function(resp){
       return resp.json();
     }).then(function(data){
-        if(params['selected_time'] == "YEAR"){
-            data.map(function(d){return map_to_datetime(d, params['selected_time'])});
+        console.log(data)
+        if(filterJSParams['selected_time'] == "YEAR"){
+            data.map(function(d){return map_to_datetime(d, filterJSParams['selected_time'])});
         
             x.domain(d3.extent(data, function(d) { return d.creation_year; }));
             y.domain([0, d3.max(data, function(d) { return d.count; })]);
@@ -90,10 +89,10 @@ readAndDrawData = function (){
             slider_svg
             .call(sliderTime);
             
-            d3.select('#warped-face').attr("src", get_image_url(params['selected_time'], 1850))
+            d3.select('#warped-face').attr("src", get_image_url(filterJSParams['selected_time'], 1850))
             set_portrait(1850)
-        } else if(params['selected_time'] == "DECADE"){
-            data.map(function(d){return map_to_datetime(d, params['selected_time'])});
+        } else if(filterJSParams['selected_time'] == "DECADE"){
+            data.map(function(d){return map_to_datetime(d, filterJSParams['selected_time'])});
             
             x.domain(d3.extent(data, function(d) { return d.decade; }));
             y.domain([0, d3.max(data, function(d) { return d.count; })]);
@@ -120,11 +119,11 @@ readAndDrawData = function (){
             slider_svg
             .call(sliderTime);
             
-            d3.select('#warped-face').attr("src", get_image_url(params['selected_time'], 1850))
+            d3.select('#warped-face').attr("src", get_image_url(filterJSParams['selected_time'], 1850))
             set_portrait(1850)
-        } else if(params['selected_time'] == "CENTURY"){
+        } else if(filterJSParams['selected_time'] == "CENTURY"){
             console.log("century")
-        } else if(params['selected_time'] == "ALL"){
+        } else if(filterJSParams['selected_time'] == "ALL"){
             console.log("all")
         }
     });
@@ -177,7 +176,7 @@ function set_portrait(time){
     let warpBoxFront = d3.select(`#usebox-svg-warped-face-1`);
     let warpImageBack = d3.select(`#warped-face-2`)
     let warpImageFront = d3.select(`#warped-face-1`)
-    let url = get_image_url(params['selected_time'],time);
+    let url = get_image_url(filterJSParams['selected_time'],time);
 
     warpImageBack.attr("href", url).on("error", function() {
       warpImageBack.attr("href", "../static/img/missing_face.svg")
@@ -197,9 +196,10 @@ d3.select("#selectTimeButton").on("change", function(d) {
     // recover the option that has been chosen
     var selectedOption = d3.select(this).property("value")
     // run the updateChart function with this selected option
-    params['selected_time'] = selectedOption; // ALL, CENTURY, DECADE, YEAR
+
+    //FIXME
+    // filterJSParams['selected_time'] = selectedOption; // ALL, CENTURY, DECADE, YEAR
     readAndDrawData();
-    
 })
 
 
@@ -240,5 +240,9 @@ function debounceD3Event(func, wait, immediate) {
 
     };
   }
+var updateView = function(filterJSParams) {
+      readAndDrawData();
+      console.log("renew");
+}
 
-readAndDrawData();
+filterJSInitParamsChangedHook(updateView);

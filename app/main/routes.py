@@ -30,12 +30,14 @@ def api_images():
 
 
 def getFilterParams():
+    print(request.args)
     begin_date = request.args.get("beginDate")
     end_date = request.args.get("endDate")
     color = request.args.get("color")
     age = request.args.get("age")
     female = request.args.get("female", type=inputs.boolean)
     male = request.args.get("male", type=inputs.boolean)
+    selected_time = request.args.get("selected_time")
 
     if age is not None:
         age = age.split(',')  # To list
@@ -43,13 +45,14 @@ def getFilterParams():
     if color is not None:
         color = color.split(',')
 
-    filterObj = models.FilterObj(begin_date, end_date, age, female, male, color)
+    filterObj = models.FilterObj(begin_date, end_date, age, female, male, color, selected_time)
     return filterObj
 
 
 @main.route('/api/portrait_count_by_params', methods=['GET'])
 def get_portrait_count_by_params():
     filterObj = getFilterParams()
+    print(filterObj)
     res = data.get_portrait_count_by_params(filterObj)
     if isinstance(res, pd.DataFrame):
         return res.to_json(orient='records')

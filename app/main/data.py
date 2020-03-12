@@ -51,14 +51,14 @@ def female_male_filter(df, filterObj):
 
 
 def get_portrait_count_by_params(filterObj):
-    if filterObj.selectedTimePeriod == "YEAR":
+    if filterObj.selected_time == "YEAR":
         res = portraits_with_faces_and_color\
             .groupby(['creation_year'])\
             .creation_year.agg('count').to_frame(
             'count').reset_index()
         return res[['creation_year', 'count']]
 
-    if filterObj.selectedTimePeriod == "DECADE":
+    if filterObj.selected_time == "DECADE":
         res = portraits_with_faces_and_color\
             .groupby(portraits_with_faces_and_color.creation_year// 10 * 10)\
             .creation_year.agg('count')\
@@ -66,13 +66,13 @@ def get_portrait_count_by_params(filterObj):
             .rename({'creation_year': 'decade'}, axis='columns')
         return res[['decade','count']]
 
-    if filterObj.selectedTimePeriod == "CENTURY":
+    if filterObj.selected_time == "CENTURY":
         res = portraits_with_faces_and_color.groupby(['century'])\
             .creation_year.agg('count').to_frame(
             'count').reset_index()
         return res[['century', 'count']]
     
-    if filterObj.selectedTimePeriod == "ALL":
+    if filterObj.selected_time == "ALL":
         return portraits_with_faces_and_color.shape[0]
 
 
@@ -80,12 +80,12 @@ def get_bubble(filterObj):
     color_groups.columns = ['R', 'G', 'B', 'group']
     portraits = get_portraits_by_year_by_params(filterObj)
 
-    if filterObj.selectedTimePeriod == "YEAR":
+    if filterObj.selected_time == "YEAR":
         dfGrouped = portraits.groupby(['gender', 'age', 'group'])
-    elif filterObj.selectedTimePeriod == "CENTURY":
+    elif filterObj.selected_time == "CENTURY":
         # TODO make groups of decades
         dfGrouped = portraits.groupby(['gender', 'age', 'group', 'creation_year'])
-    elif filterObj.selectedTimePeriod == "DECADE":
+    elif filterObj.selected_time == "DECADE":
         dfGrouped = portraits.groupby(['gender', 'age', 'group', 'creation_year'])
     else:
         dfGrouped = portraits.groupby(['gender', 'age', 'group', 'century'])
@@ -93,9 +93,9 @@ def get_bubble(filterObj):
     dfGrouped = dfGrouped.id.agg('count').to_frame('count').reset_index()
     dfGrouped = pd.merge(dfGrouped, color_groups, on='group', how='outer')
 
-    if filterObj.selectedTimePeriod == "ALL":
+    if filterObj.selected_time == "ALL":
         return dfGrouped[['R', 'G', 'B', 'gender', 'age', 'count', 'century']]
-    elif filterObj.selectedTimePeriod == "CENTURY" or filterObj.selectedTimePeriod == "DECADE":
+    elif filterObj.selected_time == "CENTURY" or filterObj.selected_time == "DECADE":
         return dfGrouped[['R', 'G', 'B', 'gender', 'age', 'count', 'creation_year']]
     else:
         return dfGrouped[['R', 'G', 'B', 'gender', 'age', 'count']]
