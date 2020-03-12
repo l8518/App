@@ -38,7 +38,7 @@ readAndDrawData = function (){
     }).then(function(data){
       data = updateCenturiesData(data)
       // set the dimensions and margins of the graph
-      var heatmap_margin = {top: 10, right: 55, bottom: 55, left: 65},
+      var heatmap_margin = {top: 10, right: 55, bottom: 100, left: 65},
           heatmap_width = 600 - heatmap_margin.left - heatmap_margin.right,
           heatmap_height = 600 - heatmap_margin.top - heatmap_margin.bottom;
       // viewBox="0 0 1400 500" xmlns="http://www.w3.org/2000/svg">
@@ -99,6 +99,14 @@ readAndDrawData = function (){
               .tickSize(5))
 
       heatmap_svg.append("text")
+          // .attr("transform", "rotate(0)")
+          .attr("y", heatmap_height + (heatmap_margin.bottom/2))
+          .attr("x", (heatmap_width / 2))
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .text("Periods");
+
+      heatmap_svg.append("text")
           .attr("transform", "rotate(-90)")
           .attr("y", 0 - heatmap_margin.left)
           .attr("x",0 - (heatmap_height / 2))
@@ -156,7 +164,6 @@ readAndDrawData = function (){
           .attr("height", y.bandwidth() )
           .style("fill", function(d) {
             if (d.group !== null){
-              console.log(d.group)
               return "rgb(" +colorHeatmap(d.group)[2] +"," +colorHeatmap(d.group)[1] +"," +colorHeatmap(d.group)[0] +")"
             }  else {
               return '#FFFFFF';
