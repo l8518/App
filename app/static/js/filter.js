@@ -14,6 +14,7 @@ filterJSParams['selected_time'] = "YEAR"
 // Hooks to update
 filterJSParamsChangedHooks = [];
 filterJSOnScrollHooks = [];
+filterJSOnWindowLookHooks = [];
 
 // Global Functions
 var filterJSUpdate = function(param, value, skip=false) {
@@ -32,6 +33,10 @@ var filterJSInitParamsChangedHook = function(callback) {
 
 var filterJSInitScrollHook = function(callback) {
     filterJSOnScrollHooks.push(callback);
+}
+
+var filterJSAddWindowLoadHook = function(callback) {
+    filterJSOnWindowLookHooks.push(callback);
 }
 
 let filterJSNotify = function() {
@@ -106,9 +111,9 @@ let toggleFunction = function () {
 
 // Onload Event
 window.onload = function(e){ 
-    toggleFunction();
-    buildAgeOptionList();
-    this.registerListener();
+    filterJSOnWindowLookHooks.forEach(f => {
+        f();
+    });
 }
 
 window.onscroll = function() {
@@ -118,3 +123,6 @@ window.onscroll = function() {
 }
 
 filterJSInitScrollHook(toggleFunction);
+filterJSAddWindowLoadHook(toggleFunction);
+filterJSAddWindowLoadHook(buildAgeOptionList);
+filterJSAddWindowLoadHook(registerListener);
