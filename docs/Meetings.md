@@ -5,7 +5,7 @@ This contains the meeting notes for each week.
 # Week 6
 ## Done
 - Color distribution bubble chart to stacked bar chart
-- Layouting 
+- Layout
 - Timeslider with warped faces
 - Filtering on certain aspects
 - Adjustments to pipeline
