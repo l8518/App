@@ -1,7 +1,7 @@
 updateCenturiesData = function(data){
   for (var i = 0; i < data.length; i++) {
     const century = data[i].century;
-    if (century === 1 || century == 21) {
+    if (century === 1 || century === 21) {
       data[i].century = century + 'st';
       continue;
     }
@@ -16,6 +16,15 @@ updateCenturiesData = function(data){
     data[i].century = century + 'th';
   }
   return data;
+};
+
+function componentToHex(c) {
+  let hex = c.toString(16);
+  return hex.length === 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
 
@@ -114,7 +123,8 @@ readAndDrawData = function (){
       var mousemove = function(d) {
         var text;
         if(d.group){
-          text = "The color of<br>this period is: " + d.group
+          text = "The color of<br>this period is: " +
+              rgbToHex(colorHeatmap(d.group)[2], colorHeatmap(d.group)[1], colorHeatmap(d.group)[0]).toUpperCase()
         } else{
           text = "There is no portrait from this century and period."
         }
@@ -128,6 +138,7 @@ readAndDrawData = function (){
       }
 
       var showDialog = function(d){
+        // Fixme remove? We can't do a filtering on groups because we have 200 in this view. Also we already have enough.
         if(d.dominant_color){
           // TODO: Make a html box where one can select a button to scroll to view of all the portraits with color, century and period.
           // Which are fetched from the server with
