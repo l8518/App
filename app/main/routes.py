@@ -80,3 +80,8 @@ def get_color_dist():
 @main.route('/api/colors', methods=['GET'])
 def get_colors():
     return data.get_colors().to_json(orient='records')
+
+
+@main.route('/api/colors_200', methods=['GET'])
+def get_colors_200():
+    return data.get_colors_200().to_json(orient='records')
