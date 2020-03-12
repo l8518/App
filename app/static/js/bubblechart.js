@@ -12,9 +12,9 @@ var svgBubble = d3.select("#bubble")
     .attr("transform",
         "translate(" + marginBubble.left + "," + marginBubble.top + ")");
 
-params['selected_time'] = "ALL"; // ALL, CENTURY, DECADE, YEAR
-params['beginDate'] = 1202;
-params['endDate'] = 1900;
+filterJSParams['selected_time'] = "ALL"; // ALL, CENTURY, DECADE, YEAR
+filterJSParams['beginDate'] = 1202;
+filterJSParams['endDate'] = 1900;
 
 createXAxisLabel = function (label) {
     // Add X axis label:
@@ -29,8 +29,8 @@ createAllXAxis = function () {
     const timePeriods = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
     let domain = timePeriods
         .filter(century =>
-            century >= Math.floor(params['beginDate'] / 100) &&
-            century <= Math.ceil(params['endDate'] / 100)
+            century >= Math.floor(filterJSParams['beginDate'] / 100) &&
+            century <= Math.ceil(filterJSParams['endDate'] / 100)
         );
 
     let x = d3.scaleBand()
@@ -59,7 +59,7 @@ createCenturyXAxis = function () {
     const timePeriods = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
     let domain = [];
     for (let i = 0; i < timePeriods.length; i++) {
-        domain[i] = params['beginDate'] + timePeriods[i];
+        domain[i] = filterJSParams['beginDate'] + timePeriods[i];
     }
 
     let x = d3.scaleBand()
@@ -87,7 +87,7 @@ createDecadeXAxis = function () {
     const timePeriods = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     let domain = [];
     for (let i = 0; i < timePeriods.length; i++) {
-        domain[i] = params['beginDate'] + timePeriods[i];
+        domain[i] = filterJSParams['beginDate'] + timePeriods[i];
     }
 
     let x = d3.scaleBand()
@@ -122,18 +122,18 @@ update = function (data) {
     //       AXIS  AND SCALE      //
     // ---------------------------//
     let x;
-    if (params['selected_time'] === "ALL") {
+    if (filterJSParams['selected_time'] === "ALL") {
         x = createAllXAxis();
-    } else if (params['selected_time'] === "CENTURY") {
+    } else if (filterJSParams['selected_time'] === "CENTURY") {
         x = createCenturyXAxis();
-    } else if (params['selected_time'] === "DECADE") {
+    } else if (filterJSParams['selected_time'] === "DECADE") {
         x = createDecadeXAxis();
     } else {
         x = createDefaultXAxis();
     }
 
     var y = d3.scaleBand()
-        .domain(params['age'].reverse())
+        .domain(filterJSParams['age'].reverse())
         .rangeRound([0, heightBubble - 25], 10, 0);
     svgBubble.append("g")
         .call(d3.axisLeft(y));
@@ -142,7 +142,7 @@ update = function (data) {
     svgBubble.append("g")
         .attr("class", "grid")
         .call(d3.axisLeft(y)
-            .ticks(params['age'].length)
+            .ticks(filterJSParams['age'].length)
             .tickSize(-widthBubble)
             .tickFormat(""));
 
@@ -229,9 +229,9 @@ update = function (data) {
             return "bubbles " + d.gender
         })
         .attr("cx", function (d) {
-            if (params['selected_time'] === "ALL") {
+            if (filterJSParams['selected_time'] === "ALL") {
                 return x(d.century);
-            } else if (params['selected_time'] === "CENTURY" || params['selected_time'] === "DECADE") {
+            } else if (filterJSParams['selected_time'] === "CENTURY" || filterJSParams['selected_time'] === "DECADE") {
                 return x(d.creation_year);
             } else {
                 return Math.random() * 2000;
@@ -360,7 +360,7 @@ update = function (data) {
 
 fetch_bubble = function () {
     let url = new URL('/api/bubble', 'http://localhost:5000')
-    url.search = new URLSearchParams(params).toString();
+    url.search = new URLSearchParams(filterJSParams).toString();
 
     fetch(url)
         .then(resp => resp.json())
