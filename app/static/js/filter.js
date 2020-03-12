@@ -10,6 +10,7 @@ filterJSParams['female'] = true;
 filterJSParams['male'] = true;
 filterJSParams['color'] = color_groups;
 filterJSParams['selected_time'] = "YEAR"
+filterJSParams['dimension'] = "none";
 
 // Hooks to update
 filterJSParamsChangedHooks = [];
@@ -65,8 +66,43 @@ function filterJSGenderFemaleClick() {
 }
 
 
+function displayDimensionFilter(dimensionValue) {
+
+    if (!dimensionValue) {
+        let dimensionSelect = document.getElementById("input-group-timeslider-dimension");
+        dimensionValue = dimensionSelect.value;
+        filterJSParams["dimension"] = dimensionValue;
+    }
+
+    console.log("Dimension", dimensionValue);
+    
+    let elems = document.querySelectorAll(".tab-pane-dimension");
+    let newTargetId = `timeslider-dimension-list-${dimensionValue}`;
+
+    elems.forEach((elem) => {
+        if (elem.classList.contains("show") && elem.id != newTargetId) {
+            elem.classList.remove("show")
+            elem.classList.remove("active")
+        }
+    })
+    let target = document.getElementById(newTargetId);
+    if (target && !target.classList.contains("show")) {
+        target.classList.add("show")
+        target.classList.add("active")
+    }
+}
+
 // // functions for the age
 function registerListener() {
+    
+    let dimensionSelect = document.getElementById("input-group-timeslider-dimension");
+    dimensionSelect.onchange = function(ev) {
+        filterJSUpdateFaceParam("dimension", ev.target.value)
+        // hide all but the current selected
+        displayDimensionFilter(ev.target.value);
+        console.log("Dimension changed");
+    }
+
     document.getElementById("selectTimeButton").onchange = function(ev) {
         filterJSUpdate("selected_time", ev.target.value)
     }
@@ -78,10 +114,29 @@ function registerListener() {
         });
         filterJSUpdate("age", selection);       
     };
+
+    document.getElementById('input-group-timeslider-age').onchange = function () {
+        var elements = document.getElementById('input-group-timeslider-age').selectedOptions;
+        let selection = Array.prototype.slice.call(elements).map((element) => {
+            return element.value
+        });
+        // filterJSUpdate("age", selection);       
+    };
 }
 
 function buildAgeOptionList() {
     const groupSelect = document.getElementById('ageGroupSelect');
+    for (let i = 0; i < age_groups.length; i++) {
+        var opt = document.createElement("option");
+        opt.value = age_groups[i];
+        opt.text = age_groups[i];
+
+        groupSelect.appendChild(opt);
+    }
+}
+
+function buildDimensionAgeOptionList() {
+    const groupSelect = document.getElementById('input-group-timeslider-age');
     for (let i = 0; i < age_groups.length; i++) {
         var opt = document.createElement("option");
         opt.value = age_groups[i];
@@ -125,4 +180,7 @@ window.onscroll = function() {
 filterJSInitScrollHook(toggleFunction);
 filterJSAddWindowLoadHook(toggleFunction);
 filterJSAddWindowLoadHook(buildAgeOptionList);
+filterJSAddWindowLoadHook(buildDimensionAgeOptionList);
 filterJSAddWindowLoadHook(registerListener);
+filterJSAddWindowLoadHook(displayDimensionFilter);
+

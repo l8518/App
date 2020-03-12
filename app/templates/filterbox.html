@@ -1,10 +1,10 @@
 <nav id="filter-nav-bar" class="navbar navbar-expand-md pb-0 fixed-bottom">
     <div class="container bg-white rounded-top shadow-lg pb-1">
         <div class="row row-eq-height text-center">
-            <div class="col-8">
+            <div class="col-9">
                 <small>Average Face Filteroptions</small>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <small>Detail Filteroptions</small>
             </div>
             <div class="col-8">
@@ -30,24 +30,29 @@
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="input-group-timeslider-dimension">Dimension</label>
                         </div>
-                        <select onchange="timesliderDimensionChanged(this);" class="custom-select form-control form-control-sm"
+                        <select onchange="timesliderSelectedDimensionChanged(this);" class="custom-select form-control form-control-sm"
                             id="input-group-timeslider-dimension">
-                            <option value="none">None</option>
+                            <option value="none" selected>None</option>
                             <option value="age">Age</option>
                             <option value="gender">Gender</option>
                             <option value="color-group">Color Group</option>
                         </select>
                         <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade" id="timeslider-dimension-list-age" role="tabpanel">
+                            <div class="tab-pane tab-pane-dimension fade col-2" id="timeslider-dimension-list-none" role="tabpanel">
+                                
+                            </div>
+                            <div class="tab-pane tab-pane-dimension fade" id="timeslider-dimension-list-age" role="tabpanel">
                                 <select onchange="timesliderAgeChanged(this);"
                                     class="custom-select border-left-0 rounded-0 rounded-right form-control form-control-sm"
                                     id="input-group-timeslider-age">
                                 </select>
                             </div>
-                            <div class="tab-pane fade" id="timeslider-dimension-list-gender" role="tabpanel">
-                            
+                            <div class="tab-pane tab-pane-dimension fade" id="timeslider-dimension-list-gender" role="tabpanel">
+                                Here gender filter
                             </div>
-                            <div class="tab-pane fade" id="timeslider-dimension-list-color-group" role="tabpanel"></div>
+                            <div class="tab-pane tab-pane-dimension fade" id="timeslider-dimension-list-color-group" role="tabpanel">
+                                Here we need a filter
+                            </div>
                         </div>
                     </div>
                 </div>
