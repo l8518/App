@@ -2,6 +2,18 @@
 
 This contains the meeting notes for each week.
 
+# Week 6
+## Done
+- Color distribution bubble chart to stacked bar chart
+- Layout
+- Timeslider with warped faces
+- Filtering on certain aspects
+- Adjustments to pipeline
+- Face simaliarity calculation
+
+## Meeting
+...
+
 # Week 5
 ## Done
 - Finishing up the heatmap

@@ -21,6 +21,10 @@ def get_heatmap():
     return heatmap_csv
 
 
+def get_colors():
+    return color_groups
+
+
 def get_portraits_by_year_by_params(filterObj: models.FilterObj):
     # Age filter
     df = portraits_with_faces_and_color[portraits_with_faces_and_color['age'].isin(filterObj.age)]
@@ -95,3 +99,10 @@ def get_bubble(filterObj):
         return dfGrouped[['R', 'G', 'B', 'gender', 'age', 'count', 'creation_year']]
     else:
         return dfGrouped[['R', 'G', 'B', 'gender', 'age', 'count']]
+
+
+def get_color_dist(filterObj):
+    portraits = get_portraits_by_year_by_params(filterObj)
+    dfGrouped = portraits.groupby(['age', 'group'])
+    df = dfGrouped.id.agg('count').to_frame('count').reset_index()
+    return df.pivot(index='age', columns='group', values='count').reset_index()
