@@ -35,12 +35,11 @@ def getFilterParams():
     age = request.args.get("age")
     female = request.args.get("female", type=inputs.boolean)
     male = request.args.get("male", type=inputs.boolean)
-    selected_time = request.args.get("selected_time")
 
     age = age.split(',')  # To list
     color = color.split(',')
 
-    filterObj = models.FilterObj(begin_date, end_date, age, female, male, color, selected_time)
+    filterObj = models.FilterObj(begin_date, end_date, age, female, male, color)
     return filterObj
 
 
@@ -68,3 +67,14 @@ def morphed_image_by_year():
 def bubble_chart():
     filterObj = getFilterParams()
     return data.get_bubble(filterObj).to_json(orient='records')
+
+
+@main.route('/api/color_dist', methods=['GET'])
+def get_color_dist():
+    filterObj = getFilterParams()
+    return data.get_color_dist(filterObj).to_json(orient='records')
+
+
+@main.route('/api/colors', methods=['GET'])
+def get_colors():
+    return data.get_colors().to_json(orient='records')
