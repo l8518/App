@@ -12,6 +12,16 @@ This contains the meeting notes for each week.
 - Face simaliarity calculation
 
 ## Meeting
+- Simple solution for similar face
+- Heat map colors just make 50 groups or so
+- Time line: line plot to bar plot
+- Make things more clear. So time line amount of faces make it more clear. Also for stacked bar chart
+- Demo is on Friday 20th 9-12 (9-10:30 or 10:30 - 12). You get a spot with a table and you show it on your laptop.
+    - Email for the time slot
+    - 3 min pitch: story and you get some questions
+- Tuesday from 1-3 could get an extra team meeting
+
+## Meeting
 ...
 
 # Week 5
