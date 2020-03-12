@@ -42,7 +42,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" id="top-navbar">
         <a class="navbar-brand" href="#">OmniArt SkinTone</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,10 +57,10 @@
 
     {% block body %} {% endblock %}
 
-    <nav id="filter-nav-bar" class="navbar navbar-expand-md pb-0 fixed-bottom d-none">
+    <nav id="filter-nav-bar" class="navbar navbar-expand-md pb-0 fixed-bottom">
         <div class="container bg-white rounded-top shadow-lg p-2">
             <div class="row" id="filtering">
-                <div class="col-12 text-center">
+                <div class="col-4 text-center">
                     <div class="d-inline mr-2">
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-secondary active">
@@ -88,10 +88,47 @@
                         </script>
                     </div>
                 </div>
+                <div class="col-8">
+                    <svg id="face_view_svg"  class="w-100 h-100" viewport="0 0 960 550" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>        
+                </div>
             </div>
         </div>
 
     </nav>
+
+<script type="text/javascript" src="../static/js/main.js"></script>
+<script type="text/javascript" src="../static/js/bubblechart.js"></script>
+<script type="text/javascript" src="../static/js/heatmap.js"></script>
+<script type="text/javascript" src="https://unpkg.com/d3-simple-slider"></script>
+<script type="text/javascript" src="../static/js/picslider.js"></script>
+<script type="text/javascript" src="../static/js/scroll_view.js"></script>
+<script type="text/javascript" src="../static/js/multirange.js"></script>
+<script>
+    window.sr = ScrollReveal();
+    sr.reveal('#top-navbar', {
+        duration: 2000,
+        origin: 'bottom'
+    });
+    sr.reveal('#splash-frame', {
+        duration: 2000,
+        origin: 'top',
+        distance: '300px',
+        delay: 1000,
+        viewFactor: 0.2
+    });
+    sr.reveal('#splash-right', {
+        duration: 2000,
+        delay: 2000,
+        origin: 'bottom'
+    });
+    sr.reveal('#analyzer-section', {
+        duration: 2000,
+        origin: 'top',
+        distance: '300px',
+        delay: 1000,
+        viewFactor: 0.2
+    });
+</script>
 
 </body>
 

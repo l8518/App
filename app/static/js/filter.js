@@ -88,13 +88,13 @@ let toggleFunction = function () {
 
     if (window.scrollY > (window.innerHeight * 0.9)) {
         // you're at the bottom of the page
-        if (bottomNav.classList.contains('d-none')) {
-            bottomNav.classList.remove('d-none');
+        if (bottomNav.classList.contains('crossfade')) {
+            bottomNav.classList.remove('crossfade');
             // alert("remove faq display!");
         }
     } else {
-        if (!bottomNav.classList.contains('d-none')) {
-            bottomNav.classList.add('d-none');
+        if (!bottomNav.classList.contains('crossfade')) {
+            bottomNav.classList.add('crossfade');
         }
     }
 };
