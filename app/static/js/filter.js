@@ -9,6 +9,7 @@ filterJSParams['age'] = age_groups;
 filterJSParams['female'] = true;
 filterJSParams['male'] = true;
 filterJSParams['color'] = color_groups;
+filterJSParams['selected_time'] = "YEAR"
 
 // Hooks to update
 filterJSParamsChangedHooks = [];
