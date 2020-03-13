@@ -11,6 +11,7 @@ filterJSParams['male'] = true;
 filterJSParams['color'] = color_groups;
 filterJSParams['selected_time'] = "YEAR"
 filterJSParams['dimension'] = "none";
+filterJSParams['dimension-value'] = "none";
 
 // Hooks to update
 filterJSParamsChangedHooks = [];
@@ -74,10 +75,9 @@ function displayDimensionFilter(dimensionValue) {
         filterJSParams["dimension"] = dimensionValue;
     }
 
-    console.log("Dimension", dimensionValue);
-    
     let elems = document.querySelectorAll(".tab-pane-dimension");
     let newTargetId = `timeslider-dimension-list-${dimensionValue}`;
+    let selectTargetId = `timeslider-dimension-list-select-${dimensionValue}`;
 
     elems.forEach((elem) => {
         if (elem.classList.contains("show") && elem.id != newTargetId) {
@@ -90,6 +90,15 @@ function displayDimensionFilter(dimensionValue) {
         target.classList.add("show")
         target.classList.add("active")
     }
+
+    // Set the select to first value
+    let selectTarget = document.getElementById(selectTargetId);
+    let newDimensionValue = "none";
+    if (selectTarget) {
+        selectTarget.selectedIndex = 0;
+        newDimensionValue = selectTarget.value;
+    }
+    filterJSUpdate("dimension-value", newDimensionValue);
 }
 
 // // functions for the age
@@ -97,7 +106,7 @@ function registerListener() {
     
     let dimensionSelect = document.getElementById("input-group-timeslider-dimension");
     dimensionSelect.onchange = function(ev) {
-        filterJSUpdate("dimension", ev.target.value)
+        filterJSUpdate("dimension", ev.target.value, skip=true)
         // hide all but the current selected
         displayDimensionFilter(ev.target.value);
         console.log("Dimension changed");
@@ -115,8 +124,8 @@ function registerListener() {
         filterJSUpdate("age", selection);       
     };
 
-    document.getElementById('input-group-timeslider-age').onchange = function () {
-        var elements = document.getElementById('input-group-timeslider-age').selectedOptions;
+    document.getElementById('timeslider-dimension-list-select-age').onchange = function () {
+        var elements = document.getElementById('timeslider-dimension-list-select-age').selectedOptions;
         let selection = Array.prototype.slice.call(elements).map((element) => {
             return element.value
         });
@@ -136,7 +145,7 @@ function buildAgeOptionList() {
 }
 
 function buildDimensionAgeOptionList() {
-    const groupSelect = document.getElementById('input-group-timeslider-age');
+    const groupSelect = document.getElementById('timeslider-dimension-list-select-age');
     for (let i = 0; i < age_groups.length; i++) {
         var opt = document.createElement("option");
         opt.value = age_groups[i];
