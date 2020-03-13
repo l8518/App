@@ -1,13 +1,13 @@
 var filterJSParams = {};
 // init
 const age_groups = ["(0-2)", "(4-6)", "(8-12)", "(15-20)", "(25-32)", "(38-43)", "(48-53)", "(60-100)"];
+const gender_groups = ["female", "male"];
 const color_groups = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
 filterJSParams['beginDate'] = 0;
 filterJSParams['endDate'] = 2020;
 filterJSParams['age'] = age_groups;
-filterJSParams['female'] = true;
-filterJSParams['male'] = true;
+filterJSParams['gender'] = "male";
 filterJSParams['color'] = color_groups;
 filterJSParams['selected_time'] = "YEAR"
 filterJSParams['dimension'] = "none";
@@ -28,7 +28,6 @@ var filterJSUpdate = function(param, value, skip=false) {
 }
 
 var filterJSInitParamsChangedHook = function(callback) {
-    console.log("added");
     filterJSParamsChangedHooks.push(callback);
     return filterJSParams;
 }
@@ -42,30 +41,10 @@ var filterJSAddWindowLoadHook = function(callback) {
 }
 
 let filterJSNotify = function() {
-    console.log("noftify")
     filterJSParamsChangedHooks.forEach(f => {
-        console.log("noftify")
         f(filterJSParams);
     });
 }
-
-// functions for the gender selection
-function filterJSGenderBothClick() {
-    filterJSUpdate("female", true, true);
-    filterJSUpdate("male", true);
-}
-
-// Male female filtering
-function filterJSGenderMaleClick() {
-    filterJSUpdate("female", false, true);
-    filterJSUpdate("male", true);
-}
-
-function filterJSGenderFemaleClick() {
-    filterJSUpdate("female", true, true);
-    filterJSUpdate("male", false);
-}
-
 
 function displayDimensionFilter(dimensionValue) {
 
@@ -78,6 +57,7 @@ function displayDimensionFilter(dimensionValue) {
     let elems = document.querySelectorAll(".tab-pane-dimension");
     let newTargetId = `timeslider-dimension-list-${dimensionValue}`;
     let selectTargetId = `timeslider-dimension-list-select-${dimensionValue}`;
+    
 
     elems.forEach((elem) => {
         if (elem.classList.contains("show") && elem.id != newTargetId) {
@@ -93,11 +73,32 @@ function displayDimensionFilter(dimensionValue) {
 
     // Set the select to first value
     let selectTarget = document.getElementById(selectTargetId);
+    
     let newDimensionValue = "none";
     if (selectTarget) {
         selectTarget.selectedIndex = 0;
         newDimensionValue = selectTarget.value;
+        // Deactivate the respective filter
     }
+
+    let detailFilterId = `detailfilter-control-${dimensionValue}`;
+    let detailFilterElems = document.querySelectorAll(`[id^='detailfilter-control']`)
+    detailFilterElems.forEach((elem) => {
+        if (elem.id == detailFilterId) {
+            elem.disabled = true;
+            $(function () {
+                // Not nice, but works 🙈
+                $(elem).selectpicker('refresh');
+            });
+        } else {
+            elem.disabled = false;
+            $(function () {
+                // Not nice, but works 🙈
+                $(elem).selectpicker('refresh');
+            });
+        }
+    })
+
     filterJSUpdate("dimension-value", newDimensionValue);
 }
 
@@ -109,15 +110,14 @@ function registerListener() {
         filterJSUpdate("dimension", ev.target.value, skip=true)
         // hide all but the current selected
         displayDimensionFilter(ev.target.value);
-        console.log("Dimension changed");
     }
 
     document.getElementById("selectTimeButton").onchange = function(ev) {
         filterJSUpdate("selected_time", ev.target.value)
     }
 
-    document.getElementById('ageGroupSelect').onchange = function () {
-        var elements = document.getElementById('ageGroupSelect').selectedOptions;
+    document.getElementById('detailfilter-control-age').onchange = function () {
+        var elements = document.getElementById('detailfilter-control-age').selectedOptions;
         let selection = Array.prototype.slice.call(elements).map((element) => {
             return element.value
         });
@@ -133,12 +133,32 @@ function timesliderDimensionValueChanged(ev) {
 }
 
 function buildAgeOptionList() {
-    const groupSelect = document.getElementById('ageGroupSelect');
+    const groupSelect = document.getElementById('detailfilter-control-age');
     for (let i = 0; i < age_groups.length; i++) {
         var opt = document.createElement("option");
         opt.value = age_groups[i];
         opt.text = age_groups[i];
 
+        groupSelect.appendChild(opt);
+    }
+}
+
+function buildColorGroupOptionList() {
+    const groupSelect = document.getElementById('detailfilter-control-gender');
+    for (let i = 0; i < gender_groups.length; i++) {
+        var opt = document.createElement("option");
+        opt.value = gender_groups[i];
+        opt.text = gender_groups[i];
+        groupSelect.appendChild(opt);
+    }
+}
+
+function buildGenderOptionList() {
+    const groupSelect = document.getElementById('detailfilter-control-color-group');
+    for (let i = 0; i < color_groups.length; i++) {
+        var opt = document.createElement("option");
+        opt.value = color_groups[i];
+        opt.text = color_groups[i];
         groupSelect.appendChild(opt);
     }
 }
@@ -189,6 +209,8 @@ filterJSInitScrollHook(toggleFunction);
 filterJSAddWindowLoadHook(toggleFunction);
 filterJSAddWindowLoadHook(buildAgeOptionList);
 filterJSAddWindowLoadHook(buildDimensionAgeOptionList);
+filterJSAddWindowLoadHook(buildColorGroupOptionList);
+filterJSAddWindowLoadHook(buildGenderOptionList);
 filterJSAddWindowLoadHook(registerListener);
 filterJSAddWindowLoadHook(displayDimensionFilter);
 

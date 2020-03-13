@@ -82,43 +82,37 @@
             <div class="col-4 mt-auto">
                 <div class="row">
                     <div class="col-12">
-                        <select id="ageGroupSelect" class="mb-2" name="options[]" class="selectpicker" multiple
+                        <select id="detailfilter-control-age" class="mb-2" name="options[]" class="selectpicker" multiple
                             data-live-search="true" data-selected-text-format="count > 3" data-actions-box="true">
                         </select>
                         <script>
                             $(function () {
-                                $('#ageGroupSelect').selectpicker({});
-                                $("#ageGroupSelect").selectpicker('selectAll');
+                                $('#detailfilter-control-age').selectpicker({});
+                                $("#detailfilter-control-age").selectpicker('selectAll');
                             });
                         </script>
                     </div>
                     <div class="col-12">
-                        <div class="btn-group btn-group-toggle mb-2" data-toggle="buttons">
-                            <label class="btn btn-secondary active">
-                                <input type="radio" name="options" id="option1" checked
-                                    onclick="filterJSGenderBothClick()"> Both
-                            </label>
-                            <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="option2" onclick="filterJSGenderFemaleClick()">
-                                Female
-                            </label>
-                            <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="option3" onclick="filterJSGenderMaleClick()">
-                                Male
-                            </label>
-                        </div>
-
+                        <select id="detailfilter-control-gender" class="mb-2" name="options[]" class="selectpicker" multiple
+                            data-live-search="true" data-selected-text-format="count > 3" data-actions-box="true">
+                        </select>
+                        <script>
+                            $(function () {
+                                $('#detailfilter-control-gender').selectpicker({});
+                                $("#detailfilter-control-gender").selectpicker('selectAll');
+                            });
+                        </script>
                     </div>
                     <div class="col-12">
                         <div class="d-inline">
-                            <select id="detailfilter-color-groups" class="ml-auto" name="options[]" class="selectpicker"
+                            <select id="detailfilter-control-color-group" class="ml-auto" name="options[]" class="selectpicker"
                                 multiple data-live-search="true" data-selected-text-format="count > 3"
                                 data-actions-box="true">
                             </select>
                             <script>
                                 $(function () {
-                                    $('#detailfilter-color-groups').selectpicker({});
-                                    $("#detailfilter-color-groups").selectpicker('selectAll');
+                                    $('#detailfilter-control-color-group').selectpicker({});
+                                    $("#detailfilter-control-color-group").selectpicker('selectAll');
                                 });
                             </script>
                         </div>
