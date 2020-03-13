@@ -3,6 +3,7 @@ let marginColorDist = {top: 50, right: 20, bottom: 50, left: 65},
     heightColorDist = 500 - marginColorDist.top - marginColorDist.bottom;
 
 let colors;
+let colRange;
 
 init_fetch_color_dist_data = function () {
     let url = new URL('/api/color_dist', 'http://localhost:5000')
@@ -36,6 +37,7 @@ init_colors = function () {
         .then(resp => resp.json())
         .then((data) => {
             colors = data
+            colRange = data.map(color => [color['R'], color['G'], color['B']]);
         }).then(() => {
         init_fetch_color_dist_data()
     });
@@ -85,7 +87,7 @@ function drawInitBars(data) {
 
 // TODO fix for smaller values than 1000
     getMaxY = function (data) {
-        return Math.round((get_max_sum(data) + (get_max_sum(data) / 10)) / 1000) * 1000;
+        return Math.ceil((get_max_sum(data) + (get_max_sum(data) / 10)) / 1000) * 1000;
     };
 
     let yColDist = d3.scaleLinear();
@@ -95,16 +97,16 @@ function drawInitBars(data) {
     let groups = getXGroups(data);
     let subgroups = filterJSParams['color'];
 
-    yColDist.domain([0, getMaxY(data)])
+    const maxYDomain = getMaxY(data);
+    yColDist.domain([0, maxYDomain])
         .range([heightColorDist, 0]);
 
     xColDist.domain(groups)
         .range([0, widthColorDist])
         .padding([0.2]);
 
-    let colRange = colors.map(color => [color['R'], color['G'], color['B']]);
     // TODO maybe sort color groups? Looks actually good like this
-    colorColDist.domain(filterJSParams['color'])
+    colorColDist.domain(color_groups)
         .range(colRange);
 
     let stackedData = d3.stack()

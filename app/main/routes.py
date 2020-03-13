@@ -39,7 +39,7 @@ def getFilterParams():
     dimension = request.args.get("dimension")
     dimension_value = request.args.get("dimension-value")
     age = request.args.get("age")
-    gender = request.args.get("gender").split(',')
+    gender = request.args.get("gender")
     color = request.args.get("color")
     female = "female" in gender
     male = "male" in gender
@@ -67,7 +67,7 @@ def getFilterParams():
             gender = request.args.get("gender").split(',')
             female = "female" in gender
             male = "male" in gender
-            color = dimension_value # TODO: error?
+            color = dimension_value # TODO: error? I added the value in Javascript. Fixed?
             age = request.args.get("age")
     
     selected_time = request.args.get("selected_time")

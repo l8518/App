@@ -93,7 +93,7 @@ function displayDimensionFilter(dimensionValue) {
         } else {
             elem.disabled = false;
             $(function () {
-                // Not nice, but works 🙈
+                // Not nice, but works 🙈 <-- nice emoji's in code!
                 $(elem).selectpicker('refresh');
             });
         }
@@ -123,6 +123,16 @@ function registerListener() {
         });
         filterJSUpdate("age", selection);       
     };
+
+
+    document.getElementById('timeslider-dimension-list-select-color-group').onchange = function () {
+        var elements = document.getElementById('timeslider-dimension-list-select-color-group').selectedOptions;
+        let selection = Array.prototype.slice.call(elements).map((element) => {
+            return element.value
+        });
+        filterJSParams['color'] = selection;
+        filterJSUpdate("dimension-value", selection);
+    };
 }
 
 
@@ -143,7 +153,7 @@ function buildAgeOptionList() {
     }
 }
 
-function buildColorGroupOptionList() {
+function buildGenderOptionList() {
     const groupSelect = document.getElementById('detailfilter-control-gender');
     for (let i = 0; i < gender_groups.length; i++) {
         var opt = document.createElement("option");
@@ -153,12 +163,12 @@ function buildColorGroupOptionList() {
     }
 }
 
-function buildGenderOptionList() {
+function buildColorGroupOptionList() {
     const groupSelect = document.getElementById('detailfilter-control-color-group');
     for (let i = 0; i < color_groups.length; i++) {
         var opt = document.createElement("option");
         opt.value = color_groups[i];
-        opt.text = color_groups[i];
+        opt.text = "Group " +(Number(color_groups[i]) + 1);
         groupSelect.appendChild(opt);
     }
 }
