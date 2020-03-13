@@ -123,14 +123,13 @@ function registerListener() {
         });
         filterJSUpdate("age", selection);       
     };
+}
 
-    document.getElementById('timeslider-dimension-list-select-age').onchange = function () {
-        var elements = document.getElementById('timeslider-dimension-list-select-age').selectedOptions;
-        let selection = Array.prototype.slice.call(elements).map((element) => {
-            return element.value
-        });
-        // filterJSUpdate("age", selection);       
-    };
+
+function timesliderDimensionValueChanged(ev) {
+    let value = ev.value;
+    filterJSUpdate("dimension-value", value);
+
 }
 
 function buildAgeOptionList() {
