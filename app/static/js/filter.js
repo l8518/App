@@ -97,7 +97,7 @@ function registerListener() {
     
     let dimensionSelect = document.getElementById("input-group-timeslider-dimension");
     dimensionSelect.onchange = function(ev) {
-        filterJSUpdateFaceParam("dimension", ev.target.value)
+        filterJSUpdate("dimension", ev.target.value)
         // hide all but the current selected
         displayDimensionFilter(ev.target.value);
         console.log("Dimension changed");
