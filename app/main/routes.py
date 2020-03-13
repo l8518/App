@@ -33,10 +33,40 @@ def getFilterParams():
     print(request.args)
     begin_date = request.args.get("beginDate")
     end_date = request.args.get("endDate")
-    color = request.args.get("color")
+    dimension = request.args.get("dimension")
+    dimension_value = request.args.get("dimension-value")
     age = request.args.get("age")
-    female = request.args.get("female", type=inputs.boolean)
-    male = request.args.get("male", type=inputs.boolean)
+    gender = request.args.get("gender").split(',')
+    color = request.args.get("color")
+    female = "female" in gender
+    male = "male" in gender
+    female = False
+    male = False
+    # TODO: WIP - not nice solution atm 🙊🙈
+    # - if dimension is present:
+    #   --> use selected dimension and value for the specific thing (gender, color group etc)
+    #   --> allow to further filter data based on the details filter
+    # - if no dimension is present:
+    #   --> use the details filter data
+    if dimension:
+        if (dimension == "age"):
+            gender = request.args.get("gender").split(',')
+            female = "female" in gender
+            male = "male" in gender
+            age = dimension_value
+            color = request.args.get("color")
+        if (dimension == "gender"):
+            female = "female" == dimension_value
+            male = "male" == dimension_value
+            age = request.args.get("age")
+            color = request.args.get("color")
+        if (dimension == "color-group"):
+            gender = request.args.get("gender").split(',')
+            female = "female" in gender
+            male = "male" in gender
+            color = dimension_value # TODO: error?
+            age = request.args.get("age")
+    
     selected_time = request.args.get("selected_time")
 
     if age is not None:
