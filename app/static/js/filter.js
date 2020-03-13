@@ -171,6 +171,14 @@ function buildColorGroupOptionList() {
         opt.text = "Group " +(Number(color_groups[i]) + 1);
         groupSelect.appendChild(opt);
     }
+
+    groupSelect.onchange = function () {
+        var elements = groupSelect.selectedOptions;
+        let selection = Array.prototype.slice.call(elements).map((element) => {
+            return element.value
+        });
+        filterJSUpdate("color", selection);
+    }
 }
 
 function buildDimensionAgeOptionList() {
