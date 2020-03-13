@@ -24,7 +24,10 @@ def api_images():
     filterObj = getFilterParams()
 
     all_portaits = data.get_portraits_by_year_by_params(filterObj)
+
     pag = int(index * 100)
+    all_portaits = all_portaits.drop_duplicates(subset = 'id')
+    print('Amount of unique results for query: ', len(all_portaits))
     return all_portaits[['image_url', 'artwork_name', 'artist_full_name', 'creation_year']].iloc[pag: pag + 99].to_json(
         orient='records')
 
@@ -110,3 +113,8 @@ def get_color_dist():
 @main.route('/api/colors', methods=['GET'])
 def get_colors():
     return data.get_colors().to_json(orient='records')
+
+
+@main.route('/api/colors_200', methods=['GET'])
+def get_colors_200():
+    return data.get_colors_200().to_json(orient='records')
