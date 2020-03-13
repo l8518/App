@@ -77,6 +77,15 @@ let getMaxY = function (data) {
     return Math.round((get_max_sum(data) + (get_max_sum(data) / 5)) / 1000) * 1000;
 };
 
+function componentToHexCD(c) {
+    let hex = c.toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
+}
+
+function rgbToHexCD(r, g, b) {
+    return "#" + componentToHexCD(r) + componentToHexCD(g) + componentToHexCD(b);
+}
+
 function drawInitBars(data) {
     const svgColorDist = d3.select("#bubble")
         .append("svg")
@@ -126,9 +135,11 @@ function drawInitBars(data) {
     let mouseover = function(d) {
         var subgroupName = d3.select(this.parentNode).datum().key;
         var subgroupValue = d.data[subgroupName];
+
+        let colGroup = colorColDist(subgroupName);
         tooltipColorDist
-        // Todo to hex from heat map? colorColDist(subgroupName).tohex
-            .html("subgroup: " + subgroupName + "<br>" + "Value: " + subgroupValue)
+            .html("Group color: " + rgbToHexCD(colGroup[2], colGroup[1], colGroup[0]).toUpperCase()
+                + "<br>" + "Amount of faces: " + subgroupValue)
             .style("opacity", 1)
     };
     let mousemove = function(d) {
