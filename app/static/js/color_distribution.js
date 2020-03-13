@@ -67,6 +67,15 @@ sort_age_groups = function (groups) {
     });
 };
 
+let getXGroups = function (data) {
+    let groups = d3.map(data, d => d.age).keys();
+    return sort_age_groups(groups);
+};
+
+// TODO fix for smaller values than 1000
+let getMaxY = function (data) {
+    return Math.round((get_max_sum(data) + (get_max_sum(data) / 5)) / 1000) * 1000;
+};
 
 function drawInitBars(data) {
     const svgColorDist = d3.select("#bubble")
@@ -76,16 +85,6 @@ function drawInitBars(data) {
         .append("g")
         .attr("transform",
             "translate(" + marginColorDist.left + "," + marginColorDist.top + ")");
-
-    getXGroups = function (data) {
-        let groups = d3.map(data, d => d.age).keys();
-        return sort_age_groups(groups);
-    };
-
-// TODO fix for smaller values than 1000
-    getMaxY = function (data) {
-        return Math.round((get_max_sum(data) + (get_max_sum(data) / 10)) / 1000) * 1000;
-    };
 
     let yColDist = d3.scaleLinear();
     let xColDist = d3.scaleBand();
@@ -170,6 +169,28 @@ function drawInitBars(data) {
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave);
 
+    svgColorDist.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - marginColorDist.left)
+        .attr("x",0 - (heightColorDist / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Amount of faces");
+
+    svgColorDist.append("text")
+        .attr("y", heightColorDist + (marginColorDist.bottom/2))
+        .attr("x", (widthColorDist / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Age groups");
+
+
+    svgColorDist.append("text")
+        .attr("y", 0)
+        .attr("x", (widthColorDist / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Amount of skin tones grouped");
 
     svgColorDist.append("g")
         .attr("transform", "translate(0," + heightColorDist + ")")
