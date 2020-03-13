@@ -3,9 +3,10 @@ import pandas as pd
 from . import models
 
 # Load data as panda dfs #
-heatmap_csv = pd.read_csv("data/heatmap.csv")
+heatmap_csv = pd.read_csv("data/heatmap_200.csv")
 faces = pd.read_json("data/faces_new.json")
 color_groups = pd.read_json("data/group_centers.json")
+color_groups_200 = pd.read_json("data/group_centers_200.json")
 portraits_with_faces_and_color = pd.read_csv("data/portraits_with_faces_and_color.csv")
 
 
@@ -23,6 +24,11 @@ def get_heatmap():
 
 def get_colors():
     return color_groups
+
+
+def get_colors_200():
+    return color_groups_200
+
 
 
 def get_portraits_by_year_by_params(filterObj: models.FilterObj):

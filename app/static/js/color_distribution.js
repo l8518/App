@@ -105,7 +105,6 @@ function drawInitBars(data) {
     colorColDist.domain(filterJSParams['color'])
         .range(colRange);
 
-    console.log(colors);
     let stackedData = d3.stack()
         .keys(subgroups)
         (data);
