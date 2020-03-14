@@ -124,15 +124,6 @@ function registerListener() {
         filterJSUpdate("age", selection);       
     };
 
-
-    document.getElementById('timeslider-dimension-list-select-color-group').onchange = function () {
-        var elements = document.getElementById('timeslider-dimension-list-select-color-group').selectedOptions;
-        let selection = Array.prototype.slice.call(elements).map((element) => {
-            return element.value
-        });
-        filterJSParams['color'] = selection;
-        filterJSUpdate("dimension-value", selection);
-    };
 }
 
 

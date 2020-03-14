@@ -45,12 +45,7 @@ def getFilterParams():
     male = "male" in gender
     female = False
     male = False
-    # TODO: WIP - not nice solution atm 🙊🙈
-    # - if dimension is present:
-    #   --> use selected dimension and value for the specific thing (gender, color group etc)
-    #   --> allow to further filter data based on the details filter
-    # - if no dimension is present:
-    #   --> use the details filter data
+    
     if dimension:
         if (dimension == "age"):
             gender = request.args.get("gender").split(',')
@@ -67,7 +62,7 @@ def getFilterParams():
             gender = request.args.get("gender").split(',')
             female = "female" in gender
             male = "male" in gender
-            color = dimension_value # TODO: error? I added the value in Javascript. Fixed?
+            color = dimension_value
             age = request.args.get("age")
     
     selected_time = request.args.get("selected_time")

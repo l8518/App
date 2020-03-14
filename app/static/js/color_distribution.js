@@ -48,8 +48,9 @@ get_max_sum = function (data) {
     let values = [];
     data.forEach((bar) => {
         let sum = 0;
-        for (let i = 0; i < filterJSParams['color'].length; i++) {
-            sum += bar[String(filterJSParams['color'][i])]
+        let groups = Object.keys(bar);
+        for (let i = 0; i < (groups.length - 1 ); i++) {
+            sum += bar[groups[i]]
         }
         values.push(sum);
     });
