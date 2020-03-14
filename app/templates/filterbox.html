@@ -1,19 +1,16 @@
 <nav id="filter-nav-bar" class="navbar navbar-expand-md pb-0 fixed-bottom">
+
     <div class="container bg-white rounded-top shadow-lg pb-1">
+
         <div class="row row-eq-height text-center">
-            <div class="col-9">
-                <small>Average Face Filteroptions</small>
-            </div>
-            <div class="col-3">
-                <small>Detail Filteroptions</small>
-            </div>
+
             <div class="col-8">
+
                 <div class="row row-eq-height align-items-center">
                     <div class="col-12">
                         <div class="row">
                             <div class="col-12 p-2">
-                                <svg id="face_view_svg" class="w-100 h-100" viewport="0 0 960 550" version="1.1"
-                                    xmlns="http://www.w3.org/2000/svg"></svg>
+                                <div id="time_slider"></div>
                             </div>
                         </div>
                     </div>
@@ -30,7 +27,8 @@
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="input-group-timeslider-dimension">Dimension</label>
                         </div>
-                        <select                             class="custom-select form-control form-control-sm" id="input-group-timeslider-dimension">
+                        <select class="custom-select form-control form-control-sm"
+                            id="input-group-timeslider-dimension">
                             <option value="none" selected>None</option>
                             <option value="age">Age</option>
                             <option value="gender">Gender</option>
@@ -84,8 +82,9 @@
             <div class="col-4 mt-auto">
                 <div class="row">
                     <div class="col-12">
-                        <select id="detailfilter-control-age" class="mb-2" name="options[]" class="selectpicker" multiple
-                            data-live-search="true" data-selected-text-format="count > 3" data-actions-box="true">
+                        <select id="detailfilter-control-age" class="mb-2" name="options[]" class="selectpicker"
+                            multiple data-live-search="true" data-selected-text-format="count > 3"
+                            data-actions-box="true">
                         </select>
                         <script>
                             $(function () {
@@ -95,8 +94,9 @@
                         </script>
                     </div>
                     <div class="col-12">
-                        <select id="detailfilter-control-gender" class="mb-2" name="options[]" class="selectpicker" multiple
-                            data-live-search="true" data-selected-text-format="count > 3" data-actions-box="true">
+                        <select id="detailfilter-control-gender" class="mb-2" name="options[]" class="selectpicker"
+                            multiple data-live-search="true" data-selected-text-format="count > 3"
+                            data-actions-box="true">
                         </select>
                         <script>
                             $(function () {
@@ -107,9 +107,9 @@
                     </div>
                     <div class="col-12">
                         <div class="d-inline">
-                            <select id="detailfilter-control-color-group" class="ml-auto" name="options[]" class="selectpicker"
-                                multiple data-live-search="true" data-selected-text-format="count > 3"
-                                data-actions-box="true">
+                            <select id="detailfilter-control-color-group" class="ml-auto" name="options[]"
+                                class="selectpicker" multiple data-live-search="true"
+                                data-selected-text-format="count > 3" data-actions-box="true">
                             </select>
                             <script>
                                 $(function () {

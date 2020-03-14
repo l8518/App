@@ -1,6 +1,6 @@
 var width = 750;
-var height = 160;
-var margin = { top: 20, right: 50, bottom: 50, left: 40 };
+var height = 120;
+var margin = { top: 0, right: 50, bottom: 10, left: 40 };
 var padding = 0.1;
 
 var allTimeGroups = ["Year", "Decade", "Century", "All"]
@@ -61,7 +61,7 @@ function init_pic_slider(data){
   const svg = d3.select("#time_slider")
         .append("svg")
         .attr("class", "w-100 h-100")
-        .attr("viewport", "0 0 960 550")
+        .attr("viewport", "0 0 960 450")
         .attr("version", 1.1)
         .attr("xmlns", "http://www.w3.org/2000/svg")
   
