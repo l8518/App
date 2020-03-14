@@ -36,10 +36,35 @@ def getFilterParams():
     print(request.args)
     begin_date = request.args.get("beginDate")
     end_date = request.args.get("endDate")
-    color = request.args.get("color")
+    dimension = request.args.get("dimension")
+    dimension_value = request.args.get("dimension-value")
     age = request.args.get("age")
-    female = request.args.get("female", type=inputs.boolean)
-    male = request.args.get("male", type=inputs.boolean)
+    gender = request.args.get("gender")
+    color = request.args.get("color")
+    female = "female" in gender
+    male = "male" in gender
+    female = False
+    male = False
+    
+    if dimension:
+        if (dimension == "age"):
+            gender = request.args.get("gender").split(',')
+            female = "female" in gender
+            male = "male" in gender
+            age = dimension_value
+            color = request.args.get("color")
+        if (dimension == "gender"):
+            female = "female" == dimension_value
+            male = "male" == dimension_value
+            age = request.args.get("age")
+            color = request.args.get("color")
+        if (dimension == "color-group"):
+            gender = request.args.get("gender").split(',')
+            female = "female" in gender
+            male = "male" in gender
+            color = dimension_value
+            age = request.args.get("age")
+    
     selected_time = request.args.get("selected_time")
 
     if age is not None:

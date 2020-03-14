@@ -4,20 +4,19 @@
             <div class="col-4 col-md-6 align-self-center" id="splash-frame">
                 <div class="framecontainer">
                     <svg class="facestyle w-100 h-100" id="faceframe" class="w-100 h-100" viewport="0 0 1200 1200" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                        <svg class="imgtop " id="overlay" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200">
-                            <image href="/static/img/century/14.jpg" x="225" y="225" width="750" height="750" />
+                        <svg id="splash-frame-front" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200">
+                            <image id="image-splash-frame-front" href="/static/img/century/14.jpg" x="225" y="225" width="750" height="750" />
                         </svg>
-                        <svg  id="overlay2" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200">
-                            <image href="/static/img/century/19.jpg" x="225" y="225" width="750" height="750" />
+                        <svg id="splash-frame-back" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200">
+                            <image id="image-splash-frame-back" href="../static/img/missing_face.svg" x="225" y="225" width="750" height="750" />
                         </svg>
                         <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200">
                             <image href="/static/img/frame.png" x="0" width="1200" />
                         </svg>
-                        <use xlink:href="#overlay2" />
-                        <use xlink:href="#overlay" />
+                        <use xlink:href="#splash-frame-back" id="use-splash-frame-back" />
+                        <use xlink:href="#splash-frame-front" id="use-splash-frame-front" />
                     </svg>
                 </div>
-
             </div>
             <div class="col-6" id="splash-right">
                 <div>
