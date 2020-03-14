@@ -5,7 +5,7 @@ let marginColorDist = {top: 50, right: 20, bottom: 50, left: 65},
 let colors;
 
 init_fetch_color_dist_data = function () {
-    let url = new URL('/api/color_dist', 'http://localhost:5000')
+    let url = new URL('/api/color_dist', 'http://localhost:5000');
     url.search = new URLSearchParams(filterJSParams).toString();
 
     fetch(url)
@@ -18,7 +18,7 @@ init_fetch_color_dist_data = function () {
 
 
 update_color_dist_data = function () {
-    let url = new URL('/api/color_dist', 'http://localhost:5000')
+    let url = new URL('/api/color_dist', 'http://localhost:5000');
     url.search = new URLSearchParams(filterJSParams).toString();
 
     fetch(url)
@@ -30,7 +30,7 @@ update_color_dist_data = function () {
 };
 
 init_colors = function () {
-    let url = new URL('/api/colors', 'http://localhost:5000')
+    let url = new URL('/api/colors', 'http://localhost:5000');
 
     fetch(url)
         .then(resp => resp.json())
@@ -62,12 +62,29 @@ sort_age_groups = function (groups) {
     values.sort((a, b) => a[0] - b[0]);
 
     // Convert back to string
-    const ageStrings = values.map((val) => {
+    return values.map((val) => {
         return "(" + val[0] + "-" + val[1] + ")";
     });
-    return ageStrings;
 };
 
+let getXGroups = function (data) {
+    let groups = d3.map(data, d => d.age).keys();
+    return sort_age_groups(groups);
+};
+
+// TODO fix for smaller values than 1000
+let getMaxY = function (data) {
+    return Math.round((get_max_sum(data) + (get_max_sum(data) / 5)) / 1000) * 1000;
+};
+
+function componentToHexCD(c) {
+    let hex = c.toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
+}
+
+function rgbToHexCD(r, g, b) {
+    return "#" + componentToHexCD(r) + componentToHexCD(g) + componentToHexCD(b);
+}
 
 function drawInitBars(data) {
     const svgColorDist = d3.select("#bubble")
@@ -77,16 +94,6 @@ function drawInitBars(data) {
         .append("g")
         .attr("transform",
             "translate(" + marginColorDist.left + "," + marginColorDist.top + ")");
-
-    getXGroups = function (data) {
-        let groups = d3.map(data, d => d.age).keys();
-        return sort_age_groups(groups);
-    };
-
-// TODO fix for smaller values than 1000
-    getMaxY = function (data) {
-        return Math.round((get_max_sum(data) + (get_max_sum(data) / 10)) / 1000) * 1000;
-    };
 
     let yColDist = d3.scaleLinear();
     let xColDist = d3.scaleBand();
@@ -111,6 +118,40 @@ function drawInitBars(data) {
         .keys(subgroups)
         (data);
 
+    // ----------------
+    // Create a tooltip
+    // ----------------
+    let tooltipColorDist = d3.select("#bubble")
+        .append("div")
+        .style("opacity", 0)
+        .attr("class", "tooltip")
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "1px")
+        .style("border-radius", "5px")
+        .style("padding", "10px");
+
+    // Three function that change the tooltip when user hover / move / leave a cell
+    let mouseover = function(d) {
+        var subgroupName = d3.select(this.parentNode).datum().key;
+        var subgroupValue = d.data[subgroupName];
+
+        let colGroup = colorColDist(subgroupName);
+        tooltipColorDist
+            .html("Group color: " + rgbToHexCD(colGroup[2], colGroup[1], colGroup[0]).toUpperCase()
+                + "<br>" + "Amount of faces: " + subgroupValue)
+            .style("opacity", 1)
+    };
+    let mousemove = function(d) {
+        tooltipColorDist
+            .style("left", (d3.mouse(this)[0]+90) + "px") // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
+            .style("top", (d3.mouse(this)[1]) + "px")
+    };
+    let mouseleave = function(d) {
+        tooltipColorDist
+            .style("opacity", 0)
+    };
+
     svgColorDist.append("g")
         .selectAll("g")
         // Enter in the stack data = loop key per key = group per group
@@ -133,8 +174,33 @@ function drawInitBars(data) {
         .attr("height", (d) => {
             return yColDist(d[0]) - yColDist(d[1])
         })
-        .attr("width", xColDist.bandwidth());
+        .attr("width", xColDist.bandwidth())
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave);
 
+    svgColorDist.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - marginColorDist.left)
+        .attr("x",0 - (heightColorDist / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Amount of faces");
+
+    svgColorDist.append("text")
+        .attr("y", heightColorDist + (marginColorDist.bottom/2))
+        .attr("x", (widthColorDist / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Age groups");
+
+
+    svgColorDist.append("text")
+        .attr("y", 0)
+        .attr("x", (widthColorDist / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Amount of skin tones grouped");
 
     svgColorDist.append("g")
         .attr("transform", "translate(0," + heightColorDist + ")")
@@ -145,53 +211,14 @@ function drawInitBars(data) {
 }
 
 updateBars = function (data) {
-    //FIXME Quick hack
     const bubble = document.getElementById("bubble");
-    bubble.childNodes[0].remove();
+    const parent = bubble.parentNode;
+    bubble.remove();
+    let bubbleDiv = document.createElement("div");
+    bubbleDiv.id = "bubble";
+    parent.appendChild(bubbleDiv);
+
     drawInitBars(data);
-
-
-    // console.log(data);
-    // let groups = getXGroups(data);
-    // let subgroups = filterJSParams['color'];
-    //
-    // y.domain([0, getMaxY(data)])
-    //     .range([heightColorDist, 0]);
-    //
-    // x.domain(groups)
-    //     .range([0, widthColorDist]);
-    //
-    // let colRange = colors.map(color => [color['R'], color['G'], color['B']]);
-    // // TODO maybe sort color groups? Looks actually good like this
-    // colorColDist.domain(filterJSParams['color'])
-    //     .range(colRange);
-    //
-    // let stackedData = d3.stack()
-    //     .keys(subgroups)
-    //     (data);
-    //
-    //
-    // svgColorDist.selectAll(".bar")
-    //     .data(stackedData)
-    //     .transition()
-    //     .duration(2000)
-    //     .attr("fill", d => {
-    //         return "rgb(" + colorColDist(d.key)[2] + ", " + colorColDist(d.key)[1] + "," + colorColDist(d.key)[0] + ")"
-    //     });
-    // svgColorDist.selectAll("rect")
-    //     // enter a second time = loop subgroup per subgroup to add all rectangles
-    //     .data(d => d)
-    //     .enter().append("rect")
-    //     .attr("x", d => {
-    //         return xColDist(d.data.age)
-    //     })
-    //     .attr("y", d => {
-    //         return yColDist(d[1])
-    //     })
-    //     .attr("height", (d) => {
-    //         return yColDist(d[0]) - yColDist(d[1])
-    //     })
-    //     .attr("width", xColDist.bandwidth());
 };
 
 filterJSInitParamsChangedHook(() => {
