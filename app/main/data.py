@@ -1,5 +1,5 @@
 import pandas as pd
-
+import numpy as np
 from . import models
 
 # Load data as panda dfs #
@@ -52,19 +52,31 @@ def female_male_filter(df, filterObj):
 
 def get_portrait_count_by_params(filterObj):
     if filterObj.selected_time == "YEAR":
-        res = portraits_with_faces_and_color\
+        yeardf = portraits_with_faces_and_color\
             .groupby(['creation_year'])\
             .creation_year.agg('count').to_frame(
             'count').reset_index()
-        return res[['creation_year', 'count']]
+
+        yeardf.index = yeardf['creation_year']
+        yeardf = yeardf.reindex(np.arange(yeardf.creation_year.min(), yeardf.creation_year.max())+ 1).fillna(0)
+        yeardf = yeardf.drop('creation_year', 1)
+        yeardf.reset_index(level=0, inplace=True)
+        return yeardf[['creation_year', 'count']]
 
     if filterObj.selected_time == "DECADE":
-        res = portraits_with_faces_and_color\
+        decadedf = portraits_with_faces_and_color\
             .groupby(portraits_with_faces_and_color.creation_year// 10 * 10)\
             .creation_year.agg('count')\
             .to_frame('count').reset_index()\
             .rename({'creation_year': 'decade'}, axis='columns')
-        return res[['decade','count']]
+        decadedf.loc[:,'decade'] /= 10
+        decadedf.index = decadedf['decade']
+        decadedf = decadedf.reindex(np.arange(decadedf.decade.min(), decadedf.decade.max())+ 1).fillna(0)
+        decadedf = decadedf.drop('decade', 1)
+        decadedf.reset_index(level=0, inplace=True)
+        decadedf.loc[:,'decade'] *= 10
+
+        return decadedf[['decade','count']]
 
     if filterObj.selected_time == "CENTURY":
         res = portraits_with_faces_and_color.groupby(['century'])\
