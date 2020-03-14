@@ -1,16 +1,11 @@
-var svg = d3.select("#face_view_svg");
-let svg_width=svg.node().getBoundingClientRect().width;
-let svg_height=svg.node().getBoundingClientRect().height;
-
-let margin = {top: 20, right: 20, bottom: 110, left: 40};
-let margin2 = {top: 30, right: 20, bottom: 50, left: 40};
-
-let width = svg_width - margin.left - margin.right;
-let height = svg_height ;
-let height2 = svg_height;
+var width = 750;
+var height = 160;
+var margin = { top: 20, right: 50, bottom: 50, left: 40 };
+var padding = 0.1;
 
 var allTimeGroups = ["Year", "Decade", "Century", "All"]
 
+//create dropdown
 d3.select("#selectTimeButton")
 .selectAll('myOptions')
     .data(allTimeGroups)
@@ -19,39 +14,6 @@ d3.select("#selectTimeButton")
 .text(function (d) { return d; })
 .attr("value", function (d) { return d.toUpperCase(); }) 
 
-var x = d3.scaleTime().range([0, width]),
-x2 = d3.scaleTime().range([0, width]),
-y = d3.scaleLinear().range([height, 0]),
-y2 = d3.scaleLinear().range([height2, 0]);
-
-var xAxis = d3.axisBottom(x),
-xAxis2 = d3.axisBottom(x2),
-yAxis = d3.axisLeft(y);
-
-var slider = svg.append('g')
-.classed('slider', true)
-.attr('transform', 'translate(' + margin.left +', '+ (height/2) + ')');
-
-var sliderTime = d3
-    .sliderBottom()
-    .width(width)
-    .on('drag', debounceD3Event(dragged_debounce,200))
-
-svg.append("defs").append("clipPath")
-.attr("id", "clip")
-.append("rect")
-.attr("width", width)
-.attr("height", height);
-
-var context = svg.append("g")
-.attr("class", "context")
-.attr("transform", "translate(" + margin2.left + "," + (margin2.top -100)+ ")");
-
-var path = context.append("path");
-var slider_svg = context.append("g")
-    .attr("transform", "translate(0," + (height2 + 3) + ")")
-    .attr("class","sliderTime");
-
 //Read the data
 readAndDrawData = function (){
     let url = new URL('/api/portrait_count_by_params', 'http://localhost:5000')
@@ -59,105 +21,160 @@ readAndDrawData = function (){
     fetch(url).then(function(resp){
       return resp.json();
     }).then(function(data){
-        if(filterJSParams['selected_time'] == "YEAR"){
-            data.map(function(d){return map_to_datetime(d, filterJSParams['selected_time'])});
-        
-            x.domain(d3.extent(data, function(d) { return d.creation_year; }));
-            y.domain([0, d3.max(data, function(d) { return d.count; })]);
-            x2.domain(x.domain());
-            y2.domain(y.domain());
-
-            sliderTime
-            .step(1000 * 60 * 60 * 24 * 365) // year
-            .tickFormat(d3.timeFormat('%Y')) // year
-            .min(d3.min(data.map(d => d.creation_year)))
-            .max(d3.max(data.map(d => d.creation_year)))
-            .default(data.map(d => d.creation_year).find(x => x.getFullYear() == 1850))
-            
-            var area2 = d3.area()
-                .curve(d3.curveMonotoneX)
-                .x(function(d) { return x2(d.creation_year); })
-                .y0(height2)
-                .y1(function(d) { return y2(d.count); });
-
-            path.datum(data)
-            .attr("class", "area")
-            .attr("d", area2);
-
-            slider_svg
-            .call(sliderTime);
-            
-            d3.select('#warped-face').attr("src", get_image_url(filterJSParams['selected_time'], 1850))
-            set_portrait(1850)
-        } else if(filterJSParams['selected_time'] == "DECADE"){
-            data.map(function(d){return map_to_datetime(d, filterJSParams['selected_time'])});
-            
-            x.domain(d3.extent(data, function(d) { return d.decade; }));
-            y.domain([0, d3.max(data, function(d) { return d.count; })]);
-            x2.domain(x.domain());
-            y2.domain(y.domain());
-
-            sliderTime
-            .step(1000 * 60 * 60 * 24 * 365 * 10) // decade
-            .tickFormat(d3.timeFormat('%Y')) // year
-            .min(d3.min(data.map(d => d.decade)))
-            .max(d3.max(data.map(d => d.decade)))
-            .default(data.map(d => d.decade).find(x => {x.getFullYear() == 1850}))
-            
-            var area2 = d3.area()
-                .curve(d3.curveMonotoneX)
-                .x(function(d) { return x2(d.decade); })
-                .y0(height2)
-                .y1(function(d) { return y2(d.count); });
-
-            path.datum(data)
-            .attr("class", "area")
-            .attr("d", area2);
-
-            slider_svg
-            .call(sliderTime);
-            
-            d3.select('#warped-face').attr("src", get_image_url(filterJSParams['selected_time'], 1850))
-            set_portrait(1850)
-        } else if(filterJSParams['selected_time'] == "CENTURY"){
-            console.log("century")
-        } else if(filterJSParams['selected_time'] == "ALL"){
-            console.log("all")
-        }
+      update_pic_slider(data)
     });
 }
 
-function map_to_datetime(data, date_type) {
-    var date = new Date()
-    switch(date_type) {
+function map_data(data, time_type) {
+    switch(time_type) {
         case "YEAR":
-            date.setFullYear(data.creation_year);
-            data.creation_year = date
+            data.time = data.creation_year
             data.count = +data.count;
           break;
         case "DECADE":
-            date.setFullYear(data.decade);
-            data.decade = date
+            data.time = data.decade
             data.count = +data.count;
           break;
         case "CENTURY":
+            data.time = data.century
+            data.count = +data.count;
             break;
         case "ALL":
+            data.time = data.period
+            data.count = +data.count;
             break;
         default:
-          // code block
+          break;
       }
     return data;
 }
 
-function get_image_url(time_step, time){
+function update_pic_slider(data){
+  const time_slider = document.getElementById("time_slider")
+  const childs = time_slider.childNodes[0]
+  if(childs != undefined)childs.remove();
+
+  init_pic_slider(data)
+}
+
+function init_pic_slider(data){
+  const svg = d3.select("#time_slider")
+        .append("svg")
+        .attr("class", "w-100 h-100")
+        .attr("viewport", "0 0 960 550")
+        .attr("version", 1.1)
+        .attr("xmlns", "http://www.w3.org/2000/svg")
+  
+  if (filterJSParams['selected_time'] == "ALL"){
+    return;
+  }
+
+  data.map(function(d){return map_data(d, filterJSParams['selected_time'])});
+  var xBand = d3
+      .scaleBand()
+      .domain(data.map(d => d.time))
+      .range([margin.left, width - margin.right])
+      .padding(padding);
+
+  var xLinear = d3
+      .scaleLinear()
+      .domain([
+      d3.min(data, d => d.time),
+      d3.max(data, d => d.time),
+      ])
+      .range([
+      margin.left + xBand.bandwidth() / 2 + xBand.step() * padding - 0.5,
+      width -
+          margin.right -
+          xBand.bandwidth() / 2 -
+          xBand.step() * padding -
+          0.5,
+      ]);
+
+  var y = d3
+      .scaleLinear()
+      .domain([0, d3.max(data, d => d.count)])
+      .nice()
+      .range([height - margin.bottom, margin.top]);
+
+  var yAxis = g => g.attr('transform', `translate(${width - margin.right},0)`)
+      .call(d3
+          .axisRight(y)
+          .tickValues([1e4])
+          .tickFormat(d3.format('($.2s'))
+      )
+      .call(g => g.select('.domain').remove());
+
+  var bars = svg
+  .append('g')
+  .selectAll('rect')
+  .data(data);
+
+  var barsEnter = bars
+      .enter()
+      .append('rect')
+      .attr('x', d => xBand(d.time))
+      .attr('y', d => y(d.count))
+      .attr('height', d => y(0) - y(d.count))
+      .attr('width', xBand.bandwidth());
+
+  var draw = selected => {
+    barsEnter
+    .merge(bars)
+    .attr('fill', d => (d.time === selected ? '#bad80a' : '#e0e0e0'));      
+  };
+
+  var slider;
+  var time;
+  // Time dependent
+  if(filterJSParams['selected_time'] == "YEAR"){
+      time=1650
+      slider = g => g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3
+              .sliderBottom(xLinear)
+              .step(1)
+              .ticks(10)
+              .default(time)
+              .on('onchange', value => draw(value))
+              .on('drag', debounceD3Event(dragged_debounce,200))
+          );
+  } else if(filterJSParams['selected_time'] == "DECADE"){
+    time = 1650
+    slider = g => g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3
+              .sliderBottom(xLinear)
+              .step(10)
+              .ticks(10)
+              .default(time)
+              .on('onchange', value => draw(value))
+              .on('drag', debounceD3Event(dragged_debounce,200))
+          );
+  }else if(filterJSParams['selected_time'] == "CENTURY"){
+    time=19
+    slider = g => g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3
+              .sliderBottom(xLinear)
+              .step(1)
+              .ticks(5)
+              .default(19)
+              .on('onchange', value => draw(value))
+              .on('drag', debounceD3Event(dragged_debounce,200))
+          );
+  } else{
+    
+  }
+  draw(time);
+  set_portrait(time)
+  
+  svg.append('g').call(yAxis);
+  svg.append('g').call(slider);
+}
+
+function get_image_url(time){
     let base_url = "/static/img/"
-    switch(time_step) {
+    switch(filterJSParams['selected_time']) {
         case "YEAR":
           base_url += "yearly/" + time
           break;
         case "DECADE":
-            base_url += "decade/" + time
+            base_url += "decade/" + Math.floor(time / 10)
           break;
         case "CENTURY":
             base_url += "century/" + time
@@ -169,12 +186,11 @@ function get_image_url(time_step, time){
 }
 
 function set_portrait(time){
-
     let warpBoxBack = d3.select(`#usebox-svg-warped-face-2`);
     let warpBoxFront = d3.select(`#usebox-svg-warped-face-1`);
     let warpImageBack = d3.select(`#warped-face-2`)
     let warpImageFront = d3.select(`#warped-face-1`)
-    let url = get_image_url(filterJSParams['selected_time'],time);
+    let url = get_image_url(time);
 
     warpImageBack.attr("href", url).on("error", function() {
       warpImageBack.attr("href", "../static/img/missing_face.svg")
@@ -191,9 +207,8 @@ function set_portrait(time){
 }
 
 function dragged_debounce(d) {
-    var year = d3.timeFormat('%Y')(d)
-    set_portrait(year)
-    d3.select('p#value-time').text(year);  
+    set_portrait(d)
+    // d3.select('p#value-time').text(year);  
 }
 
 function debounceD3Event(func, wait, immediate) {
@@ -224,12 +239,12 @@ function debounceD3Event(func, wait, immediate) {
         func.apply(context, args);
         d3.event = tmpEvent;
       }
-
     };
   }
-var updateView = function(filterJSParams) {
-      readAndDrawData();
-      console.log("renew");
-}
 
-filterJSInitParamsChangedHook(updateView);
+  readAndDrawData();
+
+filterJSInitParamsChangedHook(() => {
+  console.log("init")
+  readAndDrawData();
+});
