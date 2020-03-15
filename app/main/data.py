@@ -55,6 +55,15 @@ def female_male_filter(df, filterObj):
         df = df.query('gender == "Male"')
     return df
 
+def get_faces_by_params(filterObj):
+
+    # return similiary + faceid + imgid
+    fromidx = 10*filterObj.index 
+    todidx = 10*(filterObj.index+1)
+    filtered_df = faces.iloc[fromidx:todidx]
+    filtered_df['deviation'] = 1000
+
+    return filtered_df[['imgid', 'faceid', 'deviation' ]]
 
 def get_portrait_count_by_params(filterObj):
     if filterObj.selected_time == "YEAR":

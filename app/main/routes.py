@@ -40,6 +40,9 @@ def getFilterParams():
     dimension_value = request.args.get("dimension-value")
     age = request.args.get("age")
     gender = request.args.get("gender")
+    index = request.args.get("index")
+    if gender is None:
+        gender = ""
     color = request.args.get("color")
     female = "female" in gender
     male = "male" in gender
@@ -73,7 +76,10 @@ def getFilterParams():
     if color is not None:
         color = color.split(',')
 
-    filterObj = models.FilterObj(begin_date, end_date, age, female, male, color, selected_time)
+    if index is not None:
+        index = int(index)
+
+    filterObj = models.FilterObj(begin_date, end_date, age, female, male, color, selected_time, index)
     return filterObj
 
 
@@ -86,6 +92,15 @@ def get_portrait_count_by_params():
         return res.to_json(orient='records')
     
     return {'period':'ALL', 'count': res}
+
+@main.route('/api/faces_by_params', methods=['GET'])
+def get_faces_by_params():
+    filterObj = getFilterParams()
+
+    faces_df = data.get_faces_by_params(filterObj)
+    if isinstance(faces_df, pd.DataFrame):
+        return faces_df.to_json(orient='records')
+    return None
 
 
 @main.route('/api/morphed_image_by_year', methods=['GET'])
