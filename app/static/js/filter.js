@@ -1,15 +1,15 @@
 var filterJSParams = {};
 // init
 const age_groups = ["(0-2)", "(4-6)", "(8-12)", "(15-20)", "(25-32)", "(38-43)", "(48-53)", "(60-100)"];
-const gender_groups = ["female", "male"];
+const gender_groups = ["Female", "Male"];
 const color_groups = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
 filterJSParams['beginDate'] = 0;
 filterJSParams['endDate'] = 2020;
 filterJSParams['age'] = age_groups;
-filterJSParams['gender'] = ["male", "female"];
+filterJSParams['gender'] = ["Male", "Female"];
 filterJSParams['color'] = color_groups;
-filterJSParams['selected_time'] = "YEAR"
+filterJSParams['selected_time'] = "ALL"
 filterJSParams['dimension'] = "none";
 filterJSParams['dimension-value'] = "none";
 
@@ -22,7 +22,7 @@ filterJSOnWindowLookHooks = [];
 var filterJSUpdate = function(param, value, skip=false) {
     filterJSParams[param] = value;
     if (!skip) {
-        filterJSNotify(filterJSParams);
+        filterJSNotify(filterJSParams, param);
     }
     
 }
@@ -40,9 +40,9 @@ var filterJSAddWindowLoadHook = function(callback) {
     filterJSOnWindowLookHooks.push(callback);
 }
 
-let filterJSNotify = function() {
+let filterJSNotify = function(filterJSParams, param) {
     filterJSParamsChangedHooks.forEach(f => {
-        f(filterJSParams);
+        f(filterJSParams, param);
     });
 }
 

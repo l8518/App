@@ -3,7 +3,7 @@ var height = 120;
 var margin = { top: 0, right: 50, bottom: 10, left: 40 };
 var padding = 0.1;
 
-var allTimeGroups = ["Year", "Decade", "Century", "All"]
+var allTimeGroups = ["All", "Year", "Decade", "Century"]
 
 //create dropdown
 d3.select("#selectTimeButton")
@@ -128,22 +128,24 @@ function init_pic_slider(data){
   var time;
   // Time dependent
   if(filterJSParams['selected_time'] == "YEAR"){
-      time=1650
+      filterJSUpdate("beginDate", 1650, true)
+      filterJSUpdate("endDate", 1650)
       slider = g => g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3
               .sliderBottom(xLinear)
               .step(1)
               .ticks(10)
-              .default(time)
+              .default(filterJSParams['beginDate'])
               .on('onchange', value => draw(value))
               .on('drag', debounceD3Event(dragged_debounce,200))
           );
   } else if(filterJSParams['selected_time'] == "DECADE"){
-    time = 1650
+    filterJSUpdate("beginDate", 1650, true)
+    filterJSUpdate("endDate", 1650)
     slider = g => g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3
               .sliderBottom(xLinear)
               .step(10)
               .ticks(10)
-              .default(time)
+              .default(filterJSParams['beginDate'])
               .on('onchange', value => draw(value))
               .on('drag', debounceD3Event(dragged_debounce,200))
           );
@@ -167,48 +169,32 @@ function init_pic_slider(data){
   svg.append('g').call(slider);
 }
 
-function get_image_url(time){
-    let base_url = "/static/img/"
-    switch(filterJSParams['selected_time']) {
-        case "YEAR":
-          base_url += "yearly/" + time
-          break;
-        case "DECADE":
-            base_url += "decade/" + Math.floor(time / 10)
-          break;
-        case "CENTURY":
-            base_url += "century/" + time
-          break;
-        default:
-            base_url += "no_portrait"
-      }
-    return base_url + ".jpg"
-}
-
-function set_portrait(time){
-    let warpBoxBack = d3.select(`#usebox-svg-warped-face-2`);
-    let warpBoxFront = d3.select(`#usebox-svg-warped-face-1`);
-    let warpImageBack = d3.select(`#warped-face-2`)
-    let warpImageFront = d3.select(`#warped-face-1`)
-    let url = get_image_url(time);
-
-    warpImageBack.attr("href", url).on("error", function() {
-      warpImageBack.attr("href", "../static/img/missing_face.svg")
-      url = "../static/img/missing_face.svg";
-    });
-
-    warpBoxFront.classed("crossfade", true);
-
-    setTimeout(() => {
-      warpImageFront.attr("href", url)
-      warpBoxFront.classed("crossfade", false);
-    }, 1000);
-    
-}
-
 function dragged_debounce(d) {
-    set_portrait(d)
-    // d3.select('p#value-time').text(year);  
+
+  let begin = d;
+  let end = d;
+    switch(filterJSParams['selected_time']) {
+      case "YEAR":
+        // nothing
+        break;
+      case "DECADE":
+          begin = begin - 10
+          end = end
+        break;
+      case "CENTURY":
+          begin = (d * 100) - 100;
+          end = d * 100 
+        break;
+      case "ALL":
+          begin = 0
+          end = 9999
+        bread;
+      default:
+          throw Error("something wrong here")
+    }
+    
+    filterJSUpdate("beginDate", begin, true)
+    filterJSUpdate("endDate", end)
 }
 
 function debounceD3Event(func, wait, immediate) {
@@ -244,7 +230,8 @@ function debounceD3Event(func, wait, immediate) {
 
   readAndDrawData();
 
-filterJSInitParamsChangedHook(() => {
-  console.log("init")
-  readAndDrawData();
+filterJSInitParamsChangedHook((param, update_type) => {
+  if (["beginDate", "endDate"].indexOf(update_type) == -1) {
+    readAndDrawData();
+  }
 });

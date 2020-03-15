@@ -5,19 +5,6 @@ let marginColorDist = {top: 50, right: 20, bottom: 50, left: 65},
 let colors;
 let colRange;
 
-init_fetch_color_dist_data = function () {
-    let url = new URL('/api/color_dist', 'http://localhost:5000');
-    url.search = new URLSearchParams(filterJSParams).toString();
-
-    fetch(url)
-        .then(resp => resp.json())
-        .then((data) => {
-            // updateColorDistribution(data)
-            drawInitBars(data);
-        });
-};
-
-
 update_color_dist_data = function () {
     let url = new URL('/api/color_dist', 'http://localhost:5000');
     url.search = new URLSearchParams(filterJSParams).toString();
@@ -25,7 +12,6 @@ update_color_dist_data = function () {
     fetch(url)
         .then(resp => resp.json())
         .then((data) => {
-            // updateColorDistribution(data)
             updateBars(data);
         });
 };
@@ -39,10 +25,9 @@ init_colors = function () {
             colors = data
             colRange = data.map(color => [color['R'], color['G'], color['B']]);
         }).then(() => {
-        init_fetch_color_dist_data()
+            update_color_dist_data()
     });
 };
-init_colors();
 
 get_max_sum = function (data) {
     let values = [];
@@ -51,10 +36,10 @@ get_max_sum = function (data) {
         let groups = Object.keys(bar);
         for (let i = 0; i < (groups.length - 1 ); i++) {
             sum += bar[groups[i]]
-        }
+        }   
         values.push(sum);
     });
-    return Math.max(...values);
+    return Math.max(10, Math.max(...values));
 };
 
 sort_age_groups = function (groups) {
@@ -77,7 +62,7 @@ let getXGroups = function (data) {
 
 // TODO fix for smaller values than 1000
 let getMaxY = function (data) {
-    return Math.round((get_max_sum(data) + (get_max_sum(data) / 5)) / 1000) * 1000;
+    return Math.ceil((get_max_sum(data) + (get_max_sum(data) / 5)));
 };
 
 function componentToHexCD(c) {
@@ -215,15 +200,15 @@ function drawInitBars(data) {
 
 updateBars = function (data) {
     const bubble = document.getElementById("bubble");
-    const parent = bubble.parentNode;
-    bubble.remove();
-    let bubbleDiv = document.createElement("div");
-    bubbleDiv.id = "bubble";
-    parent.appendChild(bubbleDiv);
-
+    bubble.innerHTML = null;
     drawInitBars(data);
 };
 
 filterJSInitParamsChangedHook(() => {
+    console.log("Stacked Bar Chart Redraw")
     update_color_dist_data()
+});
+
+filterJSAddWindowLoadHook(() => {
+    init_colors()
 });

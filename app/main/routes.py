@@ -43,6 +43,8 @@ def getFilterParams():
     index = request.args.get("index")
     if gender is None:
         gender = ""
+    else:
+        gender = str.lower(gender)
     color = request.args.get("color")
     female = "female" in gender
     male = "male" in gender

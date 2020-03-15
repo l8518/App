@@ -41,8 +41,11 @@ def get_portraits_by_year_by_params(filterObj: models.FilterObj):
     # Color filter
     df = df[df['group'].isin(filterObj.color)]
 
-    # Filter period
-    result = df.query(filterObj.beginDate + ' <= creation_year <= ' + filterObj.endDate)
+    if filterObj.selected_time != "ALL":
+        # Filter period
+        result = df.query(filterObj.beginDate + ' <= creation_year <= ' + filterObj.endDate)
+    else:
+        result = df
 
     print('Amount of results for query: ', len(result))
     return result
@@ -132,4 +135,7 @@ def get_color_dist(filterObj):
     portraits = get_portraits_by_year_by_params(filterObj)
     dfGrouped = portraits.groupby(['age', 'group'])
     df = dfGrouped.id.agg('count').to_frame('count').reset_index()
-    return df.pivot(index='age', columns='group', values='count').reset_index()
+    
+    pvdf = df.pivot(index='age', columns='group', values='count').reset_index()
+    pvdf = pvdf.fillna(0)
+    return pvdf
