@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 from . import models
+from glob import glob
+import os.path
+import json
 
 # Load data as panda dfs #
 heatmap_csv = pd.read_csv("data/heatmap_200.csv")
@@ -8,7 +11,11 @@ faces = pd.read_json("data/faces_new.json")
 color_groups = pd.read_json("data/group_centers.json")
 color_groups_200 = pd.read_json("data/group_centers_200.json")
 portraits_with_faces_and_color = pd.read_csv("data/portraits_with_faces_and_color.csv")
+metadata_df = pd.read_csv("data/omniart_v3_portrait.csv")
 
+
+# fetch all json
+facessim = {}
 
 # portrait_data = pd.read_csv("data/portraits.csv")
 
@@ -16,7 +23,14 @@ portraits_with_faces_and_color = pd.read_csv("data/portraits_with_faces_and_colo
 
 #def get_portraits_by_year(begin_date: str, end_date: str):
 #    return portraits_with_faces_and_color.query(begin_date + ' <= creation_year <= ' + end_date)
-
+def load_facesim():
+    files = glob('app/static/img/*.json')
+    for f_name in files:
+        basename, file_extension = os.path.splitext(os.path.basename(f_name))
+        fo = open(f_name)
+        facessim[basename] = json.load(fo)
+        fo.close()
+load_facesim()
 
 def get_heatmap():
     return heatmap_csv
@@ -60,13 +74,25 @@ def female_male_filter(df, filterObj):
 
 def get_faces_by_params(filterObj):
 
-    # return similiary + faceid + imgid
-    fromidx = 10*filterObj.index 
-    todidx = 10*(filterObj.index+1)
-    filtered_df = faces.iloc[fromidx:todidx]
-    filtered_df['deviation'] = 1000
-
-    return filtered_df[['imgid', 'faceid', 'deviation' ]]
+    time = str.lower(filterObj.selected_time)
+    keyname = time
+    imgname = filterObj.beginDate
+    if filterObj.dimension != "none":
+        keyname += f"-{filterObj.dimension}"
+        imgname = f"{filterObj.dimension_value}-{filterObj.beginDate}"
+        if filterObj.selected_time == "ALL":
+            imgname = filterObj.dimension_value
+    else:
+        if filterObj.selected_time == "ALL":
+            imgname = "all"
+    
+    print(imgname)
+    if (imgname not in facessim[keyname]):
+        return []
+    
+    faceres = facessim[keyname][imgname]
+    
+    return faceres[0:min(len(faceres),10)]
 
 def get_portrait_count_by_params(filterObj):
     if filterObj.selected_time == "YEAR":

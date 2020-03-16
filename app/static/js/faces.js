@@ -78,18 +78,17 @@ function get_image_url(){
     let imgname = ";"
     switch(filterJSParams['selected_time']) {
         case "YEAR":
-            timefolder = "yearly"
+            timefolder = "year"
           break;
         case "DECADE":
             timefolder = "decade"
-            time = Math.floor(time / 10) 
           break;
         case "CENTURY":
             timefolder = "century"
             time = Math.floor(time / 100) + 1
           break;
         case "ALL":
-            timefolder = "overall"
+            timefolder = "all"
             if (dimension == "none") {
                 dimensionValue == "1"
             }
@@ -101,15 +100,15 @@ function get_image_url(){
         imgfolder = `${timefolder}-${dimension}`
         
         imgname = `${dimensionValue}-${time}`
-        if (timefolder == "overall") {
+        if (timefolder == "all") {
             imgname =  dimensionValue;
         }
         //TODO fixes for sutff
     } else {
         imgfolder = `${timefolder}`
         imgname = `${time}`
-        if (imgfolder == "overall") {
-            imgname =  "1";
+        if (imgfolder == "all") {
+            imgname = imgfolder;
         }
     }
 

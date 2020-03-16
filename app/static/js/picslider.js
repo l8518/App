@@ -61,7 +61,7 @@ function init_pic_slider(data){
   const svg = d3.select("#time_slider")
         .append("svg")
         .attr("class", "w-100 h-100")
-        .attr("viewport", "0 0 960 450")
+        .attr("viewBox", "0 0 750 150")
         .attr("version", 1.1)
         .attr("xmlns", "http://www.w3.org/2000/svg")
   
@@ -163,7 +163,6 @@ function init_pic_slider(data){
     
   }
   draw(time);
-  set_portrait(time)
   
   svg.append('g').call(yAxis);
   svg.append('g').call(slider);

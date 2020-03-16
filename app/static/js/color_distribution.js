@@ -1,4 +1,4 @@
-let marginColorDist = {top: 50, right: 20, bottom: 50, left: 65},
+let marginColorDist = {top: 10, right: 20, bottom: 50, left: 65},
     widthColorDist = 500 - marginColorDist.left - marginColorDist.right,
     heightColorDist = 500 - marginColorDist.top - marginColorDist.bottom;
 

@@ -1,5 +1,6 @@
 from flask import render_template, request
 from flask_restplus import inputs
+from flask import jsonify
 import pandas as pd
 
 from . import data
@@ -33,7 +34,6 @@ def api_images():
 
 
 def getFilterParams():
-    print(request.args)
     begin_date = request.args.get("beginDate")
     end_date = request.args.get("endDate")
     dimension = request.args.get("dimension")
@@ -81,7 +81,7 @@ def getFilterParams():
     if index is not None:
         index = int(index)
 
-    filterObj = models.FilterObj(begin_date, end_date, age, female, male, color, selected_time, index)
+    filterObj = models.FilterObj(begin_date, end_date, age, female, male, color, selected_time, index, dimension, dimension_value)
     return filterObj
 
 
@@ -99,10 +99,8 @@ def get_portrait_count_by_params():
 def get_faces_by_params():
     filterObj = getFilterParams()
 
-    faces_df = data.get_faces_by_params(filterObj)
-    if isinstance(faces_df, pd.DataFrame):
-        return faces_df.to_json(orient='records')
-    return None
+    faces = data.get_faces_by_params(filterObj)
+    return jsonify(faces)
 
 
 @main.route('/api/morphed_image_by_year', methods=['GET'])
