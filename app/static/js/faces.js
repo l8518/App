@@ -43,7 +43,6 @@ function createFaceDOM(face, index, svg) {
 function buildFacesBar(data) {
     let svg = d3.select("#faces-simbar")
     svg.selectAll("svg").remove()
-    console.log(data)
     data.forEach( (element, index) => {
         createFaceDOM(element, index, svg);
     });
@@ -103,7 +102,6 @@ function get_image_url(){
             break;
       }
     
-      console.log(filterJSParams["dimension"]);
     if (filterJSParams["dimension"] != "none") {
         imgfolder = `${timefolder}-${dimension}`
         
@@ -120,7 +118,6 @@ function get_image_url(){
         }
     }
 
-    console.log(`${base_url}/${imgfolder}/${imgname}.jpg`)
     return `${base_url}/${imgfolder}/${imgname}.jpg`
 }
 
@@ -154,7 +151,6 @@ var updateView = function(params, type) {
         fetch_data()
         set_portrait()
     }
-    console.log("renew");
 }
 
 filterJSInitParamsChangedHook(updateView);
