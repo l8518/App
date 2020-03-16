@@ -105,6 +105,7 @@ def get_portrait_count_by_params(filterObj):
         yeardf = yeardf.reindex(np.arange(yeardf.creation_year.min(), yeardf.creation_year.max())+ 1).fillna(0)
         yeardf = yeardf.drop('creation_year', 1)
         yeardf.reset_index(level=0, inplace=True)
+        yeardf["count"] = np.log(yeardf["count"])
         return yeardf[['creation_year', 'count']]
 
     if filterObj.selected_time == "DECADE":
