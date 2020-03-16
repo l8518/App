@@ -27,9 +27,9 @@ def api_images():
     all_portaits = data.get_portraits_by_year_by_params(filterObj)
 
     pag = int(index * 100)
-    all_portaits = all_portaits.drop_duplicates(subset = 'id')
+    all_portaits = all_portaits.drop_duplicates(subset = 'imgid')
     print('Amount of unique results for query: ', len(all_portaits))
-    return all_portaits[['image_url', 'artwork_name', 'artist_full_name', 'creation_year']].iloc[pag: pag + 99].to_json(
+    return all_portaits[['imgid', 'image_url', 'artwork_name', 'artist_full_name', 'creation_year']].iloc[pag: pag + 99].to_json(
         orient='records')
 
 
@@ -88,7 +88,6 @@ def getFilterParams():
 @main.route('/api/portrait_count_by_params', methods=['GET'])
 def get_portrait_count_by_params():
     filterObj = getFilterParams()
-    print(filterObj)
     res = data.get_portrait_count_by_params(filterObj)
     if isinstance(res, pd.DataFrame):
         return res.to_json(orient='records')
@@ -100,6 +99,7 @@ def get_faces_by_params():
     filterObj = getFilterParams()
 
     faces = data.get_faces_by_params(filterObj)
+    print(faces)
     if isinstance(faces, pd.DataFrame):
         return faces.to_json(orient='records')
     return None

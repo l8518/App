@@ -8,6 +8,7 @@ var face_index = 0;
 function createFaceDOM(face, index, svg) {
     
     let faceurl = `../static/img/faces/${face.imgid}_${face.faceid}.jpg` 
+    let purl = `../static/img/portraits/${face.imgid}.jpg` 
     let facesvg = svg.append("svg")
         .attr("x", xmargin + (xwide * index))
         .attr("y", ymargin)
@@ -18,7 +19,7 @@ function createFaceDOM(face, index, svg) {
         .classed("shadow", true)
 
     let tooltiphtml = `<div class="container">
-                       <img class='w-100' src='${face.image_url}'>
+                       <img class='w-100' src='${purl}'>
                        <span>Distance</span>
                        <span>${face.deviation}</span>
                        </div>`
@@ -68,7 +69,7 @@ function fetch_data() {
     var url = new URL('/api/faces_by_params', 'http://localhost:5000')
     let params = filterJSParams;
     params["index"] = face_index;
-
+    
     url.search = new URLSearchParams(params).toString();
     fetch(url).then(function (resp) {
         return resp.json()
@@ -89,10 +90,10 @@ function get_image_url(){
           break;
         case "DECADE":
             timefolder = "decade"
+            time = time
           break;
         case "CENTURY":
             timefolder = "century"
-            time = Math.floor(time / 100) + 1
           break;
         case "ALL":
             timefolder = "all"
@@ -101,13 +102,15 @@ function get_image_url(){
             }
             break;
       }
-    
+    console.log(filterJSParams["dimension"]);
     if (filterJSParams["dimension"] != "none") {
         imgfolder = `${timefolder}-${dimension}`
         
         imgname = `${dimensionValue}-${time}`
         if (timefolder == "all") {
             imgname =  dimensionValue;
+        } else {
+
         }
         //TODO fixes for sutff
     } else {
@@ -127,7 +130,7 @@ function set_portrait(){
     let warpImageBack = d3.select(`#warped-face-2`)
     let warpImageFront = d3.select(`#warped-face-1`)
     let url = get_image_url();
-
+    console.log(url)
     warpImageBack.attr("href", url).on("error", function() {
       warpImageBack.attr("href", "../static/img/missing_face.svg")
       url = "../static/img/missing_face.svg";
@@ -142,15 +145,9 @@ function set_portrait(){
     
 }
 
-fetch_data()
-
-filterJSInitParamsChangedHook(fetch_data);
-
 var updateView = function(params, type) {
-    if (["beginDate", "endDate"]) {
-        fetch_data()
-        set_portrait()
-    }
+    fetch_data()
+    set_portrait()
 }
 
 filterJSInitParamsChangedHook(updateView);

@@ -52,7 +52,8 @@ get_images = function (index) {
             img.setAttributeNode(att);
 
             const container = document.createElement("div");
-            img.src = data[i]['image_url'];
+            let purl = `../static/img/portraits/${data[i]["imgid"]}.jpg` 
+            img.src = purl;
 
             const bootstrap = document.createAttribute("class");
             bootstrap.value = "col-4 col-md-3 col-lg-2 my-1 imageContainer";

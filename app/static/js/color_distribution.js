@@ -8,7 +8,6 @@ let colRange;
 update_color_dist_data = function () {
     let url = new URL('/api/color_dist', location.href);
     url.search = new URLSearchParams(filterJSParams).toString();
-
     fetch(url)
         .then(resp => resp.json())
         .then((data) => {

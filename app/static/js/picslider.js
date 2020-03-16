@@ -2,8 +2,10 @@ var width = 750;
 var height = 120;
 var margin = { top: 0, right: 50, bottom: 10, left: 40 };
 var padding = 0.1;
-var previousTime = null;
-var allTimeGroups = ["All", "Year", "Decade", "Century"]
+var previousBegin = null;
+var previousEnd = null;
+var previousTimegap = null;
+var allTimeGroups = ["All", "Century", "Decade", "Year"]
 
 //create dropdown
 d3.select("#selectTimeButton")
@@ -17,7 +19,15 @@ d3.select("#selectTimeButton")
 //Read the data
 readAndDrawData = function (){
     let url = new URL('/api/portrait_count_by_params', 'http://localhost:5000')
-    url.search = new URLSearchParams(filterJSParams).toString();
+    let fetchParams = filterJSParams
+    fetchParams['beginDate'] = 0;
+    fetchParams['endDate'] = 2020;
+    fetchParams['age'] = age_groups;
+    fetchParams['gender'] = ["Male", "Female"];
+    fetchParams['color'] = color_groups;
+    
+    url.search = new URLSearchParams(fetchParams).toString();
+    console.log("fetch", url)
     fetch(url).then(function(resp){
       return resp.json();
     }).then(function(data){
@@ -125,16 +135,23 @@ function init_pic_slider(data){
   };
 
   var slider;
-  var time;
+  console.log(previousBegin);
+  console.log(previousEnd);
+  console.log(previousTimegap);
+  let begin = previousBegin;
+  let end = previousEnd;
+  let selected;
   // Time dependent
   if(filterJSParams['selected_time'] == "YEAR"){
-      if (previousTime) {
-        time=previousTime
+      if (previousBegin) {
+          console.log(data);
       } else {
-        time=1650
+        begin = 1650;
+        end = 1651;
       }
-      filterJSUpdate("beginDate", time, true)
-      filterJSUpdate("endDate", time)
+      selected = begin;
+      filterJSUpdate("beginDate", begin, true)
+      filterJSUpdate("endDate", end)
       slider = g => g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3
               .sliderBottom(xLinear)
               .step(1)
@@ -144,13 +161,17 @@ function init_pic_slider(data){
               .on('drag', debounceD3Event(dragged_debounce,200))
           );
   } else if(filterJSParams['selected_time'] == "DECADE"){
-    if (previousTime) {
-      time=Math.round(previousTime/10) * 10
+    if (previousBegin) {
+      begin = Math.round(previousBegin/10) * 10;
+      end = (Math.round(previousEnd/10) * 10);
+      if (end == begin) end = end + 10;
     } else {
-      time=1650
+      begin = 1650
+      end = 1660
     }
-    filterJSUpdate("beginDate", time, true)
-    filterJSUpdate("endDate", time)
+    selected = begin;
+    filterJSUpdate("beginDate", begin, true)
+    filterJSUpdate("endDate", end)
     slider = g => g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3
               .sliderBottom(xLinear)
               .step(10)
@@ -160,24 +181,36 @@ function init_pic_slider(data){
               .on('drag', debounceD3Event(dragged_debounce,200))
           );
   }else if(filterJSParams['selected_time'] == "CENTURY"){
-    if (previousTime) {
-      time= Math.round(previousTime / 100)
+    
+    if (previousBegin) {
+      if (previousTimegap == "CENTURY") {
+        begin = previousBegin;
+        end = previousEnd;
+      } else {
+        begin = Math.floor(previousBegin / 100) * 100;
+        end = (Math.floor(previousBegin / 100) + 1) * 100;
+      }
+      
     } else {
-      time=19
+      begin = 1600
+      end = 1700
     }
+    selected = Math.floor(end / 100);
+    filterJSUpdate("beginDate", begin, true)
+    filterJSUpdate("endDate", end)
     
     slider = g => g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3
               .sliderBottom(xLinear)
               .step(1)
               .ticks(5)
-              .default(time)
+              .default(selected)
               .on('onchange', value => draw(value))
               .on('drag', debounceD3Event(dragged_debounce,200))
           );
   } else{
     
   }
-  draw(time);
+  draw(selected);
   
   svg.append('g').call(yAxis);
   svg.append('g').call(slider);
@@ -185,27 +218,37 @@ function init_pic_slider(data){
 
 function dragged_debounce(d) {
 
-  let begin = d;
-  let end = d;
+    let begin = d;
+    let end = d;
     switch(filterJSParams['selected_time']) {
       case "YEAR":
         // nothing
-        previousTime = d;
+        end = end +1;
+        previousBegin = begin;
+        previousEnd = end;
+        previousTimegap = "YEAR";
         break;
       case "DECADE":
-          begin = begin - 10
-          end = end
-          previousTime = end;
+          begin = begin
+          end = end + 10
+          previousBegin = begin;
+          previousEnd = end;
+          previousTimegap = "DECADE";
         break;
       case "CENTURY":
-          begin = (d * 100) - 100;
+          console.log("test")
+          begin = (d * 100) - 100 ;
           end = d * 100 
-          previousTime = end;
+          previousBegin = begin;
+          previousEnd = end;
+          previousTimegap = "CENTURY";
         break;
       case "ALL":
           begin = 0
           end = 9999
-          previousTime = null;
+          previousBegin = null;
+          previousEnd = null;
+          previousTimegap = "ALL";
         break;
       default:
           throw Error("something wrong here")
