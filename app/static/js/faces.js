@@ -154,4 +154,3 @@ var updateView = function(params, type) {
 }
 
 filterJSInitParamsChangedHook(updateView);
-filterJSInitScrollHook(scrollViewScrollHook);
