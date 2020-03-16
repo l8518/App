@@ -7,7 +7,7 @@ import json
 
 # Load data as panda dfs #
 heatmap_csv = pd.read_csv("data/heatmap_200.csv")
-faces = pd.read_json("data/faces_new.json")
+faces = pd.read_json("data/faces.json")
 color_groups = pd.read_json("data/group_centers.json")
 color_groups_200 = pd.read_json("data/group_centers_200.json")
 portraits_with_faces_and_color = pd.read_csv("data/portraits_with_faces_and_color.csv")
