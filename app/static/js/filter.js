@@ -155,7 +155,7 @@ function buildGenderOptionList() {
 }
 
 function buildColorGroupOptionList() {
-    const groupSelect = document.getElementById('detailfilter-control-color-group');
+    const groupSelect = document.getElementById('detailfilter-control-group');
     for (let i = 0; i < color_groups.length; i++) {
         var opt = document.createElement("option");
         opt.value = color_groups[i];

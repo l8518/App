@@ -1,5 +1,5 @@
 
-var loaded = false;
+var endReached = false;
 
 // Continuous scroll
 get_images = function (index) {
@@ -7,10 +7,14 @@ get_images = function (index) {
     filterJSParams['index'] = index;
 
     url.search = new URLSearchParams(filterJSParams).toString();
-
+    
+    console.log(index)
     fetch(url).then(function (resp) {
         return resp.json()
     }).then(function (data) {
+        if (data.length == 0) {
+            endReached = true;
+        }
         for (let i = 0; i < data.length; i++) {
 
             const textOverlay = document.createElement("div");
@@ -68,7 +72,8 @@ renew_view = function () {
     // fetch_color_dist_data();
 
     // reset index
-    index = 0;
+    index = -1;
+    endReached = false;
 
     let elem = document.getElementById("scroll");
 
@@ -79,7 +84,7 @@ renew_view = function () {
 
 var mainView = document.getElementById("scroll")
 var heatmapView = document.getElementById("heatmap")
-var index = 0;
+var index = -1;
 
 var scrollViewScrollHook = function () {
     let bottom_page = (document.body.offsetHeight - window.innerHeight);
@@ -89,13 +94,10 @@ var scrollViewScrollHook = function () {
         return
     }
 
-    if ( (scrollY >= bottom_page) || !loaded) {
-        if (loaded) {
-            index++;
-        } else {
-            loaded = true;
-        }
-        
+    if (endReached) return;
+
+    if ( (scrollY >= bottom_page || index <= 0)) {
+        index++;
         get_images(index);
         window.setTimeout(1000);
     }

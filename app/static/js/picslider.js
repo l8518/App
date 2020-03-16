@@ -2,7 +2,7 @@ var width = 750;
 var height = 120;
 var margin = { top: 0, right: 50, bottom: 10, left: 40 };
 var padding = 0.1;
-
+var previousTime = null;
 var allTimeGroups = ["All", "Year", "Decade", "Century"]
 
 //create dropdown
@@ -128,8 +128,13 @@ function init_pic_slider(data){
   var time;
   // Time dependent
   if(filterJSParams['selected_time'] == "YEAR"){
-      filterJSUpdate("beginDate", 1650, true)
-      filterJSUpdate("endDate", 1650)
+      if (previousTime) {
+        time=previousTime
+      } else {
+        time=1650
+      }
+      filterJSUpdate("beginDate", time, true)
+      filterJSUpdate("endDate", time)
       slider = g => g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3
               .sliderBottom(xLinear)
               .step(1)
@@ -139,8 +144,13 @@ function init_pic_slider(data){
               .on('drag', debounceD3Event(dragged_debounce,200))
           );
   } else if(filterJSParams['selected_time'] == "DECADE"){
-    filterJSUpdate("beginDate", 1650, true)
-    filterJSUpdate("endDate", 1650)
+    if (previousTime) {
+      time=Math.round(previousTime/10) * 10
+    } else {
+      time=1650
+    }
+    filterJSUpdate("beginDate", time, true)
+    filterJSUpdate("endDate", time)
     slider = g => g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3
               .sliderBottom(xLinear)
               .step(10)
@@ -150,12 +160,17 @@ function init_pic_slider(data){
               .on('drag', debounceD3Event(dragged_debounce,200))
           );
   }else if(filterJSParams['selected_time'] == "CENTURY"){
-    time=19
+    if (previousTime) {
+      time= Math.round(previousTime / 100)
+    } else {
+      time=19
+    }
+    
     slider = g => g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3
               .sliderBottom(xLinear)
               .step(1)
               .ticks(5)
-              .default(19)
+              .default(time)
               .on('onchange', value => draw(value))
               .on('drag', debounceD3Event(dragged_debounce,200))
           );
@@ -175,19 +190,23 @@ function dragged_debounce(d) {
     switch(filterJSParams['selected_time']) {
       case "YEAR":
         // nothing
+        previousTime = d;
         break;
       case "DECADE":
           begin = begin - 10
           end = end
+          previousTime = end;
         break;
       case "CENTURY":
           begin = (d * 100) - 100;
           end = d * 100 
+          previousTime = end;
         break;
       case "ALL":
           begin = 0
           end = 9999
-        bread;
+          previousTime = null;
+        break;
       default:
           throw Error("something wrong here")
     }
@@ -230,7 +249,8 @@ function debounceD3Event(func, wait, immediate) {
   readAndDrawData();
 
 filterJSInitParamsChangedHook((param, update_type) => {
-  if (["beginDate", "endDate"].indexOf(update_type) == -1) {
+  console.log(update_type);
+  if (["beginDate", "endDate", "age", "gender", "color"].indexOf(update_type) == -1) {
     readAndDrawData();
   }
 });

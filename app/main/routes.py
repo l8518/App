@@ -37,7 +37,7 @@ def getFilterParams():
     begin_date = request.args.get("beginDate")
     end_date = request.args.get("endDate")
     dimension = request.args.get("dimension")
-    dimension_value = request.args.get("dimension-value")
+    dimension_value = str.lower(request.args.get("dimension-value"))
     age = request.args.get("age")
     gender = request.args.get("gender")
     index = request.args.get("index")
@@ -63,7 +63,7 @@ def getFilterParams():
             male = "male" == dimension_value
             age = request.args.get("age")
             color = request.args.get("color")
-        if (dimension == "color-group"):
+        if (dimension == "group"):
             gender = request.args.get("gender").split(',')
             female = "female" in gender
             male = "male" in gender
