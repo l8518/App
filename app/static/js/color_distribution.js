@@ -77,8 +77,7 @@ function rgbToHexCD(r, g, b) {
 function drawInitBars(data) {
     const svgColorDist = d3.select("#bubble")
         .append("svg")
-        .attr("width", widthColorDist + marginColorDist.left + marginColorDist.right)
-        .attr("height", heightColorDist + marginColorDist.top + marginColorDist.bottom)
+        .attr("viewBox", `0 0 ${widthColorDist + marginColorDist.left + marginColorDist.right} ${heightColorDist + marginColorDist.top + marginColorDist.bottom}`)
         .append("g")
         .attr("transform",
             "translate(" + marginColorDist.left + "," + marginColorDist.top + ")");
