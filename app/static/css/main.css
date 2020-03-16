@@ -155,8 +155,9 @@ body {
   pointer-events: all;
 }
 
-.focus{
-}
+.tooltip.show {
+    opacity: 1;
+} 
 
 .focus image {
   -webkit-transition: opacity 2s ease-in-out;

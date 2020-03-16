@@ -1,14 +1,19 @@
 
+var endReached = false;
+
 // Continuous scroll
 get_images = function (index) {
-    var url = new URL('/api/images', 'http://localhost:5000')
+    var url = new URL('/api/images', location.href)
     filterJSParams['index'] = index;
 
     url.search = new URLSearchParams(filterJSParams).toString();
-
+    
     fetch(url).then(function (resp) {
         return resp.json()
     }).then(function (data) {
+        if (data.length == 0) {
+            endReached = true;
+        }
         for (let i = 0; i < data.length; i++) {
 
             const textOverlay = document.createElement("div");
@@ -46,7 +51,8 @@ get_images = function (index) {
             img.setAttributeNode(att);
 
             const container = document.createElement("div");
-            img.src = data[i]['image_url'];
+            let purl = `../static/img/portraits/${data[i]["imgid"]}.jpg` 
+            img.src = purl;
 
             const bootstrap = document.createAttribute("class");
             bootstrap.value = "col-4 col-md-3 col-lg-2 my-1 imageContainer";
@@ -66,23 +72,31 @@ renew_view = function () {
     // fetch_color_dist_data();
 
     // reset index
-    index = 0;
+    index = -1;
+    endReached = false;
 
     let elem = document.getElementById("scroll");
 
     elem.innerHTML = null;
 
-    get_images(index);
+    // get_images(index);
 };
 
 var mainView = document.getElementById("scroll")
-var index = 0;
+var heatmapView = document.getElementById("heatmap")
+var index = -1;
 
 var scrollViewScrollHook = function () {
-    var bottom_page = (document.body.offsetHeight - window.innerHeight);
-    var scrollY = document.documentElement.scrollTop;
+    let bottom_page = (document.body.offsetHeight - window.innerHeight);
+    let start_offset = (heatmapView.offsetTop + heatmapView.offsetHeight  - window.innerHeight);
+    let scrollY = document.documentElement.scrollTop;
+    if (scrollY < start_offset) {
+        return
+    }
 
-    if (scrollY >= bottom_page) {
+    if (endReached) return;
+
+    if ( (scrollY >= bottom_page || index <= 0)) {
         index++;
         get_images(index);
         window.setTimeout(1000);
@@ -91,10 +105,7 @@ var scrollViewScrollHook = function () {
 
 var updateView = function(params) {
     renew_view();
-    console.log("renew");
 }
 
 filterJSInitParamsChangedHook(updateView);
 filterJSInitScrollHook(scrollViewScrollHook);
-
-get_images(index);
