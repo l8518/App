@@ -8,7 +8,6 @@ get_images = function (index) {
 
     url.search = new URLSearchParams(filterJSParams).toString();
     
-    console.log(index)
     fetch(url).then(function (resp) {
         return resp.json()
     }).then(function (data) {

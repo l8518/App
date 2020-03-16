@@ -102,7 +102,6 @@ function get_image_url(){
             }
             break;
       }
-    console.log(filterJSParams["dimension"]);
     if (filterJSParams["dimension"] != "none") {
         imgfolder = `${timefolder}-${dimension}`
         
@@ -130,7 +129,6 @@ function set_portrait(){
     let warpImageBack = d3.select(`#warped-face-2`)
     let warpImageFront = d3.select(`#warped-face-1`)
     let url = get_image_url();
-    console.log(url)
     warpImageBack.attr("href", url).on("error", function() {
       warpImageBack.attr("href", "../static/img/missing_face.svg")
       url = "../static/img/missing_face.svg";

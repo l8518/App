@@ -224,10 +224,11 @@ updateBars = function (data) {
     drawInitBars(data);
 };
 
-filterJSInitParamsChangedHook(() => {
-    update_color_dist_data()
-});
-
 filterJSAddWindowLoadHook(() => {
     init_colors()
+    filterJSInitParamsChangedHook((param, update_type) => {
+        if (["selected_time"].indexOf(update_type) == -1) {
+          update_color_dist_data()
+        }
+      });
 });

@@ -27,7 +27,6 @@ readAndDrawData = function (){
     fetchParams['color'] = color_groups;
     
     url.search = new URLSearchParams(fetchParams).toString();
-    console.log("fetch", url)
     fetch(url).then(function(resp){
       return resp.json();
     }).then(function(data){
@@ -135,16 +134,13 @@ function init_pic_slider(data){
   };
 
   var slider;
-  console.log(previousBegin);
-  console.log(previousEnd);
-  console.log(previousTimegap);
   let begin = previousBegin;
   let end = previousEnd;
   let selected;
   // Time dependent
   if(filterJSParams['selected_time'] == "YEAR"){
       if (previousBegin) {
-          console.log(data);
+          // console.log(data);
       } else {
         begin = 1650;
         end = 1651;
@@ -236,7 +232,6 @@ function dragged_debounce(d) {
           previousTimegap = "DECADE";
         break;
       case "CENTURY":
-          console.log("test")
           begin = (d * 100) - 100 ;
           end = d * 100 
           previousBegin = begin;
@@ -292,7 +287,6 @@ function debounceD3Event(func, wait, immediate) {
   readAndDrawData();
 
 filterJSInitParamsChangedHook((param, update_type) => {
-  console.log(update_type);
   if (["beginDate", "endDate", "age", "gender", "color"].indexOf(update_type) == -1) {
     readAndDrawData();
   }
