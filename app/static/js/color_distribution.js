@@ -6,7 +6,7 @@ let colors;
 let colRange;
 
 update_color_dist_data = function () {
-    let url = new URL('/api/color_dist', 'http://localhost:5000');
+    let url = new URL('/api/color_dist', location.href);
     url.search = new URLSearchParams(filterJSParams).toString();
 
     fetch(url)
@@ -17,7 +17,7 @@ update_color_dist_data = function () {
 };
 
 init_colors = function () {
-    let url = new URL('/api/colors', 'http://localhost:5000');
+    let url = new URL('/api/colors', location.href);
 
     fetch(url)
         .then(resp => resp.json())

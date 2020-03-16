@@ -17,8 +17,15 @@ function createFaceDOM(face, index, svg) {
         .classed("rounded-circle", true)
         .classed("shadow", true)
 
-    let tooltiphtml = `<img class='w-100' src='${faceurl}'>`
-    let faceobj = facesvg.append("image")
+    let tooltiphtml = `<div class="container">
+                       <img class='w-100' src='${face.image_url}'>
+                       <span>Distance</span>
+                       <span>${face.deviation}</span>
+                       </div>`
+
+    let link = facesvg.append("a")
+        .attr("href", faceurl)
+    let faceobj = link.append("image")
         .attr("href", faceurl)
         .attr("y", 0)
         .attr("x", 0)
@@ -36,6 +43,7 @@ function createFaceDOM(face, index, svg) {
 function buildFacesBar(data) {
     let svg = d3.select("#faces-simbar")
     svg.selectAll("svg").remove()
+    console.log(data)
     data.forEach( (element, index) => {
         createFaceDOM(element, index, svg);
     });

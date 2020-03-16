@@ -100,7 +100,9 @@ def get_faces_by_params():
     filterObj = getFilterParams()
 
     faces = data.get_faces_by_params(filterObj)
-    return jsonify(faces)
+    if isinstance(faces, pd.DataFrame):
+        return faces.to_json(orient='records')
+    return None
 
 
 @main.route('/api/morphed_image_by_year', methods=['GET'])

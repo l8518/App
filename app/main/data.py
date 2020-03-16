@@ -12,7 +12,7 @@ color_groups = pd.read_json("data/group_centers.json")
 color_groups_200 = pd.read_json("data/group_centers_200.json")
 portraits_with_faces_and_color = pd.read_csv("data/portraits_with_faces_and_color.csv")
 metadata_df = pd.read_csv("data/omniart_v3_portrait.csv")
-
+metadata_df = metadata_df.set_index("id")
 
 # fetch all json
 facessim = {}
@@ -91,8 +91,10 @@ def get_faces_by_params(filterObj):
         return []
     
     faceres = facessim[keyname][imgname]
-    
-    return faceres[0:min(len(faceres),10)]
+    dicts = faceres[0:min(len(faceres),10)]
+    querydf = pd.DataFrame(dicts)
+    querydf = pd.merge(querydf, metadata_df, how='left', left_on='imgid', right_index=True)
+    return querydf
 
 def get_portrait_count_by_params(filterObj):
     if filterObj.selected_time == "YEAR":
