@@ -13,8 +13,8 @@ color_groups_200 = pd.read_json("data/group_centers_200.json")
 metadata_df = pd.read_csv("data/omniart_v3_portrait.csv")
 metadata_df = metadata_df.set_index("id")
 faces_meta = pd.merge(faces, metadata_df, how='left', left_on='imgid', right_index=True)
-faces_meta["decade"] = faces_meta.creation_year.floordiv(10)
-faces_meta["century"] = faces_meta.creation_year.floordiv(100)
+faces_meta["decade"] = (faces_meta.creation_year.floordiv(10) + 10)
+faces_meta["century"] = (faces_meta.creation_year.floordiv(100) + 1)
 faces_meta = faces_meta[faces_meta.groupby("creation_year")['creation_year'].transform('size') > 1]
 # fetch all json
 facessim = {}
@@ -53,7 +53,7 @@ def get_portraits_by_year_by_params(filterObj: models.FilterObj):
 
     if filterObj.selected_time != "ALL":
         # Filter period
-        result = df.query(filterObj.beginDate + ' <= creation_year <= ' + filterObj.endDate)
+        result = df.query(filterObj.beginDate + ' <= creation_year < ' + filterObj.endDate)
     else:
         result = df
 
@@ -78,11 +78,14 @@ def get_faces_by_params(filterObj):
         imgname = f"{filterObj.dimension_value}-{filterObj.beginDate}"
         if filterObj.selected_time == "ALL":
             imgname = filterObj.dimension_value
+        # quickfix:
+        if filterObj.dimension == "gender":
+            imgname = imgname.title()
     else:
         if filterObj.selected_time == "ALL":
             imgname = "all"
     if (imgname not in facessim[keyname]):
-        return []
+        return pd.DataFrame()
     
     faceres = facessim[keyname][imgname]
     dicts = faceres
@@ -91,12 +94,15 @@ def get_faces_by_params(filterObj):
     return querydf.head(10)
 
 def get_portrait_count_by_params(filterObj):
+    
+    sourcedf = get_portraits_by_year_by_params(filterObj)
+
     if filterObj.selected_time == "YEAR":
-        yeardf = faces_meta\
-            .groupby(['creation_year'])\
+        yeardf = sourcedf[sourcedf.groupby("creation_year")['creation_year'].transform('size') > 1]
+        yeardf = yeardf.groupby(sourcedf['creation_year'])\
             .creation_year.agg('count').to_frame(
             'count').reset_index()
-
+        
         yeardf.index = yeardf['creation_year']
         yeardf = yeardf.reindex(np.arange(yeardf.creation_year.min(), yeardf.creation_year.max())+ 1).fillna(0)
         yeardf = yeardf.drop('creation_year', 1)
@@ -105,8 +111,8 @@ def get_portrait_count_by_params(filterObj):
         return yeardf[['creation_year', 'count']]
 
     if filterObj.selected_time == "DECADE":
-        decadedf = faces_meta\
-            .groupby(faces_meta.creation_year// 10 * 10)\
+        decadedf = sourcedf[sourcedf.groupby("decade")['decade'].transform('size') > 1]
+        decadedf = decadedf.groupby(sourcedf.creation_year// 10 * 10)\
             .creation_year.agg('count')\
             .to_frame('count').reset_index()\
             .rename({'creation_year': 'decade'}, axis='columns')
@@ -120,14 +126,14 @@ def get_portrait_count_by_params(filterObj):
         return decadedf[['decade','count']]
 
     if filterObj.selected_time == "CENTURY":
-        res = faces_meta.groupby(['century'])\
-            .creation_year.agg('count').to_frame(
+        res = sourcedf[sourcedf.groupby("decade")['decade'].transform('size') > 1]
+        res = res.groupby(['century']).creation_year.agg('count').to_frame(
             'count').reset_index()
         res["count"] = np.log(res["count"])
         return res[['century', 'count']]
     
     if filterObj.selected_time == "ALL":
-        return faces_meta.shape[0]
+        return sourcedf.shape[0]
 
 
 def get_bubble(filterObj):

@@ -142,6 +142,10 @@ function buildAgeOptionList() {
 
         groupSelect.appendChild(opt);
     }
+    $(function () {
+        $(groupSelect).selectpicker({});
+        $(groupSelect).selectpicker('selectAll');
+    });
 }
 
 function buildGenderOptionList() {
@@ -152,6 +156,10 @@ function buildGenderOptionList() {
         opt.text = gender_groups[i];
         groupSelect.appendChild(opt);
     }
+    $(function () {
+        $(groupSelect).selectpicker({});
+        $(groupSelect).selectpicker('selectAll');
+    });
 }
 
 function buildColorGroupOptionList() {
@@ -170,6 +178,10 @@ function buildColorGroupOptionList() {
         });
         filterJSUpdate("color", selection);
     }
+    $(function () {
+        $(groupSelect).selectpicker({});
+        $(groupSelect).selectpicker('selectAll');
+    });
 }
 
 function buildDimensionAgeOptionList() {

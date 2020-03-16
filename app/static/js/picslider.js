@@ -107,11 +107,6 @@ function init_pic_slider(data){
       .range([height - margin.bottom, margin.top]);
 
   var yAxis = g => g.attr('transform', `translate(${width - margin.right},0)`)
-      .call(d3
-          .axisRight(y)
-          .tickValues([1e4])
-          .tickFormat(d3.format('($.2s'))
-      )
       .call(g => g.select('.domain').remove());
 
   var bars = svg
@@ -152,6 +147,7 @@ function init_pic_slider(data){
               .sliderBottom(xLinear)
               .step(1)
               .ticks(10)
+              .tickFormat(d3.format('.0f'))
               .default(filterJSParams['beginDate'])
               .on('onchange', value => draw(value))
               .on('drag', debounceD3Event(dragged_debounce,200))
@@ -172,6 +168,7 @@ function init_pic_slider(data){
               .sliderBottom(xLinear)
               .step(10)
               .ticks(10)
+              .tickFormat(d3.format('.0f'))
               .default(filterJSParams['beginDate'])
               .on('onchange', value => draw(value))
               .on('drag', debounceD3Event(dragged_debounce,200))
@@ -199,6 +196,7 @@ function init_pic_slider(data){
               .sliderBottom(xLinear)
               .step(1)
               .ticks(5)
+              .tickFormat(d3.format('.0f'))
               .default(selected)
               .on('onchange', value => draw(value))
               .on('drag', debounceD3Event(dragged_debounce,200))
