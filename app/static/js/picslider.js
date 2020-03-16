@@ -18,7 +18,7 @@ d3.select("#selectTimeButton")
 
 //Read the data
 readAndDrawData = function (){
-    let url = new URL('/api/portrait_count_by_params', 'http://localhost:5000')
+    let url = new URL('/api/portrait_count_by_params', location.href)
     let fetchParams = filterJSParams
     fetchParams['beginDate'] = 0;
     fetchParams['endDate'] = 2020;

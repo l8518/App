@@ -66,7 +66,7 @@ var similarFacesButtonMinusClick = function(e) {
 }
 
 function fetch_data() {
-    var url = new URL('/api/faces_by_params', 'http://localhost:5000')
+    var url = new URL('/api/faces_by_params', location.href)
     let params = filterJSParams;
     params["index"] = face_index;
     

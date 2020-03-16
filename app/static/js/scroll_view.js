@@ -3,7 +3,7 @@ var endReached = false;
 
 // Continuous scroll
 get_images = function (index) {
-    var url = new URL('/api/images', 'http://localhost:5000')
+    var url = new URL('/api/images', location.href)
     filterJSParams['index'] = index;
 
     url.search = new URLSearchParams(filterJSParams).toString();
