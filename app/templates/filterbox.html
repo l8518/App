@@ -32,7 +32,7 @@
                             <option value="none" selected>None</option>
                             <option value="age">Age</option>
                             <option value="gender">Gender</option>
-                            <option value="color-group">Color Group</option>
+                            <option value="group">Color Group</option>
                         </select>
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane tab-pane-dimension fade col-2" id="timeslider-dimension-list-none"
@@ -52,15 +52,15 @@
                                     class="custom-select border-left-0 rounded-0 rounded-right form-control form-control-sm"
                                     id="timeslider-dimension-list-select-gender">
                                     <!-- TODO: - feeds this like the other select boxes -->
-                                    <option value="female">Female</option>
-                                    <option value="male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Male">Male</option>
                                 </select>
                             </div>
-                            <div class="tab-pane tab-pane-dimension fade" id="timeslider-dimension-list-color-group"
+                            <div class="tab-pane tab-pane-dimension fade" id="timeslider-dimension-list-group"
                                 role="tabpanel">
                                 <select onchange="timesliderDimensionValueChanged(this);"
                                     class="custom-select border-left-0 rounded-0 rounded-right form-control form-control-sm"
-                                    id="timeslider-dimension-list-select-color-group">
+                                    id="timeslider-dimension-list-select-group">
                                     <!-- TODO: - feeds this like the other select boxes -->
                                     <option value="0" style="background-color: rgb(200, 155, 113);">Group 1</option>
                                     <option value="1" style="background-color: rgb(159, 102, 58);">Group 2</option>
@@ -86,37 +86,19 @@
                             multiple data-live-search="true" data-selected-text-format="count > 3"
                             data-actions-box="true">
                         </select>
-                        <script>
-                            $(function () {
-                                $('#detailfilter-control-age').selectpicker({});
-                                $("#detailfilter-control-age").selectpicker('selectAll');
-                            });
-                        </script>
                     </div>
                     <div class="col-12">
                         <select id="detailfilter-control-gender" class="mb-2" name="options[]" class="selectpicker"
                             multiple data-live-search="true" data-selected-text-format="count > 3"
                             data-actions-box="true">
                         </select>
-                        <script>
-                            $(function () {
-                                $('#detailfilter-control-gender').selectpicker({});
-                                $("#detailfilter-control-gender").selectpicker('selectAll');
-                            });
-                        </script>
                     </div>
                     <div class="col-12">
                         <div class="d-inline">
-                            <select id="detailfilter-control-color-group" class="ml-auto" name="options[]"
+                            <select id="detailfilter-control-group" class="ml-auto" name="options[]"
                                 class="selectpicker" multiple data-live-search="true"
                                 data-selected-text-format="count > 3" data-actions-box="true">
                             </select>
-                            <script>
-                                $(function () {
-                                    $('#detailfilter-control-color-group').selectpicker({});
-                                    $("#detailfilter-control-color-group").selectpicker('selectAll');
-                                });
-                            </script>
                         </div>
                     </div>
                 </div>

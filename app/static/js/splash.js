@@ -1,6 +1,6 @@
 
 let rotateImageIndex = 0;
-const availableCenturyImages = ["14", "15", "16", "17", "18", "19"];
+const availableCenturyImages = ["1400", "1500", "1600", "1700", "1800", "1900"];
 
 /**
  * Preloads the image and than replaces the current image

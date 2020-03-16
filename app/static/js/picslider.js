@@ -2,8 +2,10 @@ var width = 750;
 var height = 120;
 var margin = { top: 0, right: 50, bottom: 10, left: 40 };
 var padding = 0.1;
-
-var allTimeGroups = ["Year", "Decade", "Century", "All"]
+var previousBegin = null;
+var previousEnd = null;
+var previousTimegap = null;
+var allTimeGroups = ["All", "Century", "Decade", "Year"]
 
 //create dropdown
 d3.select("#selectTimeButton")
@@ -16,8 +18,15 @@ d3.select("#selectTimeButton")
 
 //Read the data
 readAndDrawData = function (){
-    let url = new URL('/api/portrait_count_by_params', 'http://localhost:5000')
-    url.search = new URLSearchParams(filterJSParams).toString();
+    let url = new URL('/api/portrait_count_by_params', location.href)
+    let fetchParams = filterJSParams
+    fetchParams['beginDate'] = 0;
+    fetchParams['endDate'] = 2020;
+    fetchParams['age'] = age_groups;
+    fetchParams['gender'] = ["Male", "Female"];
+    fetchParams['color'] = color_groups;
+    
+    url.search = new URLSearchParams(fetchParams).toString();
     fetch(url).then(function(resp){
       return resp.json();
     }).then(function(data){
@@ -61,7 +70,7 @@ function init_pic_slider(data){
   const svg = d3.select("#time_slider")
         .append("svg")
         .attr("class", "w-100 h-100")
-        .attr("viewport", "0 0 960 450")
+        .attr("viewBox", "0 0 750 150")
         .attr("version", 1.1)
         .attr("xmlns", "http://www.w3.org/2000/svg")
   
@@ -98,11 +107,6 @@ function init_pic_slider(data){
       .range([height - margin.bottom, margin.top]);
 
   var yAxis = g => g.attr('transform', `translate(${width - margin.right},0)`)
-      .call(d3
-          .axisRight(y)
-          .tickValues([1e4])
-          .tickFormat(d3.format('($.2s'))
-      )
       .call(g => g.select('.domain').remove());
 
   var bars = svg
@@ -125,90 +129,126 @@ function init_pic_slider(data){
   };
 
   var slider;
-  var time;
+  let begin = previousBegin;
+  let end = previousEnd;
+  let selected;
   // Time dependent
   if(filterJSParams['selected_time'] == "YEAR"){
-      time=1650
+      if (previousBegin) {
+          // console.log(data);
+      } else {
+        begin = 1650;
+        end = 1651;
+      }
+      selected = begin;
+      filterJSUpdate("beginDate", begin, true)
+      filterJSUpdate("endDate", end)
       slider = g => g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3
               .sliderBottom(xLinear)
               .step(1)
               .ticks(10)
-              .default(time)
+              .tickFormat(d3.format('.0f'))
+              .default(filterJSParams['beginDate'])
               .on('onchange', value => draw(value))
               .on('drag', debounceD3Event(dragged_debounce,200))
           );
   } else if(filterJSParams['selected_time'] == "DECADE"){
-    time = 1650
+    if (previousBegin) {
+      begin = Math.round(previousBegin/10) * 10;
+      end = (Math.round(previousEnd/10) * 10);
+      if (end == begin) end = end + 10;
+    } else {
+      begin = 1650
+      end = 1660
+    }
+    selected = begin;
+    filterJSUpdate("beginDate", begin, true)
+    filterJSUpdate("endDate", end)
     slider = g => g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3
               .sliderBottom(xLinear)
               .step(10)
               .ticks(10)
-              .default(time)
+              .tickFormat(d3.format('.0f'))
+              .default(filterJSParams['beginDate'])
               .on('onchange', value => draw(value))
               .on('drag', debounceD3Event(dragged_debounce,200))
           );
   }else if(filterJSParams['selected_time'] == "CENTURY"){
-    time=19
+    
+    if (previousBegin) {
+      if (previousTimegap == "CENTURY") {
+        begin = previousBegin;
+        end = previousEnd;
+      } else {
+        begin = Math.floor(previousBegin / 100) * 100;
+        end = (Math.floor(previousBegin / 100) + 1) * 100;
+      }
+      
+    } else {
+      begin = 1600
+      end = 1700
+    }
+    selected = Math.floor(end / 100);
+    filterJSUpdate("beginDate", begin, true)
+    filterJSUpdate("endDate", end)
+    
     slider = g => g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3
               .sliderBottom(xLinear)
               .step(1)
               .ticks(5)
-              .default(19)
+              .tickFormat(d3.format('.0f'))
+              .default(selected)
               .on('onchange', value => draw(value))
               .on('drag', debounceD3Event(dragged_debounce,200))
           );
   } else{
     
   }
-  draw(time);
-  set_portrait(time)
+  draw(selected);
   
   svg.append('g').call(yAxis);
   svg.append('g').call(slider);
 }
 
-function get_image_url(time){
-    let base_url = "/static/img/"
-    switch(filterJSParams['selected_time']) {
-        case "YEAR":
-          base_url += "yearly/" + time
-          break;
-        case "DECADE":
-            base_url += "decade/" + Math.floor(time / 10)
-          break;
-        case "CENTURY":
-            base_url += "century/" + time
-          break;
-        default:
-            base_url += "no_portrait"
-      }
-    return base_url + ".jpg"
-}
-
-function set_portrait(time){
-    let warpBoxBack = d3.select(`#usebox-svg-warped-face-2`);
-    let warpBoxFront = d3.select(`#usebox-svg-warped-face-1`);
-    let warpImageBack = d3.select(`#warped-face-2`)
-    let warpImageFront = d3.select(`#warped-face-1`)
-    let url = get_image_url(time);
-
-    warpImageBack.attr("href", url).on("error", function() {
-      warpImageBack.attr("href", "../static/img/missing_face.svg")
-      url = "../static/img/missing_face.svg";
-    });
-
-    warpBoxFront.classed("crossfade", true);
-
-    setTimeout(() => {
-      warpImageFront.attr("href", url)
-      warpBoxFront.classed("crossfade", false);
-    }, 1000);
-    
-}
-
 function dragged_debounce(d) {
-    set_portrait(d)
-    // d3.select('p#value-time').text(year);  
+
+    let begin = d;
+    let end = d;
+    switch(filterJSParams['selected_time']) {
+      case "YEAR":
+        // nothing
+        end = end +1;
+        previousBegin = begin;
+        previousEnd = end;
+        previousTimegap = "YEAR";
+        break;
+      case "DECADE":
+          begin = begin
+          end = end + 10
+          previousBegin = begin;
+          previousEnd = end;
+          previousTimegap = "DECADE";
+        break;
+      case "CENTURY":
+          begin = (d * 100) - 100 ;
+          end = d * 100 
+          previousBegin = begin;
+          previousEnd = end;
+          previousTimegap = "CENTURY";
+        break;
+      case "ALL":
+          begin = 0
+          end = 9999
+          previousBegin = null;
+          previousEnd = null;
+          previousTimegap = "ALL";
+        break;
+      default:
+          throw Error("something wrong here")
+    }
+    
+    filterJSUpdate("beginDate", begin, true)
+    filterJSUpdate("endDate", end)
 }
 
 function debounceD3Event(func, wait, immediate) {
@@ -244,7 +284,8 @@ function debounceD3Event(func, wait, immediate) {
 
   readAndDrawData();
 
-filterJSInitParamsChangedHook(() => {
-  console.log("init")
-  readAndDrawData();
+filterJSInitParamsChangedHook((param, update_type) => {
+  if (["beginDate", "endDate", "age", "gender", "color"].indexOf(update_type) == -1) {
+    readAndDrawData();
+  }
 });

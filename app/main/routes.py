@@ -1,5 +1,6 @@
 from flask import render_template, request
 from flask_restplus import inputs
+from flask import jsonify
 import pandas as pd
 
 from . import data
@@ -26,20 +27,24 @@ def api_images():
     all_portaits = data.get_portraits_by_year_by_params(filterObj)
 
     pag = int(index * 100)
-    all_portaits = all_portaits.drop_duplicates(subset = 'id')
+    all_portaits = all_portaits.drop_duplicates(subset = 'imgid')
     print('Amount of unique results for query: ', len(all_portaits))
-    return all_portaits[['image_url', 'artwork_name', 'artist_full_name', 'creation_year']].iloc[pag: pag + 99].to_json(
+    return all_portaits[['imgid', 'image_url', 'artwork_name', 'artist_full_name', 'creation_year']].iloc[pag: pag + 99].to_json(
         orient='records')
 
 
 def getFilterParams():
-    print(request.args)
     begin_date = request.args.get("beginDate")
     end_date = request.args.get("endDate")
     dimension = request.args.get("dimension")
-    dimension_value = request.args.get("dimension-value")
+    dimension_value = str.lower(request.args.get("dimension-value"))
     age = request.args.get("age")
     gender = request.args.get("gender")
+    index = request.args.get("index")
+    if gender is None:
+        gender = ""
+    else:
+        gender = str.lower(gender)
     color = request.args.get("color")
     female = "female" in gender
     male = "male" in gender
@@ -58,7 +63,7 @@ def getFilterParams():
             male = "male" == dimension_value
             age = request.args.get("age")
             color = request.args.get("color")
-        if (dimension == "color-group"):
+        if (dimension == "group"):
             gender = request.args.get("gender").split(',')
             female = "female" in gender
             male = "male" in gender
@@ -73,19 +78,30 @@ def getFilterParams():
     if color is not None:
         color = color.split(',')
 
-    filterObj = models.FilterObj(begin_date, end_date, age, female, male, color, selected_time)
+    if index is not None:
+        index = int(index)
+
+    filterObj = models.FilterObj(begin_date, end_date, age, female, male, color, selected_time, index, dimension, dimension_value)
     return filterObj
 
 
 @main.route('/api/portrait_count_by_params', methods=['GET'])
 def get_portrait_count_by_params():
     filterObj = getFilterParams()
-    print(filterObj)
     res = data.get_portrait_count_by_params(filterObj)
     if isinstance(res, pd.DataFrame):
         return res.to_json(orient='records')
     
     return {'period':'ALL', 'count': res}
+
+@main.route('/api/faces_by_params', methods=['GET'])
+def get_faces_by_params():
+    filterObj = getFilterParams()
+
+    faces = data.get_faces_by_params(filterObj)
+    if isinstance(faces, pd.DataFrame):
+        return faces.to_json(orient='records')
+    return None
 
 
 @main.route('/api/morphed_image_by_year', methods=['GET'])
