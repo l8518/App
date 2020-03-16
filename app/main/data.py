@@ -120,13 +120,14 @@ def get_portrait_count_by_params(filterObj):
         decadedf = decadedf.drop('decade', 1)
         decadedf.reset_index(level=0, inplace=True)
         decadedf.loc[:,'decade'] *= 10
-
+        decadedf["count"] = np.log(decadedf["count"])
         return decadedf[['decade','count']]
 
     if filterObj.selected_time == "CENTURY":
         res = portraits_with_faces_and_color.groupby(['century'])\
             .creation_year.agg('count').to_frame(
             'count').reset_index()
+        res["count"] = np.log(res["count"])
         return res[['century', 'count']]
     
     if filterObj.selected_time == "ALL":
